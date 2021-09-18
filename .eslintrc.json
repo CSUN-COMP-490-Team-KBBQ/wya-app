@@ -6,6 +6,7 @@
     "extends": [
         "plugin:react/recommended",
         "airbnb",
+        "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended"
     ],
     "parser": "@typescript-eslint/parser",
@@ -21,5 +22,22 @@
         "@typescript-eslint"
     ],
     "rules": {
+        // fixes import React error
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": [ "error" ],
+        "react/jsx-filename-extension": [ "warn", { "extensions": [ ".tsx" ] } ],
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "ts": "never",
+                "tsx": "never"
+            }
+        ]
+    },
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
     }
 }
