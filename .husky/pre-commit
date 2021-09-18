@@ -1,7 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo "Linting..."
-npm run lint
-echo "Running tests..."
-npm test -- --watchAll=false
+npx lint-staged
