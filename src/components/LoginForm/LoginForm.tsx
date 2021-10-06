@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import './LoginForm.css';
+
 export default function LoginForm(): JSX.Element {
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -14,13 +16,17 @@ export default function LoginForm(): JSX.Element {
     };
 
     return (
-        <Form onSubmit={onSubmitHandler}>
+        <Form onSubmit={onSubmitHandler} className="login-form">
             <Form.Group as={Row} controlId="loginEmail">
                 <Form.Label column sm={2}>
                     Email
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="email" name="email" />
+                    <Form.Control
+                        type="email"
+                        name="email"
+                        className="form-input"
+                    />
                 </Col>
             </Form.Group>
 
@@ -29,7 +35,11 @@ export default function LoginForm(): JSX.Element {
                     Password
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="password" name="password" />
+                    <Form.Control
+                        type="password"
+                        name="password"
+                        className="form-input"
+                    />
                 </Col>
             </Form.Group>
 
