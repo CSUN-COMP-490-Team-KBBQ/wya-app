@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import './RegisterForm.css';
+
 export default function RegisterForm(): JSX.Element {
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -27,19 +29,25 @@ export default function RegisterForm(): JSX.Element {
                 </Form.Group>
             </Row>
 
-            <Form.Group controlId="registerEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" name="email" />
-            </Form.Group>
+            <Row>
+                <Form.Group controlId="registerEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" name="email" />
+                </Form.Group>
+            </Row>
 
-            <Form.Group controlId="registerPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" />
-            </Form.Group>
+            <Row>
+                <Form.Group controlId="registerPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" name="password" />
+                </Form.Group>
+            </Row>
 
-            <Form.Group>
-                <Button type="submit">Register</Button>
-            </Form.Group>
+            <Row>
+                <Form.Group>
+                    <Button type="submit">Register</Button>
+                </Form.Group>
+            </Row>
         </Form>
     );
 }

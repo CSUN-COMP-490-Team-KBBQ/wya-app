@@ -45,7 +45,7 @@ export default function LoginForm(): JSX.Element {
 
             <Form.Group as={Row}>
                 <Col sm={{ span: 10, offset: 2 }}>
-                    <Button type="submit">Login</Button>
+                    <Button type="submit">Log in</Button>
                 </Col>
             </Form.Group>
         </Form>
