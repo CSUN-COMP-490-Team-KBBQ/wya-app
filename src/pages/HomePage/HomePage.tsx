@@ -5,7 +5,7 @@ export default function HomePage(): JSX.Element {
     return (
         <div>
             <h1>Home Page</h1>
-            Welcome! <Link to="/login">Log in</Link> to get started.
+            Welcome! <Link to="/login">Login</Link> to get started.
         </div>
     );
 }
