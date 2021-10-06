@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import RegisterPage from './RegisterPage';
 import { BrowserRouter } from 'react-router-dom';
+import RegisterPage from './RegisterPage';
 
 it('renders component', () => {
     const { queryAllByText } = render(
