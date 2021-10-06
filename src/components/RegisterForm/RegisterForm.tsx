@@ -16,7 +16,7 @@ export default function RegisterForm(): JSX.Element {
     };
 
     return (
-        <Form onSubmit={onSubmitHandler}>
+        <Form onSubmit={onSubmitHandler} className="register-form">
             <Row>
                 <Form.Group as={Col} controlId="registerFirstName">
                     <Form.Label>First Name</Form.Label>
