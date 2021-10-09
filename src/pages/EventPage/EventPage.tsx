@@ -24,9 +24,7 @@ export default function EventPage({
         };
     };
 
-    const [eventData, setEventData] = React.useState<EventData>(
-        fetchEventData()
-    );
+    const [eventData] = React.useState<EventData>(fetchEventData());
 
     return (
         <div>
