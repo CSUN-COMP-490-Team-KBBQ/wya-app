@@ -25,11 +25,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prepare": "husky install",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "prettier:fix": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "prettier:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint {functions/src,src} --ext .js,.jsx,.ts,.tsx",
+    "prettier:fix": "prettier --write '{functions/src,src}/**/*.{js,jsx,ts,tsx}'",
+    "prettier:check": "prettier --check '{functions/src,src}/**/*.{js,jsx,ts,tsx}'",
     "cypress": "cypress open-ct",
-    "create": "cd src && wya-app create" 
+    "create": "cd src && wya-app create"
   },
   "browserslist": {
     "production": [
@@ -66,6 +66,10 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
+      "npm run prettier:fix",
+      "npm run lint"
+    ],
+    "functions/src/**/*.{js,ts}": [
       "npm run prettier:fix",
       "npm run lint"
     ]
