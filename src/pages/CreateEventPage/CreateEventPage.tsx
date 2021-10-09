@@ -1,12 +1,11 @@
 import React from 'react';
-import CreateEventForm, {
-    CreateEventFormInterface,
-} from '../../components/CreateEventForm/CreateEventForm';
+import CreateEventForm from '../../components/CreateEventForm/CreateEventForm';
+import { EventData } from '../../interfaces/Event';
 
 import './CreateEventPage.css';
 
 export default function CreateEventPage(): JSX.Element {
-    const [form, setForm] = React.useState<CreateEventFormInterface>();
+    const [form, setForm] = React.useState<EventData>();
     return (
         <div>
             <h1>CreateEventPage</h1>

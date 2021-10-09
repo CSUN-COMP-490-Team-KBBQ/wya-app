@@ -5,6 +5,7 @@ import HomePage from '../../pages/HomePage/HomePage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import CreateEventPage from '../../pages/CreateEventPage/CreateEventPage';
+import EventPage from '../../pages/EventPage/EventPage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,6 +17,7 @@ export default function App(): JSX.Element {
                 <Route path="/login" exact component={LoginPage} />
                 <Route path="/register" exact component={RegisterPage} />
                 <Route path="/create-event" exact component={CreateEventPage} />
+                <Route path="/event/:id" exact component={EventPage} />
             </Switch>
         </Router>
     );
