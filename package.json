@@ -28,7 +28,8 @@
     "lint": "eslint {functions/src,src} --ext .js,.jsx,.ts,.tsx",
     "prettier:fix": "prettier --write '{functions/src,src}/**/*.{js,jsx,ts,tsx}'",
     "prettier:check": "prettier --check '{functions/src,src}/**/*.{js,jsx,ts,tsx}'",
-    "cypress": "cypress open-ct"
+    "cypress": "cypress open-ct",
+    "create": "cd src && wya-app create"
   },
   "browserslist": {
     "production": [
@@ -48,6 +49,7 @@
     "@types/react-router-dom": "^5.3.0",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
+    "cli": "file:cli",
     "cypress": "^8.4.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
