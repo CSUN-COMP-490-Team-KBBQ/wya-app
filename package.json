@@ -26,8 +26,8 @@
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "prettier:fix": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "prettier:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
+    "prettier:fix": "prettier --write '{functions/src,src}/**/*.{js,jsx,ts,tsx}'",
+    "prettier:check": "prettier --check '{functions/src,src}/**/*.{js,jsx,ts,tsx}'",
     "cypress": "cypress open-ct"
   },
   "browserslist": {

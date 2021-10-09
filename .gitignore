@@ -24,3 +24,4 @@ yarn-error.log*
 
 # firebase generated files
 ui-debug.log
+firebase-debug.log
