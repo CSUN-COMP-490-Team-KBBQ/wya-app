@@ -56,14 +56,6 @@ export function GuestList(props: GuestListProps): JSX.Element {
     );
 }
 
-export interface CreateEventFormInterface {
-    name: string;
-    description: string;
-    startDatetime: string;
-    endDatetime: string;
-    guests: string[];
-}
-
 interface CreateEventFormProps {
     // eslint-disable-next-line
     setFormHook: React.Dispatch<React.SetStateAction<any>>;
@@ -90,6 +82,7 @@ export default function CreateEventForm(
     return (
         <Form data-testid="CreateEventForm" onSubmit={onSubmitHandler}>
             <input type="hidden" name="hostId" value="Host1" />
+            <input type="hidden" name="eventId" value={uuid()} />
             <Row>
                 <FloatingLabel controlId="eventName" label="Event Name">
                     <Form.Control
