@@ -66,6 +66,10 @@
     "src/**/*.{js,jsx,ts,tsx}": [
       "npm run prettier:fix",
       "npm run lint"
+    ],
+    "functions/src/**/*.{js,ts}": [
+      "npm run prettier:fix",
+      "npm run lint"
     ]
   }
 }
