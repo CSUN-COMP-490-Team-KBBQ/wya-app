@@ -1,4 +1,4 @@
-export interface EventData {
+export default interface EventData {
     eventId: string;
     hostId: string;
     name: string;

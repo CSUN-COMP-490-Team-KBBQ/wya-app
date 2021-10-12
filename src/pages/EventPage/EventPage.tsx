@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { EventData } from '../../interfaces/Event';
+import EventData from '../../interfaces/Event';
 
 export default function EventPage({
     match,
