@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import HomePage from '../../pages/HomePage/HomePage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
@@ -13,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function App(): JSX.Element {
     return (
         <UserAuthProvider>
-            <Router>
+            <BrowserRouter>
                 <Switch>
                     <Route path="/" exact component={HomePage} />
                     <Route path="/login" exact component={LoginPage} />
@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
                     />
                     <Route path="/event/:id" exact component={EventPage} />
                 </Switch>
-            </Router>
+            </BrowserRouter>
         </UserAuthProvider>
     );
 }
