@@ -78,8 +78,7 @@ export default function CreateEventForm(
         // eslint-disable-next-line
         console.log('USER_CREATE_EVENT', formValue);
         if (setFormHook) setFormHook(formValue);
-        firestore.default.addEvent(formValue);
-        firestore.default.setEvent(formValue, 'boof');
+        firestore.default.createEvent(formValue);
     };
 
     return (
