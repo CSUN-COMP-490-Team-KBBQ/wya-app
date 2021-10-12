@@ -5,14 +5,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import './RegisterForm.css';
+import RegisterFormData from '../../interfaces/RegisterFormData';
+import { registerUser } from '../../lib/auth';
 
 export default function RegisterForm(): JSX.Element {
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
-        const formValue = Object.fromEntries(formData.entries());
+        const formValue: RegisterFormData = Object.fromEntries(
+            formData.entries()
+            // eslint-disable-next-line
+        ) as any;
         // eslint-disable-next-line
         console.log('USER_REGISTER', formValue);
+        const { email, password } = formValue;
+        registerUser(email, password);
     };
 
     return (
