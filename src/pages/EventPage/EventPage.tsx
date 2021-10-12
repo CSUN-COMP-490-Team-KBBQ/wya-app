@@ -1,7 +1,7 @@
 import React from 'react';
 
 import EventData from '../../interfaces/Event';
-import { getEventData } from '../../lib/firestore';
+import { getDocSnapshot$ } from '../../lib/firestore';
 
 export default function EventPage({
     match,
@@ -14,12 +14,14 @@ export default function EventPage({
 }): JSX.Element {
     const [eventData, setEventData] = React.useState<EventData>();
 
-    getEventData(match.params.id)
-        .then((data) => {
-            setEventData(data);
-        })
-        // eslint-disable-next-line
-        .catch(console.error);
+    React.useEffect(() => {
+        return getDocSnapshot$(`/events/${match.params.id}`, {
+            next: (snapshot) => {
+                setEventData(snapshot.data() as EventData);
+            },
+        });
+    }, []);
+
     return (
         <div>
             <h1>EventPage</h1>
