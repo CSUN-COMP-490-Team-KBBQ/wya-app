@@ -6,7 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuid } from 'uuid';
-import * as firestore from '../../lib/firestore';
+import { createEvent } from '../../lib/firestore';
+import { useUserContext } from '../../contexts/UserContext';
 
 import './CreateEventForm.css';
 
@@ -66,7 +67,7 @@ export default function CreateEventForm(
     props: CreateEventFormProps
 ): JSX.Element {
     const { setFormHook } = props;
-
+    const user = useUserContext();
     const [guests, updateGuests] = React.useState<string[]>([]);
 
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -78,12 +79,12 @@ export default function CreateEventForm(
         // eslint-disable-next-line
         console.log('USER_CREATE_EVENT', formValue);
         if (setFormHook) setFormHook(formValue);
-        firestore.default.createEvent(formValue);
+        createEvent(formValue);
     };
 
     return (
         <Form data-testid="CreateEventForm" onSubmit={onSubmitHandler}>
-            <input type="hidden" name="hostId" value="Host1" />
+            <input type="hidden" name="hostId" value={user?.uid} />
             <input type="hidden" name="eventId" value={uuid()} />
             <Row>
                 <FloatingLabel controlId="eventName" label="Event Name">
