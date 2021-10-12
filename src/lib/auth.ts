@@ -3,9 +3,10 @@ import {
     signOut,
     signInWithEmailAndPassword,
     User,
-    createUserWithEmailAndPassword,
 } from 'firebase/auth';
+import axios, { AxiosResponse } from 'axios';
 import app from './firebase';
+import RegisterFormData from '../interfaces/RegisterFormData';
 
 const auth = getAuth(app);
 
@@ -24,16 +25,17 @@ export const logOut = (): Promise<void> => {
 };
 
 export const registerUser = (
-    email: string,
-    password: string
-): Promise<User> => {
-    return new Promise((resolve, reject) => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCreds) => {
-                resolve(userCreds.user);
-            })
-            .catch(reject);
-    });
+    data: RegisterFormData
+): Promise<AxiosResponse<User>> => {
+    return axios.post(
+        'https://us-central1-kbbq-wya-35414.cloudfunctions.net/api/register',
+        JSON.stringify(data),
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+    );
 };
 
 export default auth;
