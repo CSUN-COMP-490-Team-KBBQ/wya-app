@@ -1,8 +1,38 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write;
+  	// checks for /users/
+  	function isUser(userId) {
+    	// check that the requesting auth matches the userId
+    	return request.auth.uid == userId;
+    }
+    function isSafeUserWrite() {
+    	// allow write if the uid and email fields will not change
+    	return request.resource.data.uid == resource.data.uid &&
+      			 request.resource.data.email == resource.data.email;
+    }
+    match /users/{USERID} {
+    	allow read: if isUser(USERID);
+      allow update: if isSafeUserWrite() && isUser(USERID);
+    }
+    
+    match /events/{document=**} {
+    	function isHost() {
+        // check that requesting uid matches hostId
+        return request.auth.uid == resource.data.hostId;
+      }
+      function isGuest() {
+        // check that the requesting uid is a guest
+        return request.auth.uid in resource.data.guests;
+      }
+      function isSafeEventWrite() {
+        // check that the hostId does not change during the write
+        return request.resource.data.hostId == resource.data.hostId;
+      }
+    	allow read: if isGuest() || isHost();
+      allow create: if true;
+      allow update: if isHost() && isSafeEventWrite();
+      allow delete: if isHost();
     }
   }
 }
