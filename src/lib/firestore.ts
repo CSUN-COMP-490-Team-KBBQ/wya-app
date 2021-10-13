@@ -1,23 +1,23 @@
-import { doc, setDoc, getFirestore } from 'firebase/firestore';
+import { doc, setDoc, getFirestore, getDoc } from 'firebase/firestore';
 import app from './firebase';
+import EventData from '../interfaces/Event';
 
 const firestore = getFirestore(app);
 
-// createEvent makes use setDoc which will use the hostId and eventId from the front-end
-const createEvent = async (eventData: any): Promise<void> => {
-    const data = {
-        availabilities: {},
-        description: eventData.description,
-        endDate: new Date(eventData.endDatetime),
-        guests: eventData.guests,
-        hostId: eventData.hostId,
-        startDate: new Date(eventData.startDatetime),
-        title: eventData.name,
-    };
-
-    const id = eventData.eventId;
-    const eventsDocumentRef = doc(firestore, 'events', id);
-    await setDoc(eventsDocumentRef, data);
+const getDocRef = (path: string) => {
+    return doc(firestore, path);
 };
 
-export default { createEvent };
+export const createEvent = (data: EventData) => {
+    const eventDocRef = getDocRef(`/events/${data.eventId}`);
+    return setDoc(eventDocRef, {
+        ...data,
+    });
+};
+
+export const getEventData = async (eventId: string): Promise<EventData> => {
+    const eventDocRef = getDocRef(`/events/${eventId}`);
+    return (await getDoc(eventDocRef)).data() as EventData;
+};
+
+export default firestore;
