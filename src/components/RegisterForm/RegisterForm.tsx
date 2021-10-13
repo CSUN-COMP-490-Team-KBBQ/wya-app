@@ -31,6 +31,7 @@ export default function RegisterForm(): JSX.Element {
             .then(({ data }) => {
                 // eslint-disable-next-line
                 console.log(`User successfully created!`, data);
+                history.push('/');
             })
             // eslint-disable-next-line
             .catch(console.error);
