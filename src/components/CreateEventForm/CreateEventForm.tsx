@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import { useHistory } from 'react-router-dom';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,9 +12,15 @@ import { useUserContext } from '../../contexts/UserContext';
 
 import './CreateEventForm.css';
 
+interface Guest {
+    uid: string;
+}
+
 interface GuestListProps {
-    guests: string[];
-    updateGuests: React.Dispatch<React.SetStateAction<string[]>>;
+    guests: { [key: string]: Guest };
+    updateGuests: React.Dispatch<
+        React.SetStateAction<{ [key: string]: Guest }>
+    >;
 }
 
 export function GuestList(props: GuestListProps): JSX.Element {
@@ -21,8 +28,9 @@ export function GuestList(props: GuestListProps): JSX.Element {
     const inputRef = React.useRef<HTMLInputElement>();
     const onClickHandler = () => {
         if (inputRef.current) {
-            const newGuestName = inputRef.current.value;
-            updateGuests([...guests, newGuestName]);
+            const newGuestUID = inputRef.current.value;
+            guests[`${newGuestUID}`] = { uid: newGuestUID };
+            updateGuests({ ...guests });
             inputRef.current.value = '';
         }
     };
@@ -31,17 +39,17 @@ export function GuestList(props: GuestListProps): JSX.Element {
             <h4>Guest List</h4>
             <Row>
                 <ListGroup>
-                    {guests.map((guest) => (
+                    {Object.keys(guests).map((guest) => (
                         <ListGroup.Item key={uuid()}>{guest}</ListGroup.Item>
                     ))}
                 </ListGroup>
             </Row>
             <Row>
                 <Col>
-                    <FloatingLabel controlId="addGuest" label="Guest Name">
+                    <FloatingLabel controlId="addGuest" label="Guest UID">
                         <Form.Control
                             type="text"
-                            placeholder="Guest Name"
+                            placeholder="Guest UID"
                             ref={(node: HTMLInputElement) => {
                                 inputRef.current = node;
                             }}
@@ -68,7 +76,10 @@ export default function CreateEventForm(
 ): JSX.Element {
     const { setFormHook } = props;
     const user = useUserContext();
-    const [guests, updateGuests] = React.useState<string[]>([]);
+    const history = useHistory();
+    const [guests, updateGuests] = React.useState<{
+        [key: string]: Guest;
+    }>({});
 
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -79,7 +90,11 @@ export default function CreateEventForm(
         // eslint-disable-next-line
         console.log('USER_CREATE_EVENT', formValue);
         if (setFormHook) setFormHook(formValue);
-        createEvent(formValue);
+        createEvent(formValue)
+            .then((eventId) => {
+                history.push(`/event/${eventId}`);
+            })
+            .catch(console.error);
     };
 
     return (

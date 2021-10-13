@@ -19,10 +19,16 @@ const getDocRef = (path: string): DocumentReference<DocumentData> => {
     return doc(firestore, path);
 };
 
-export const createEvent = (data: EventData): Promise<void> => {
-    const eventDocRef = getDocRef(`/events/${data.eventId}`);
-    return setDoc(eventDocRef, {
-        ...data,
+export const createEvent = (data: EventData): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const eventDocRef = getDocRef(`/events/${data.eventId}`);
+        setDoc(eventDocRef, {
+            ...data,
+        })
+            .then(() => {
+                resolve(data.eventId);
+            })
+            .catch(reject);
     });
 };
 
