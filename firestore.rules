@@ -16,19 +16,20 @@ service cloud.firestore {
       allow update: if isSafeUserWrite() && isUser(USERID);
     }
     
+    // checks for /events/
+    function isHost() {
+      // check that requesting uid matches hostId
+      return request.auth.uid == resource.data.hostId;
+    }
+    function isGuest() {
+      // check that the requesting uid is a guest
+      return request.auth.uid in resource.data.guests;
+    }
+    function isSafeEventWrite() {
+      // check that the hostId does not change during the write
+      return request.resource.data.hostId == resource.data.hostId;
+    }
     match /events/{document=**} {
-    	function isHost() {
-        // check that requesting uid matches hostId
-        return request.auth.uid == resource.data.hostId;
-      }
-      function isGuest() {
-        // check that the requesting uid is a guest
-        return request.auth.uid in resource.data.guests;
-      }
-      function isSafeEventWrite() {
-        // check that the hostId does not change during the write
-        return request.resource.data.hostId == resource.data.hostId;
-      }
     	allow read: if isGuest() || isHost();
       allow create: if true;
       allow update: if isHost() && isSafeEventWrite();
