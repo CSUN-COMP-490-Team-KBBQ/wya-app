@@ -7,6 +7,7 @@ jest.mock('firebase/auth');
 jest.mock('firebase/firestore');
 jest.mock('../../contexts/UserContext', () => {
     return {
+        // eslint-disable-next-line
         UserAuthProvider: ({ children }: any): JSX.Element => {
             return <div>{children}</div>;
         },

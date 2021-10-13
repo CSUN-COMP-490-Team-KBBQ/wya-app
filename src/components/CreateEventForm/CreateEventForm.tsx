@@ -94,6 +94,7 @@ export default function CreateEventForm(
             .then((eventId) => {
                 history.push(`/event/${eventId}`);
             })
+            // eslint-disable-next-line
             .catch(console.error);
     };
 
