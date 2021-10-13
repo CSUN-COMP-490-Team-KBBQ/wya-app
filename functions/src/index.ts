@@ -28,7 +28,7 @@ app.post('/register', async (req, res) => {
             email,
             firstName,
             lastName,
-            events: [],
+            events: {},
         });
         functions.logger.info(`User ${uid} successfully created.`);
         res.status(200).send(user.toJSON());
