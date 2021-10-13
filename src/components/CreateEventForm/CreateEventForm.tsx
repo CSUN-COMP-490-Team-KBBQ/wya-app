@@ -60,7 +60,7 @@ export function GuestList(props: GuestListProps): JSX.Element {
 
 interface CreateEventFormProps {
     // eslint-disable-next-line
-    setFormHook: React.Dispatch<React.SetStateAction<any>>;
+    setFormHook?: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function CreateEventForm(
