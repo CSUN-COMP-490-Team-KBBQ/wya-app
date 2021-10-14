@@ -3,20 +3,42 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useHistory } from 'react-router-dom';
+import { logIn } from '../../lib/auth';
+import { useUserContext } from '../../contexts/UserContext';
 
 import './LoginForm.css';
 
 export default function LoginForm(): JSX.Element {
-    const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    const history = useHistory();
+    const user = useUserContext();
+    React.useEffect(() => {
+        if (user) {
+            // eslint-disable-next-line
+            console.log('User already logged in, redirecting to home page');
+            history.push('/');
+        }
+    });
+
+    const logInHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         const formValue = Object.fromEntries(formData.entries());
         // eslint-disable-next-line
         console.log('USER_LOGIN', formValue);
+        const { email, password } = formValue;
+        logIn(email as string, password as string)
+            .then(({ uid }) => {
+                // eslint-disable-next-line
+                console.log(`Logged in as user ${uid}`);
+                history.push('/');
+            })
+            // eslint-disable-next-line
+            .catch(console.error);
     };
 
     return (
-        <Form onSubmit={onSubmitHandler} className="login-form">
+        <Form onSubmit={logInHandler} className="login-form">
             <Form.Group as={Row} controlId="loginEmail">
                 <Form.Label column sm={2}>
                     Email

@@ -2,6 +2,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import RegisterForm from './RegisterForm';
 
+jest.mock('firebase/app');
+jest.mock('firebase/auth');
+
 it('renders component', () => {
     const { queryAllByText } = render(<RegisterForm />);
     expect(queryAllByText('First Name')).toBeTruthy();

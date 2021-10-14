@@ -3,20 +3,42 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useHistory } from 'react-router-dom';
 
 import './RegisterForm.css';
+import RegisterFormData from '../../interfaces/RegisterFormData';
+import { registerUser } from '../../lib/auth';
+import { useUserContext } from '../../contexts/UserContext';
 
 export default function RegisterForm(): JSX.Element {
-    const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    const history = useHistory();
+    const user = useUserContext();
+    React.useEffect(() => {
+        if (user) {
+            // eslint-disable-next-line
+            console.log('User already logged in, redirecting to home page');
+            history.push('/');
+        }
+    });
+    const registerHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
-        const formValue = Object.fromEntries(formData.entries());
-        // eslint-disable-next-line
-        console.log('USER_REGISTER', formValue);
+        const formValue: RegisterFormData = Object.fromEntries(
+            formData.entries()
+            // eslint-disable-next-line
+        ) as any;
+        registerUser(formValue)
+            .then(({ data }) => {
+                // eslint-disable-next-line
+                console.log(`User successfully created!`, data);
+                history.push('/');
+            })
+            // eslint-disable-next-line
+            .catch(console.error);
     };
 
     return (
-        <Form onSubmit={onSubmitHandler} className="register-form">
+        <Form onSubmit={registerHandler} className="register-form">
             <Row>
                 <Form.Group as={Col} controlId="registerFirstName">
                     <Form.Label>First Name</Form.Label>
