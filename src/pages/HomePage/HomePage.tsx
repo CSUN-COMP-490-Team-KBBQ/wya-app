@@ -13,18 +13,31 @@ export default function HomePage(): JSX.Element {
             {user ? (
                 <div>
                     <header>
-                        <Button variant="light" onClick={logOut}>
+                        <Button
+                            variant="light"
+                            className="btn-sm"
+                            onClick={logOut}
+                        >
                             Log out
                         </Button>
                     </header>
-                    <h1>Main Menu</h1>
-                    <pre>Welcome: {JSON.stringify(user.email, null, 2)}</pre>
-                    <Link to="/create-event" className="btn btn-info">
-                        Create Event
-                    </Link>
-                    <Button variant="info" className="btn">
-                        Current Calander
-                    </Button>{' '}
+                    <h1 className="f-header">Main Menu</h1>
+                    <pre className="s-header">
+                        Welcome: {JSON.stringify(user.email, null, 2)}
+                    </pre>
+                    <div className="text-center">
+                        <Link
+                            to="/create-event"
+                            className="btn-links btn btn-info btn-lg"
+                        >
+                            Create Event
+                        </Link>
+                    </div>
+                    <div className="text-center">
+                        <Button variant="info" className="btn-links btn btn-lg">
+                            Current Calander
+                        </Button>{' '}
+                    </div>
                 </div>
             ) : (
                 <div>
