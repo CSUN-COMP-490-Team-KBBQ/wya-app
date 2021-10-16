@@ -1,17 +1,26 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import { useHistory } from 'react-router-dom';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuid } from 'uuid';
+import { createEvent } from '../../lib/firestore';
+import { useUserContext } from '../../contexts/UserContext';
 
 import './CreateEventForm.css';
 
+interface Guest {
+    uid: string;
+}
+
 interface GuestListProps {
-    guests: string[];
-    updateGuests: React.Dispatch<React.SetStateAction<string[]>>;
+    guests: { [key: string]: Guest };
+    updateGuests: React.Dispatch<
+        React.SetStateAction<{ [key: string]: Guest }>
+    >;
 }
 
 export function GuestList(props: GuestListProps): JSX.Element {
@@ -19,8 +28,9 @@ export function GuestList(props: GuestListProps): JSX.Element {
     const inputRef = React.useRef<HTMLInputElement>();
     const onClickHandler = () => {
         if (inputRef.current) {
-            const newGuestName = inputRef.current.value;
-            updateGuests([...guests, newGuestName]);
+            const newGuestUID = inputRef.current.value;
+            guests[`${newGuestUID}`] = { uid: newGuestUID };
+            updateGuests({ ...guests });
             inputRef.current.value = '';
         }
     };
@@ -29,17 +39,17 @@ export function GuestList(props: GuestListProps): JSX.Element {
             <h4>Guest List</h4>
             <Row>
                 <ListGroup>
-                    {guests.map((guest) => (
+                    {Object.keys(guests).map((guest) => (
                         <ListGroup.Item key={uuid()}>{guest}</ListGroup.Item>
                     ))}
                 </ListGroup>
             </Row>
             <Row>
                 <Col>
-                    <FloatingLabel controlId="addGuest" label="Guest Name">
+                    <FloatingLabel controlId="addGuest" label="Guest UID">
                         <Form.Control
                             type="text"
-                            placeholder="Guest Name"
+                            placeholder="Guest UID"
                             ref={(node: HTMLInputElement) => {
                                 inputRef.current = node;
                             }}
@@ -58,15 +68,18 @@ export function GuestList(props: GuestListProps): JSX.Element {
 
 interface CreateEventFormProps {
     // eslint-disable-next-line
-    setFormHook: React.Dispatch<React.SetStateAction<any>>;
+    setFormHook?: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function CreateEventForm(
     props: CreateEventFormProps
 ): JSX.Element {
     const { setFormHook } = props;
-
-    const [guests, updateGuests] = React.useState<string[]>([]);
+    const user = useUserContext();
+    const history = useHistory();
+    const [guests, updateGuests] = React.useState<{
+        [key: string]: Guest;
+    }>({});
 
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -77,11 +90,17 @@ export default function CreateEventForm(
         // eslint-disable-next-line
         console.log('USER_CREATE_EVENT', formValue);
         if (setFormHook) setFormHook(formValue);
+        createEvent(formValue)
+            .then((eventId) => {
+                history.push(`/event/${eventId}`);
+            })
+            // eslint-disable-next-line
+            .catch(console.error);
     };
 
     return (
         <Form data-testid="CreateEventForm" onSubmit={onSubmitHandler}>
-            <input type="hidden" name="hostId" value="Host1" />
+            <input type="hidden" name="hostId" value={user?.uid} />
             <input type="hidden" name="eventId" value={uuid()} />
             <Row>
                 <FloatingLabel controlId="eventName" label="Event Name">
