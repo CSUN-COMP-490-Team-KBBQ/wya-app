@@ -1,0 +1,45 @@
+h1 {
+    color:black;
+    font-size: large;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+h2 {
+    color:black;
+    font-size: medium;
+    text-align: center;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.loginLink{
+    color: white;
+}
+
+.loginLink:hover{
+    color: darkblue;
+}
+
+.btn{
+    font-family: arial;
+    text-transform: uppercase;
+    font-size: 30px;
+    border-radius: 80px;
+    line-height: 60px;
+    text-align: center;
+    border: 3px solid #000000;
+    display: block;
+    text-decoration: none;
+    margin: 300px auto;
+    color: green;
+}
+
+img {
+    height: 200px;    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+

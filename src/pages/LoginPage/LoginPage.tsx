@@ -7,7 +7,8 @@ import './LoginPage.css';
 export default function LoginPage(): JSX.Element {
     return (
         <div>
-            <h1>Login Page</h1>
+            <img src="wya test 4.png" alt="logo" />
+            <h1>Log In</h1>
             <div className="form-container">
                 <LoginForm />
                 <div className="form-footer">
