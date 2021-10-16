@@ -7,7 +7,8 @@ import './RegisterPage.css';
 export default function RegisterPage(): JSX.Element {
     return (
         <div>
-            <h1>Register Page</h1>
+            <img src="wya test 4.png" alt="logo" />
+            <h1>Register</h1>
             <div className="form-container">
                 <RegisterForm />
                 <div className="form-footer">
