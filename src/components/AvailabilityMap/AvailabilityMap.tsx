@@ -4,8 +4,8 @@ import HeatMap from 'react-heatmap-grid';
 
 interface AvailabilityMapProps {
     days: Array<string>;
+    // eslint-disable-next-line
     handleClicks: (x: any, y: any) => void;
-    // availabilities: ?,
 }
 
 /**
@@ -94,11 +94,16 @@ export default function AvailabilityMap(
                     data={availabiltyData}
                     squares={false}
                     height={30}
+                    // eslint-disable-next-line
                     onClick={(x: any, y: any) => handleClicks(x, y)}
                     cellStyle={(
+                        // eslint-disable-next-line
                         _background: any,
+                        // eslint-disable-next-line
                         value: any,
+                        // eslint-disable-next-line
                         min: any,
+                        // eslint-disable-next-line
                         max: any
                     ) => ({
                         background: `rgb(0, 151, 230, ${
