@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { useUserContext } from '../../contexts/UserContext';
 import { logOut } from '../../lib/auth';
+import finallogo from '../../assets/wya test 4.png';
 
 import './HomePage.css';
 
@@ -42,7 +43,7 @@ export default function HomePage(): JSX.Element {
                 </div>
             ) : (
                 <div>
-                    <img src="wya test 4.png" alt="logo" />
+                    <img src={finallogo} alt="logo" />
                     <h1>
                         Welcome!{' '}
                         <Link to="/login" className="loginLink">
