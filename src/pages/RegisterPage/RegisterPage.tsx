@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import RegisterForm from '../../components/RegisterForm/RegisterForm';
-
+import finallogo from '../../assets/wya test 4.png';
 import './RegisterPage.css';
 
 export default function RegisterPage(): JSX.Element {
     return (
         <div>
-            <h1>Register Page</h1>
+            <img src={finallogo} alt="logo" />
+            <h1>Register</h1>
             <div className="form-container">
                 <RegisterForm />
                 <div className="form-footer">

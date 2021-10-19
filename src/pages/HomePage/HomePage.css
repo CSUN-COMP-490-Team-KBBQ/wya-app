@@ -9,7 +9,7 @@
 header{
     background-color: #AAAAAA;
     text-align: right;
-    padding-bottom: 1em;
+    margin-bottom: 1em;
 }
 
 .f-header{
@@ -21,3 +21,34 @@ header{
     text-align: center;
     font-size: 2em;
 }
+h1 {
+    color:black;
+    font-size: large;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+h2 {
+    color:black;
+    font-size: medium;
+    text-align: center;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.loginLink{
+    color: white;
+}
+
+.loginLink:hover{
+    color: darkblue;
+}
+
+img {
+    height: 200px;    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
