@@ -11,7 +11,8 @@
     ],
     "ignorePatterns": [
         "*.css", 
-        "*.json"
+        "*.json",
+        "*.png"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {

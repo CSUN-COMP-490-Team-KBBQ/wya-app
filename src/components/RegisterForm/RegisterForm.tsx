@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 
 import './RegisterForm.css';
 import RegisterFormData from '../../interfaces/RegisterFormData';
-import { registerUser } from '../../lib/auth';
+import { registerUser, logIn } from '../../lib/auth';
 import { useUserContext } from '../../contexts/UserContext';
 
 export default function RegisterForm(): JSX.Element {
@@ -27,10 +27,12 @@ export default function RegisterForm(): JSX.Element {
             formData.entries()
             // eslint-disable-next-line
         ) as any;
+        const { email, password } = formValue;
         registerUser(formValue)
-            .then(({ data }) => {
+            .then(async ({ data }) => {
                 // eslint-disable-next-line
                 console.log(`User successfully created!`, data);
+                await logIn(email, password);
                 history.push('/');
             })
             // eslint-disable-next-line
