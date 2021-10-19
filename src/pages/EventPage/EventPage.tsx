@@ -6,6 +6,7 @@ import AvailabilityMap from '../../components/AvailabilityMap/AvailabilityMap';
 import EventData from '../../interfaces/Event';
 import { getDocSnapshot$ } from '../../lib/firestore';
 
+// eslint-disable-next-line
 function AddAvailabiliyModal({ days, show, onHide }: any): JSX.Element {
     return (
         <Modal
@@ -20,7 +21,9 @@ function AddAvailabiliyModal({ days, show, onHide }: any): JSX.Element {
             <Modal.Body>
                 <AvailabilityMap
                     days={days}
+                    // eslint-disable-next-line
                     handleClicks={(x: any, y: any) =>
+                        // eslint-disable-next-line
                         alert(`Clicked ${x}, ${y}`)
                     }
                 />
