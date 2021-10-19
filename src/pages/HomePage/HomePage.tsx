@@ -6,8 +6,6 @@ import { useUserContext } from '../../contexts/UserContext';
 import { logOut } from '../../lib/auth';
 import finallogo from '../../assets/wya test 4.png';
 
-import './HomePage.css';
-
 export default function HomePage(): JSX.Element {
     const user = useUserContext();
     return (
