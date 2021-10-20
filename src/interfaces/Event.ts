@@ -3,7 +3,16 @@ export default interface EventData {
     hostId: string;
     name: string;
     description: string;
-    startDatetime: string;
-    endDatetime: string;
+    startDate: string;
+    endDate: string;
+    startTime: string;
+    endTime: string;
     guests: string[];
+    availability: EventDataAvailability;
+}
+
+export interface EventDataAvailability {
+    [time: string]: {
+        [date: string]: string[];
+    };
 }

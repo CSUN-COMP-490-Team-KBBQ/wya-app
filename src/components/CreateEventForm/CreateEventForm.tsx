@@ -81,6 +81,12 @@ export default function CreateEventForm(
         [key: string]: Guest;
     }>({});
 
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const currentDate = String(`${yyyy}-${mm}-${dd}`);
+
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
@@ -129,26 +135,49 @@ export default function CreateEventForm(
             <Row>
                 <Col>
                     <FloatingLabel
-                        controlId="eventStartDatetime"
+                        controlId="eventStartDate"
                         label="Event Start"
                     >
                         <Form.Control
-                            type="datetime-local"
+                            type="date"
                             placeholder="Event Start"
-                            name="startDatetime"
+                            name="startDate"
+                            min={currentDate}
                         />
                     </FloatingLabel>
                 </Col>
 
                 <Col>
+                    <FloatingLabel controlId="eventEndDate" label="Event End">
+                        <Form.Control
+                            type="date"
+                            placeholder="Event End"
+                            name="endDate"
+                            min={currentDate}
+                        />
+                    </FloatingLabel>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col>
                     <FloatingLabel
-                        controlId="eventEndDatetime"
-                        label="Event End"
+                        controlId="eventStartTime"
+                        label="Start Time"
                     >
                         <Form.Control
-                            type="datetime-local"
-                            placeholder="Event End"
-                            name="endDatetime"
+                            type="time"
+                            placeholder="Start Time"
+                            name="startTime"
+                        />
+                    </FloatingLabel>
+                </Col>
+                <Col>
+                    <FloatingLabel controlId="eventEndTime" label="End Time">
+                        <Form.Control
+                            type="time"
+                            placeholder="End Time"
+                            name="endTime"
                         />
                     </FloatingLabel>
                 </Col>

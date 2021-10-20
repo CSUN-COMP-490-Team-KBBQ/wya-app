@@ -65,7 +65,7 @@ export default function AvailabilityMap(
      * Flow of data:
      *    times => days => fill with ppl
      * */
-    const availabiltyData = new Array(yTimes.length)
+    const availabilityData = new Array(yTimes.length)
         .fill(0)
         .map(() =>
             new Array(xDays.length)
@@ -91,7 +91,7 @@ export default function AvailabilityMap(
                     xLabelsLocation="top"
                     xLabelWidth={60}
                     yLabelWidth={60}
-                    data={availabiltyData}
+                    data={availabilityData}
                     squares={false}
                     height={30}
                     // eslint-disable-next-line
