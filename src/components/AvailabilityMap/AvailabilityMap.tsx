@@ -1,77 +1,30 @@
 import React from 'react';
 import './AvailabilityMap.css';
 import HeatMap from 'react-heatmap-grid';
+import { EventDataAvailability } from '../../interfaces/Event';
 
 interface AvailabilityMapProps {
-    days: Array<string>;
+    availability: EventDataAvailability;
     // eslint-disable-next-line
     handleClicks: (x: any, y: any) => void;
 }
 
-/**
- *  Mock data for availability
- *
- *  Once, proper data structure becomes finialized this will
- *  need to be updated
- *
- * */
-const yTimes = [
-    '8am',
-    '8:15am',
-    '8:30am',
-    '8:45am',
-    '9am',
-    '9:15am',
-    '9:30am',
-    '9:45am',
-    '10am',
-    '10:15am',
-    '10:30am',
-    '10:45am',
-    '11am',
-    '11:15am',
-    '11:30am',
-    '11:45am',
-    '12pm',
-    '12:15pm',
-    '12:30pm',
-    '12:45pm',
-    '1pm',
-    '1:15pm',
-    '1:30pm',
-    '1:45pm',
-    '2am',
-    '2:15pm',
-    '2:30pm',
-    '2:45pm',
-    '3pm',
-    '3:15pm',
-    '3:30pm',
-    '3:45pm',
-    '4pm',
-    '4:15pm',
-    '4:30pm',
-    '4:45pm',
-    '5pm',
-];
-
 export default function AvailabilityMap(
     props: AvailabilityMapProps
 ): JSX.Element {
-    const { days, handleClicks } = props;
-    const xDays = days;
+    const { availability, handleClicks } = props;
+    const yTimes = Object.keys(availability).sort();
+    const xDays = Object.keys(availability[yTimes[0]]).sort();
 
-    /**
-     * Flow of data:
-     *    times => days => fill with ppl
-     * */
-    const availabilityData = new Array(yTimes.length)
-        .fill(0)
-        .map(() =>
-            new Array(xDays.length)
-                .fill(0)
-                .map(() => Math.floor(Math.random() * 100))
-        );
+    const xDaysFormated = xDays.map((timeStamp) =>
+        new Date(Number(timeStamp)).toDateString().slice(0, 15)
+    );
+
+    const availabilityData = new Array(yTimes.length).fill(0).map((_j, y) => {
+        return new Array(xDays.length).fill(0).map((_k, x) => {
+            return availability[yTimes[y]][xDays[x]].length;
+        });
+    });
 
     return (
         <div>
@@ -86,7 +39,7 @@ export default function AvailabilityMap(
                 }}
             >
                 <HeatMap
-                    xLabels={xDays}
+                    xLabels={xDaysFormated}
                     yLabels={yTimes}
                     xLabelsLocation="top"
                     xLabelWidth={60}
