@@ -40,7 +40,7 @@ const formatAvailability = (
     let i = 0;
     while (tempDateTimeStamp < endDateTimeStamp) {
         const tempDays = {
-            [tempDateTimeStamp.toDateString().slice(0, 15)]: [],
+            [tempDateTimeStamp.valueOf().toString()]: [],
         };
         Object.assign(days, tempDays);
         tempDateTimeStamp = new Date(
