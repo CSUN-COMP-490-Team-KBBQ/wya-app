@@ -3,14 +3,12 @@ import './AvailabilityMap.css';
 import HeatMap from 'react-heatmap-grid';
 import { EventDataAvailability } from '../../interfaces/Event';
 
-interface AvailabilityMapProps {
+type AvailabilityMapProps = {
     availability: EventDataAvailability;
-    handleClicks: (x: number, y: number) => void;
-}
+    handleClicks?: (x: number, y: number) => void;
+};
 
-export default function AvailabilityMap(
-    props: AvailabilityMapProps
-): JSX.Element {
+function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
     const { availability, handleClicks } = props;
     const yTimes = Object.keys(availability).sort();
     const xDays = Object.keys(availability[yTimes[0]]).sort();
@@ -65,3 +63,9 @@ export default function AvailabilityMap(
         </div>
     );
 }
+
+AvailabilityMap.defaultProps = {
+    handleClicks: () => void 0,
+};
+
+export default AvailabilityMap;

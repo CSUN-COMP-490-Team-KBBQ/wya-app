@@ -21,8 +21,7 @@ function AddAvailabiliyModal({ availability, show, onHide }: any): JSX.Element {
             <Modal.Body>
                 <AvailabilityMap
                     availability={availability}
-                    // eslint-disable-next-line
-                    handleClicks={(x: any, y: any) =>
+                    handleClicks={(x: number, y: number) =>
                         // eslint-disable-next-line
                         alert(`Clicked ${x}, ${y}`)
                     }
@@ -62,10 +61,7 @@ export default function EventPage({
             <pre>{JSON.stringify(eventData || {}, null, 2)}</pre>
 
             <h2>Group Availabilities</h2>
-            <AvailabilityMap
-                availability={eventData.availability}
-                handleClicks={() => undefined}
-            />
+            <AvailabilityMap availability={eventData.availability} />
             <Button type="button" onClick={() => setModalShow(true)}>
                 add Availability
             </Button>
