@@ -7,7 +7,11 @@ import EventData from '../../interfaces/Event';
 import { getDocSnapshot$ } from '../../lib/firestore';
 
 // eslint-disable-next-line
-function AddAvailabiliyModal({ availability, show, onHide }: any): JSX.Element {
+function AddAvailabilityModal({
+    availability,
+    show,
+    onHide,
+}: any): JSX.Element {
     return (
         <Modal
             show={show}
@@ -66,13 +70,15 @@ export default function EventPage({
                 add Availability
             </Button>
 
-            <AddAvailabiliyModal
+            <AddAvailabilityModal
                 availability={eventData.availability}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
             />
         </div>
     ) : (
-        <div />
+        <div>
+            <h1>EventPage</h1>
+        </div>
     );
 }
