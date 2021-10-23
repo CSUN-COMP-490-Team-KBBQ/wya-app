@@ -3,15 +3,21 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AvailabilityMap from '../../components/AvailabilityMap/AvailabilityMap';
 
-import EventData from '../../interfaces/Event';
+import EventData, { EventDataAvailability } from '../../interfaces/Event';
 import { getDocSnapshot$ } from '../../lib/firestore';
 
 // eslint-disable-next-line
+type AddAvailabilityModalProps = {
+    show: boolean;
+    availability: EventDataAvailability;
+    onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
+};
+
 function AddAvailabilityModal({
     availability,
     show,
     onHide,
-}: any): JSX.Element {
+}: AddAvailabilityModalProps): JSX.Element {
     return (
         <Modal
             show={show}
