@@ -63,7 +63,7 @@ export default function EventPage({
 
             <h2>Group Availabilities</h2>
             <AvailabilityMap
-                availability={eventData!.availability}
+                availability={eventData.availability}
                 handleClicks={() => undefined}
             />
             <Button type="button" onClick={() => setModalShow(true)}>
@@ -71,7 +71,7 @@ export default function EventPage({
             </Button>
 
             <AddAvailabiliyModal
-                availability={eventData!.availability}
+                availability={eventData.availability}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
             />
