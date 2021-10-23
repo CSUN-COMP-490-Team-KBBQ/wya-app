@@ -63,6 +63,7 @@ export default function EventPage({
 
             <h2>Group Availabilities</h2>
             <AvailabilityMap
+                // eslint-disable-next-line
                 availability={eventData!.availability}
                 handleClicks={() => undefined}
             />
@@ -71,6 +72,7 @@ export default function EventPage({
             </Button>
 
             <AddAvailabiliyModal
+                // eslint-disable-next-line
                 availability={eventData!.availability}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
