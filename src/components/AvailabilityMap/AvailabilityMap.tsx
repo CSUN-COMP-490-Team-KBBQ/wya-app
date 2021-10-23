@@ -5,8 +5,7 @@ import { EventDataAvailability } from '../../interfaces/Event';
 
 interface AvailabilityMapProps {
     availability: EventDataAvailability;
-    // eslint-disable-next-line
-    handleClicks: (x: any, y: any) => void;
+    handleClicks: (x: number, y: number) => void;
 }
 
 export default function AvailabilityMap(
@@ -47,17 +46,13 @@ export default function AvailabilityMap(
                     data={availabilityData}
                     squares={false}
                     height={30}
-                    // eslint-disable-next-line
-                    onClick={(x: any, y: any) => handleClicks(x, y)}
+                    onClick={handleClicks}
                     cellStyle={(
                         // eslint-disable-next-line
                         _background: any,
-                        // eslint-disable-next-line
-                        value: any,
-                        // eslint-disable-next-line
-                        min: any,
-                        // eslint-disable-next-line
-                        max: any
+                        value: number,
+                        min: number,
+                        max: number
                     ) => ({
                         background: `rgb(0, 151, 230, ${
                             1 - (max - value) / (max - min)
