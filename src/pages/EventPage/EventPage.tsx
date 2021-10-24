@@ -2,22 +2,18 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AvailabilityMap from '../../components/AvailabilityMap/AvailabilityMap';
-
-import EventData, { EventDataAvailability } from '../../interfaces/Event';
+import EventData from '../../interfaces/Event';
 import { getDocSnapshot$ } from '../../lib/firestore';
 
 // eslint-disable-next-line
-type AddAvailabilityModalProps = {
-    show: boolean;
-    availability: EventDataAvailability;
-    onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
-};
-
-function AddAvailabilityModal({
+function AddAvailabiliyModal({
     availability,
     show,
     onHide,
-}: AddAvailabilityModalProps): JSX.Element {
+    forModal,
+}: any): JSX.Element {
+    const [clicked, setClicked] = React.useState<boolean>(false);
+
     return (
         <Modal
             show={show}
@@ -30,11 +26,17 @@ function AddAvailabilityModal({
             </Modal.Header>
             <Modal.Body>
                 <AvailabilityMap
+                    forModal={forModal}
                     availability={availability}
-                    handleClicks={(x: number, y: number) =>
+                    handleClicks={(
+                        x: number,
+                        y: number,
+                        availabilityData: number[][]
+                    ) => {
                         // eslint-disable-next-line
-                        alert(`Clicked ${x}, ${y}`)
-                    }
+                        availabilityData[y][x] = 1;
+                        setClicked(!clicked);
+                    }}
                 />
             </Modal.Body>
             <Modal.Footer>
@@ -71,13 +73,18 @@ export default function EventPage({
             <pre>{JSON.stringify(eventData || {}, null, 2)}</pre>
 
             <h2>Group Availabilities</h2>
-            <AvailabilityMap availability={eventData.availability} />
+            <AvailabilityMap
+                forModal={false}
+                availability={eventData!.availability}
+                handleClicks={() => undefined}
+            />
             <Button type="button" onClick={() => setModalShow(true)}>
                 add Availability
             </Button>
 
-            <AddAvailabilityModal
-                availability={eventData.availability}
+            <AddAvailabiliyModal
+                forModal
+                availability={eventData!.availability}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
             />

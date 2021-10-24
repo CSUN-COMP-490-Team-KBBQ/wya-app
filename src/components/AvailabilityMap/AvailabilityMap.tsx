@@ -3,25 +3,34 @@ import './AvailabilityMap.css';
 import HeatMap from 'react-heatmap-grid';
 import { EventDataAvailability } from '../../interfaces/Event';
 
-type AvailabilityMapProps = {
+interface AvailabilityMapProps {
+    forModal: boolean;
     availability: EventDataAvailability;
-    handleClicks?: (x: number, y: number) => void;
-};
+    handleClicks: (x: number, y: number, avail: number[][]) => void;
+}
 
-function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
-    const { availability, handleClicks } = props;
+export default function AvailabilityMap(
+    props: AvailabilityMapProps
+): JSX.Element {
+    const { forModal, availability, handleClicks } = props;
     const yTimes = Object.keys(availability).sort();
     const xDays = Object.keys(availability[yTimes[0]]).sort();
-
     const xDaysFormated = xDays.map((timeStamp) =>
         new Date(Number(timeStamp)).toDateString().slice(0, 15)
     );
-
-    const availabilityData = new Array(yTimes.length).fill(0).map((_j, y) => {
-        return new Array(xDays.length).fill(0).map((_k, x) => {
-            return availability[yTimes[y]][xDays[x]].length;
-        });
-    });
+    const [availabilityData] = React.useState<number[][]>(
+        forModal
+            ? new Array(yTimes.length)
+                  .fill(0)
+                  .map(() => new Array(xDays.length).fill(0).map(() => 0))
+            : new Array(yTimes.length).fill(0).map((_j, y) => {
+                  return new Array(xDays.length).fill(0).map((_k, x) => {
+                      return availability[yTimes[y]][xDays[x]].length;
+                  });
+              })
+    );
+    // eslint-disable-next-line
+    console.log(availabilityData);
 
     return (
         <div>
@@ -29,7 +38,7 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
                 style={{
                     fontSize: '13px',
                     width: 'auto',
-                    backgroundColor: 'lightyellow',
+                    // backgroundColor: 'lightyellow',
                     margin: '10px',
                     // temp set width for mock data
                     maxWidth: '1024px',
@@ -44,7 +53,9 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
                     data={availabilityData}
                     squares={false}
                     height={30}
-                    onClick={handleClicks}
+                    onClick={(x: number, y: number) =>
+                        handleClicks(x, y, availabilityData)
+                    }
                     cellStyle={(
                         // eslint-disable-next-line
                         _background: any,
@@ -63,9 +74,3 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
         </div>
     );
 }
-
-AvailabilityMap.defaultProps = {
-    handleClicks: () => void 0,
-};
-
-export default AvailabilityMap;
