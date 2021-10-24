@@ -3,11 +3,21 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AvailabilityMap from '../../components/AvailabilityMap/AvailabilityMap';
 
-import EventData from '../../interfaces/Event';
+import EventData, { EventDataAvailability } from '../../interfaces/Event';
 import { getDocSnapshot$ } from '../../lib/firestore';
 
 // eslint-disable-next-line
-function AddAvailabiliyModal({ days, show, onHide }: any): JSX.Element {
+type AddAvailabilityModalProps = {
+    show: boolean;
+    availability: EventDataAvailability;
+    onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
+};
+
+function AddAvailabilityModal({
+    availability,
+    show,
+    onHide,
+}: AddAvailabilityModalProps): JSX.Element {
     return (
         <Modal
             show={show}
@@ -20,9 +30,8 @@ function AddAvailabiliyModal({ days, show, onHide }: any): JSX.Element {
             </Modal.Header>
             <Modal.Body>
                 <AvailabilityMap
-                    days={days}
-                    // eslint-disable-next-line
-                    handleClicks={(x: any, y: any) =>
+                    availability={availability}
+                    handleClicks={(x: number, y: number) =>
                         // eslint-disable-next-line
                         alert(`Clicked ${x}, ${y}`)
                     }
@@ -48,9 +57,6 @@ export default function EventPage({
     const [eventData, setEventData] = React.useState<EventData>();
     const [modalShow, setModalShow] = React.useState<boolean>(false);
 
-    // Mock data for availability
-    const days = ['Thur Oct 14', 'Fri Oct 15', 'Sat Oct 16'];
-
     React.useEffect(() => {
         return getDocSnapshot$(`/events/${match.params.id}`, {
             next: (snapshot) => {
@@ -59,22 +65,26 @@ export default function EventPage({
         });
     }, []);
 
-    return (
+    return eventData ? (
         <div>
             <h1>EventPage</h1>
             <pre>{JSON.stringify(eventData || {}, null, 2)}</pre>
 
             <h2>Group Availabilities</h2>
-            <AvailabilityMap days={days} handleClicks={() => undefined} />
+            <AvailabilityMap availability={eventData.availability} />
             <Button type="button" onClick={() => setModalShow(true)}>
                 add Availability
             </Button>
 
-            <AddAvailabiliyModal
-                days={days}
+            <AddAvailabilityModal
+                availability={eventData.availability}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
             />
+        </div>
+    ) : (
+        <div>
+            <h1>EventPage</h1>
         </div>
     );
 }
