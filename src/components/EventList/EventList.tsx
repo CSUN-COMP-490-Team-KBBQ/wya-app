@@ -12,7 +12,7 @@ export default function EventList(props: EventListProps): JSX.Element {
 
     return (
         <div id={elementId}>
-            <h1>EventListComponent</h1>
+            <h1>Events</h1>
             <ListGroup className="event-list">
                 {/* 
                     subject to change:
