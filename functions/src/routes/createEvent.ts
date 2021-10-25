@@ -4,7 +4,7 @@ import { functions, firestore } from '../firebase';
 const router = Router();
 
 router.post('/', async (req, res) => {
-    const { eventId, guests } = req.body;
+    const { eventId, guests, name, description } = req.body;
     try {
         functions.logger.info('Creating event document');
         const eventDocRef = firestore.doc(`/events/${eventId}`);
@@ -19,6 +19,34 @@ router.post('/', async (req, res) => {
         });
 
         await batch.commit();
+
+        functions.logger.info('Inviting guests');
+        await Promise.all(
+            Object.keys(guests).map((guest) => {
+                const queryRef = firestore
+                    .collection('/users')
+                    .where('email', '==', guest);
+                return firestore.runTransaction(async (transaction) => {
+                    const querySnapshot = await transaction.get(queryRef);
+                    if (!querySnapshot.empty) {
+                        querySnapshot.forEach(async (doc) => {
+                            await transaction.update(doc.ref, {
+                                events: {
+                                    ...doc.data().events,
+                                    [eventId]: {
+                                        eventId,
+                                        name,
+                                        description,
+                                        role: 'GUEST',
+                                    },
+                                },
+                            });
+                        });
+                    }
+                });
+            })
+        );
+
         res.status(200).json(req.body);
     } catch (e) {
         if (e instanceof Error) {
