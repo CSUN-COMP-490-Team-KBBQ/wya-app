@@ -1,6 +1,6 @@
-export default interface EventData {
-    eventId: string;
-    hostId: string;
+export interface EventData {
+    eventId: EventId;
+    hostId: UserId;
     name: string;
     description: string;
     startDate: string;
@@ -9,10 +9,17 @@ export default interface EventData {
     endTime: string;
     guests: string[];
     availability: EventDataAvailability;
+    participants: Participants;
+    times: string[];
+    days: string[];
 }
 
-export interface EventDataAvailability {
-    [time: string]: {
-        [date: string]: string[];
-    };
+export type UserId = string;
+export type EventId = string;
+export type CellId = string;
+
+export interface Participants {
+    [uuid: CellId]: UserId[];
 }
+
+export type EventDataAvailability = Array<Array<CellId>>;
