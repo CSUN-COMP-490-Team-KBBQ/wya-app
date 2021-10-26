@@ -4,7 +4,7 @@ import { functions, firestore } from '../firebase';
 const router = Router();
 
 router.post('/', async (req, res) => {
-    const { eventId, guests, name, description } = req.body;
+    const { eventId, guests, name, description, startDate, hostId } = req.body;
     try {
         functions.logger.info('Creating event document');
         const eventDocRef = firestore.doc(`/events/${eventId}`);
@@ -37,6 +37,7 @@ router.post('/', async (req, res) => {
                                         eventId,
                                         name,
                                         description,
+                                        startDate,
                                         role: 'GUEST',
                                     },
                                 },
