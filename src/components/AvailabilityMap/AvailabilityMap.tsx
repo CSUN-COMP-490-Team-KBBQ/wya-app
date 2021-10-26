@@ -3,25 +3,27 @@ import './AvailabilityMap.css';
 import HeatMap from 'react-heatmap-grid';
 import { EventDataAvailability } from '../../interfaces/Event';
 
-type AvailabilityMapProps = {
+export type AvailabilityMapProps = {
     availability: EventDataAvailability;
+    days: string[];
+    times: string[];
     handleClicks?: (x: number, y: number) => void;
 };
 
 function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
-    const { availability, handleClicks } = props;
-    const yTimes = Object.keys(availability).sort();
-    const xDays = Object.keys(availability[yTimes[0]]).sort();
+    const { availability, handleClicks, days, times } = props;
+    // const yTimes = Object.keys(availability).sort();
+    // const xDays = Object.keys(availability[yTimes[0]]).sort();
 
-    const xDaysFormated = xDays.map((timeStamp) =>
-        new Date(Number(timeStamp)).toDateString().slice(0, 15)
-    );
+    // const xDaysFormated = xDays.map((timeStamp) =>
+    //     new Date(Number(timeStamp)).toDateString().slice(0, 15)
+    // );
 
-    const availabilityData = new Array(yTimes.length).fill(0).map((_j, y) => {
-        return new Array(xDays.length).fill(0).map((_k, x) => {
-            return availability[yTimes[y]][xDays[x]].length;
-        });
-    });
+    // const availabilityData = new Array(yTimes.length).fill(0).map((_j, y) => {
+    //     return new Array(xDays.length).fill(0).map((_k, x) => {
+    //         return availability[yTimes[y]][xDays[x]].length;
+    //     });
+    // });
 
     return (
         <div>
@@ -36,12 +38,12 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
                 }}
             >
                 <HeatMap
-                    xLabels={xDaysFormated}
-                    yLabels={yTimes}
+                    xLabels={days}
+                    yLabels={times}
                     xLabelsLocation="top"
                     xLabelWidth={60}
                     yLabelWidth={60}
-                    data={availabilityData}
+                    data={availability}
                     squares={false}
                     height={30}
                     onClick={handleClicks}
