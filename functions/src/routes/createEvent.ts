@@ -48,6 +48,26 @@ router.post('/', async (req, res) => {
             })
         );
 
+        functions.logger.info('Updating host user record');
+        await firestore.runTransaction(async (transaction) => {
+            const docRef = firestore.doc(`/users/${hostId}`);
+            const doc = await transaction.get(docRef);
+            if (doc.exists) {
+                await transaction.update(docRef, {
+                    events: {
+                        ...doc.data()!.events,
+                        [eventId]: {
+                            eventId,
+                            name,
+                            description,
+                            startDate,
+                            role: 'HOST',
+                        },
+                    },
+                });
+            }
+        });
+
         res.status(200).json(req.body);
     } catch (e) {
         if (e instanceof Error) {
