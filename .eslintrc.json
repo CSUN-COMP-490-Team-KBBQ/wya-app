@@ -39,7 +39,8 @@
                 "tsx": "never"
             }
         ],
-        "no-void": "off"
+        "no-void": "off",
+        "no-plusplus": "off"
     },
     "settings": {
         "import/resolver": {
