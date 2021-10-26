@@ -12,8 +12,6 @@ function AddAvailabiliyModal({
     onHide,
     forModal,
 }: any): JSX.Element {
-    const [clicked, setClicked] = React.useState<boolean>(false);
-
     return (
         <Modal
             show={show}
@@ -28,19 +26,12 @@ function AddAvailabiliyModal({
                 <AvailabilityMap
                     forModal={forModal}
                     availability={availability}
-                    handleClicks={(
-                        x: number,
-                        y: number,
-                        availabilityData: number[][]
-                    ) => {
-                        // eslint-disable-next-line
-                        availabilityData[y][x] = 1;
-                        setClicked(!clicked);
-                    }}
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onHide}>Cancel</Button>
+                <Button variant="secondary" onClick={onHide}>
+                    Cancel
+                </Button>
                 <Button onClick={onHide}>Submit</Button>
             </Modal.Footer>
         </Modal>
@@ -71,17 +62,14 @@ export default function EventPage({
         <div>
             <h1>EventPage</h1>
             <pre>{JSON.stringify(eventData || {}, null, 2)}</pre>
-
             <h2>Group Availabilities</h2>
             <AvailabilityMap
                 forModal={false}
                 availability={eventData!.availability}
-                handleClicks={() => undefined}
             />
             <Button type="button" onClick={() => setModalShow(true)}>
                 add Availability
             </Button>
-
             <AddAvailabiliyModal
                 forModal
                 availability={eventData!.availability}

@@ -6,19 +6,18 @@ import { EventDataAvailability } from '../../interfaces/Event';
 interface AvailabilityMapProps {
     forModal: boolean;
     availability: EventDataAvailability;
-    handleClicks: (x: number, y: number, avail: number[][]) => void;
 }
 
 export default function AvailabilityMap(
     props: AvailabilityMapProps
 ): JSX.Element {
-    const { forModal, availability, handleClicks } = props;
+    const { forModal, availability } = props;
     const yTimes = Object.keys(availability).sort();
     const xDays = Object.keys(availability[yTimes[0]]).sort();
     const xDaysFormated = xDays.map((timeStamp) =>
         new Date(Number(timeStamp)).toDateString().slice(0, 15)
     );
-    const [availabilityData] = React.useState<number[][]>(
+    const [availabilityData, setAvailabilityData] = React.useState<number[][]>(
         forModal
             ? new Array(yTimes.length)
                   .fill(0)
@@ -29,8 +28,27 @@ export default function AvailabilityMap(
                   });
               })
     );
-    // eslint-disable-next-line
-    console.log(availabilityData);
+    const handleClicks = (x: number, y: number) => {
+        if (forModal) {
+            const avail = JSON.parse(JSON.stringify(availabilityData));
+            if (avail[y][x] === 0) {
+                avail[y][x] = 1;
+            } else {
+                avail[y][x] = 0;
+            }
+            setAvailabilityData(avail);
+        }
+    };
+
+    const getOpacity = (value: number, min: number, max: number) => {
+        if (max - min !== 0) {
+            return 1 - (max - value) / (max - min);
+        }
+        if (max === min && max !== 0) {
+            return 1;
+        }
+        return 0;
+    };
 
     return (
         <div>
@@ -50,12 +68,11 @@ export default function AvailabilityMap(
                     xLabelsLocation="top"
                     xLabelWidth={60}
                     yLabelWidth={60}
+                    // cellRender={value => null}
                     data={availabilityData}
                     squares={false}
                     height={30}
-                    onClick={(x: number, y: number) =>
-                        handleClicks(x, y, availabilityData)
-                    }
+                    onClick={(x: number, y: number) => handleClicks(x, y)}
                     cellStyle={(
                         // eslint-disable-next-line
                         _background: any,
@@ -63,11 +80,14 @@ export default function AvailabilityMap(
                         min: number,
                         max: number
                     ) => ({
-                        background: `rgb(0, 151, 230, ${
-                            1 - (max - value) / (max - min)
-                        })`,
+                        background: `rgb(0, 151, 230, ${getOpacity(
+                            value,
+                            min,
+                            max
+                        )})`,
                         fontSize: '11.5px',
                         color: '#444',
+                        border: '2px solid gray',
                     })}
                 />
             </div>
