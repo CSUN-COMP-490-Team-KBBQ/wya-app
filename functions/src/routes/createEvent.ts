@@ -13,9 +13,14 @@ router.post('/', async (req, res) => {
         functions.logger.info('Creating guests');
         const batch = firestore.batch();
         Object.keys(guests).forEach((guest) => {
-            batch.create(firestore.doc(`/events/${eventId}/guests/${guest}`), {
-                email: guest,
-            });
+            if (guest) {
+                batch.create(
+                    firestore.doc(`/events/${eventId}/guests/${guest}`),
+                    {
+                        email: guest,
+                    }
+                );
+            }
         });
 
         await batch.commit();
