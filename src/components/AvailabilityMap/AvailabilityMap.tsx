@@ -43,7 +43,7 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
             return 1 - (max - value) / (max - min);
         }
         if (max === min && max !== 0) {
-            return 1;
+            return max;
         }
         return 0;
     };
