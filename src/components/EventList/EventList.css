@@ -1,4 +1,7 @@
 .event-list {
+    max-height: 500px;
     min-width: 600px;
     margin: 30px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
