@@ -4,7 +4,7 @@ import './CurrentCalendarPage.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function AddShowEventModal({ dayEvents, show, onHide }: any): JSX.Element {
+function ShowEventModal({ dayEvents, show, onHide }: any): JSX.Element {
     return (
         <Modal
             show={show}
@@ -50,7 +50,7 @@ export default function CurrentCalendarPage({
                     calendarType="US"
                     onClickDay={() => setModalShow(true)}
                 />
-                <AddShowEventModal
+                <ShowEventModal
                     dayEvents={myEvents}
                     show={modalShow}
                     onHide={() => setModalShow(false)}
