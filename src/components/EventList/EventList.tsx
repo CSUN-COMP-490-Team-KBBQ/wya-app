@@ -1,6 +1,7 @@
 import React from 'react';
 import './EventList.css';
 import { ListGroup } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import { EventInfo } from '../../interfaces/User';
 
 interface EventListProps {
@@ -17,6 +18,7 @@ function sortEvents(events: EventInfo[]): EventInfo[] {
 }
 
 export default function EventList(props: EventListProps): JSX.Element {
+    const history = useHistory();
     const { elementId, events } = props;
     const eventList = sortEvents(events);
 
@@ -29,7 +31,7 @@ export default function EventList(props: EventListProps): JSX.Element {
                         <ListGroup.Item
                             key={eventId}
                             action
-                            href={`/event/${eventId}`}
+                            onClick={() => history.push(`/event/${eventId}`)}
                         >
                             {name}
                         </ListGroup.Item>
