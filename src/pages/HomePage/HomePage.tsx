@@ -34,9 +34,15 @@ export default function HomePage(): JSX.Element {
                         </Link>
                     </div>
                     <div className="text-center">
-                        <Button variant="info" className="btn-links btn btn-lg">
-                            Current Calander
-                        </Button>{' '}
+                        <Link
+                            to="/calendar"
+                            className="btn-links btn btn-info btn-lg"
+                        >
+                            Current Calender
+                        </Link>{' '}
+                        {/* <Button variant="info" className="btn-links btn btn-lg">
+                            Current Calender
+                        </Button>{' '} */}
                     </div>
                 </div>
             ) : (

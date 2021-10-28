@@ -6,6 +6,7 @@ import LoginPage from '../../pages/LoginPage/LoginPage';
 import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import CreateEventPage from '../../pages/CreateEventPage/CreateEventPage';
 import EventPage from '../../pages/EventPage/EventPage';
+import CalendarPage from '../../pages/CalendarPage/CalendarPage';
 import { UserAuthProvider } from '../../contexts/UserContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,6 +25,7 @@ export default function App(): JSX.Element {
                         component={CreateEventPage}
                     />
                     <Route path="/event/:id" exact component={EventPage} />
+                    <Route path="/calendar" exact component={CalendarPage} />
                 </Switch>
             </BrowserRouter>
         </UserAuthProvider>
