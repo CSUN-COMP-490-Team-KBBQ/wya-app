@@ -11,12 +11,14 @@ type AddAvailabilityModalProps = {
     show: boolean;
     availability: EventDataAvailability;
     onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    forModal: boolean;
 };
 
 function AddAvailabilityModal({
     availability,
     show,
     onHide,
+    forModal,
 }: AddAvailabilityModalProps): JSX.Element {
     return (
         <Modal
@@ -30,15 +32,14 @@ function AddAvailabilityModal({
             </Modal.Header>
             <Modal.Body>
                 <AvailabilityMap
+                    forModal={forModal}
                     availability={availability}
-                    handleClicks={(x: number, y: number) =>
-                        // eslint-disable-next-line
-                        alert(`Clicked ${x}, ${y}`)
-                    }
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onHide}>Cancel</Button>
+                <Button variant="secondary" onClick={onHide}>
+                    Cancel
+                </Button>
                 <Button onClick={onHide}>Submit</Button>
             </Modal.Footer>
         </Modal>
@@ -71,12 +72,16 @@ export default function EventPage({
             <pre>{JSON.stringify(eventData || {}, null, 2)}</pre>
 
             <h2>Group Availabilities</h2>
-            <AvailabilityMap availability={eventData.availability} />
+            <AvailabilityMap
+                forModal={false}
+                availability={eventData.availability}
+            />
             <Button type="button" onClick={() => setModalShow(true)}>
                 add Availability
             </Button>
 
             <AddAvailabilityModal
+                forModal
                 availability={eventData.availability}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
