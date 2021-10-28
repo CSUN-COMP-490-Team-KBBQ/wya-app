@@ -19,7 +19,7 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
         forModal
             ? new Array(yTimes.length)
                   .fill(0)
-                  .map(() => new Array(xDays.length).fill(0).map(() => 0))
+                  .map(() => new Array(xDays.length).fill(0))
             : new Array(yTimes.length).fill(0).map((_j, y) => {
                   return new Array(xDays.length).fill(0).map((_k, x) => {
                       return availability[yTimes[y]][xDays[x]].length;
@@ -43,7 +43,7 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
             return 1 - (max - value) / (max - min);
         }
         if (max === min && max !== 0) {
-            return max;
+            return 1;
         }
         return 0;
     };
