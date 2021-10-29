@@ -4,7 +4,11 @@ import './CurrentCalendarPage.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function ShowEventModal({ dayEvents, show, onHide }: any): JSX.Element {
+function UpdateAvailabilityModal({
+    editScheduleForm,
+    show,
+    onHide,
+}: any): JSX.Element {
     return (
         <Modal
             show={show}
@@ -13,11 +17,12 @@ function ShowEventModal({ dayEvents, show, onHide }: any): JSX.Element {
             centered
         >
             <Modal.Header>
-                <Modal.Title>Event</Modal.Title>
+                <Modal.Title>Enter Schedule</Modal.Title>
             </Modal.Header>
-            <Modal.Body>dayEvents={dayEvents}</Modal.Body>
+            <Modal.Body>editScheduleForm={editScheduleForm}</Modal.Body>
             <Modal.Footer>
-                <Button onClick={onHide}>Close</Button>
+                <Button onClick={onHide}>Cancel</Button>
+                <Button onClick={onHide}>Submit</Button>
             </Modal.Footer>
         </Modal>
     );
@@ -50,13 +55,14 @@ export default function CurrentCalendarPage({
                     calendarType="US"
                     onClickDay={() => setModalShow(true)}
                 />
-                <ShowEventModal
-                    dayEvents={myEvents}
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                />
-                <Button type="submit">Edit Schedule</Button>
+                <Button type="button" onClick={() => setModalShow(true)}>
+                    Edit Schedule
+                </Button>
             </div>
+            <UpdateAvailabilityModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+            />
         </div>
     );
 }
