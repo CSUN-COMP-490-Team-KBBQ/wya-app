@@ -4,6 +4,7 @@ export default interface UserData {
     events: EventInfo[];
     firstName: string;
     lastName: string;
+    availability: UserDataAvailability;
 }
 
 export interface EventInfo {
@@ -12,4 +13,11 @@ export interface EventInfo {
     description: string;
     startDate: string;
     role: string;
+}
+
+export interface UserDataAvailability {
+    [time: string]: {
+        // should be type boolean, not string[]
+        [date: string]: string[];
+    };
 }

@@ -1,20 +1,27 @@
 import React from 'react';
 import './CalendarPage.css';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Calendar from 'react-calendar';
 import EventList from '../../components/EventList/EventList';
-import UserData from '../../interfaces/User';
+import UserData, { UserDataAvailability } from '../../interfaces/User';
+import AvailabilityMap from '../../components/AvailabilityMap/AvailabilityMap';
 import { useUserContext } from '../../contexts/UserContext';
 import { getDocSnapshot$ } from '../../lib/firestore';
 
+type UpdateAvailabilityModalProps = {
+    show: boolean;
+    availability: UserDataAvailability;
+    onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    forModal: boolean;
+};
+
 function UpdateAvailabilityModal({
-    editScheduleForm,
+    availability,
+    forModal,
     show,
     onHide,
-}: any): JSX.Element {
+}: UpdateAvailabilityModalProps): JSX.Element {
     return (
         <Modal
             show={show}
@@ -23,12 +30,17 @@ function UpdateAvailabilityModal({
             centered
         >
             <Modal.Header>
-                <Modal.Title>Enter Schedule</Modal.Title>
+                <Modal.Title>Enter Your Availability</Modal.Title>
             </Modal.Header>
-            <Modal.Body>editScheduleForm={editScheduleForm}</Modal.Body>
+            <Modal.Body>
+                <AvailabilityMap
+                    forModal={forModal}
+                    availability={availability}
+                />
+            </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onHide}>Cancel</Button>
-                <Button onClick={onHide}>Submit</Button>
+                <Button onClick={onHide}>Update</Button>
             </Modal.Footer>
         </Modal>
     );
@@ -62,12 +74,15 @@ export default function CalendarPage(): JSX.Element {
                     onChange={onChange}
                     value={value}
                     calendarType="US"
+                    // onDayClick
                     // showDoubleView
                 />
                 <Button type="button" onClick={() => setModalShow(true)}>
                     Edit Availability
                 </Button>
                 <UpdateAvailabilityModal
+                    forModal
+                    availability={userData.availability}
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                 />
