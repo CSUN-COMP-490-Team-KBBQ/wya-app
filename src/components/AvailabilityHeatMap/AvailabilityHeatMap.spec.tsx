@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import AvailabilityMap from './AvailabilityMap';
+import AvailabilityHeatMap from './AvailabilityHeatMap';
 
 const availabilityStub = {
     '04:15': {
@@ -23,7 +23,7 @@ const availabilityStub = {
 
 it('renders component', () => {
     const { queryByText } = render(
-        <AvailabilityMap availability={availabilityStub} />
+        <AvailabilityHeatMap availability={availabilityStub} />
     );
     expect(queryByText('Sat Oct 23 2021')).toBeTruthy();
     expect(queryByText('Sun Oct 24 2021')).toBeTruthy();

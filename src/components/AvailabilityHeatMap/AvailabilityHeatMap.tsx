@@ -1,42 +1,46 @@
 import React from 'react';
-import './AvailabilityMap.css';
+import './AvailabilityHeatMap.css';
 import HeatMap from 'react-heatmap-grid';
 import { EventDataAvailability } from '../../interfaces/Event';
 
-type AvailabilityMapProps = {
-    forModal: boolean;
-    availability: EventDataAvailability;
+type AvailabilityHeatMapProps = {
+    // forModal: boolean;
+    // availability: EventDataAvailability;
+    availability: number[][];
+    xDaysFormated: string[];
+    yTimes: string[];
+    onClick: (x: number, y: number) => void;
 };
 
-function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
-    const { forModal, availability } = props;
-    const yTimes = Object.keys(availability).sort();
-    const xDays = Object.keys(availability[yTimes[0]]).sort();
-    const xDaysFormated = xDays.map((timeStamp) =>
-        new Date(Number(timeStamp)).toDateString().slice(0, 15)
-    );
-    const [availabilityData, setAvailabilityData] = React.useState<number[][]>(
-        forModal
-            ? new Array(yTimes.length)
-                  .fill(0)
-                  .map(() => new Array(xDays.length).fill(0))
-            : new Array(yTimes.length).fill(0).map((_j, y) => {
-                  return new Array(xDays.length).fill(0).map((_k, x) => {
-                      return availability[yTimes[y]][xDays[x]].length;
-                  });
-              })
-    );
-    const handleClicks = (x: number, y: number) => {
-        if (forModal) {
-            const avail = JSON.parse(JSON.stringify(availabilityData));
-            if (avail[y][x] === 0) {
-                avail[y][x] = 1;
-            } else {
-                avail[y][x] = 0;
-            }
-            setAvailabilityData(avail);
-        }
-    };
+function AvailabilityHeatMap(props: AvailabilityHeatMapProps): JSX.Element {
+    const { availability, xDaysFormated, yTimes, onClick } = props;
+    // const yTimes = Object.keys(availability).sort();
+    // const xDays = Object.keys(availability[yTimes[0]]).sort();
+    // const xDaysFormated = xDays.map((timeStamp) =>
+    //     new Date(Number(timeStamp)).toDateString().slice(0, 15)
+    // );
+    // const [availabilityData, setAvailabilityData] = React.useState<number[][]>(
+    //     forModal
+    //         ? new Array(yTimes.length)
+    //               .fill(0)
+    //               .map(() => new Array(xDays.length).fill(0))
+    //         : new Array(yTimes.length).fill(0).map((_j, y) => {
+    //               return new Array(xDays.length).fill(0).map((_k, x) => {
+    //                   return availability[yTimes[y]][xDays[x]].length;
+    //               });
+    //           })
+    // );
+    // const handleClicks = (x: number, y: number) => {
+    //     if (forModal) {
+    //         const avail = [...availabilityData];
+    //         if (avail[y][x] === 0) {
+    //             avail[y][x] = 1;
+    //         } else {
+    //             avail[y][x] = 0;
+    //         }
+    //         setAvailabilityData(avail);
+    //     }
+    // };
 
     const getOpacity = (value: number, min: number, max: number) => {
         if (max - min !== 0) {
@@ -67,10 +71,11 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
                     xLabelWidth={60}
                     yLabelWidth={60}
                     // cellRender={value => null}
-                    data={availabilityData}
+                    data={availability}
                     squares={false}
                     height={30}
-                    onClick={(x: number, y: number) => handleClicks(x, y)}
+                    // onClick={(x: number, y: number) => handleClicks(x, y)}
+                    onClick={(x: number, y: number) => onClick(x, y)}
                     cellStyle={(
                         // eslint-disable-next-line
                         _background: any,
@@ -93,4 +98,4 @@ function AvailabilityMap(props: AvailabilityMapProps): JSX.Element {
     );
 }
 
-export default AvailabilityMap;
+export default AvailabilityHeatMap;
