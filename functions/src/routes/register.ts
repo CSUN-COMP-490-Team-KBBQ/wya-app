@@ -1,16 +1,15 @@
 import { Router } from 'express';
-import { firestore, auth, functions } from '../firebase';
+import createUser from '../middleware/createUser';
 
 const router = Router();
 
-router.post('/', async (req, res) => {
-    const { email, password, firstName, lastName } = req.body;
+router.post('/', createUser, async (req, res) => {
+    const functions = req.app.locals.functions;
+    const firestore = req.app.locals.firestore;
+
+    const { email, firstName, lastName } = req.body;
     try {
-        functions.logger.info('Creating user');
-        const user = await auth.createUser({
-            email,
-            password,
-        });
+        const user = res.locals.user;
         const { uid } = user;
         functions.logger.info('Creating user record');
         await firestore.doc(`/users/${uid}`).create({
