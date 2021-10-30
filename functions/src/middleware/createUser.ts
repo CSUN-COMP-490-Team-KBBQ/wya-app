@@ -14,10 +14,11 @@ const createUser: RequestHandler = async (req, res, next) => {
         res.locals.uid = uid;
         next();
     } catch (e) {
-        if (e instanceof Error) {
-            functions.logger.error(e);
-            res.status(500).send(`${e.name}: ${e.message}`);
-        }
+        functions.logger.error(e);
+        res.status(500).json({
+            name: 'ERROR/AUTH',
+            message: 'Error creating user credentials',
+        });
     }
 };
 

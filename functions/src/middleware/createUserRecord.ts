@@ -18,10 +18,11 @@ const createUserRecord: RequestHandler = async (req, res, next) => {
         functions.logger.info(`User ${uid} successfully created.`);
         next();
     } catch (e) {
-        if (e instanceof Error) {
-            functions.logger.error(e);
-            res.status(500).send(`${e.name}: ${e.message}`);
-        }
+        functions.logger.error(e);
+        res.status(500).json({
+            name: 'ERROR/FIRESTORE',
+            message: 'Error creating user record',
+        });
     }
 };
 
