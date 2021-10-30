@@ -23,6 +23,7 @@
         "quotes": ["error", "single"],
         "import/no-unresolved": 0,
         "import/prefer-defer-export": "off",
-        "indent": ["error", 4]
+        "indent": ["error", 4],
+        "prefer-destructuring": "off"
     }
 }
