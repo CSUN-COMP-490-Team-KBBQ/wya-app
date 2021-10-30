@@ -1,6 +1,6 @@
 import { EventDataAvailability } from '../interfaces/Event';
 
-const prepareGroupAvailabilityData = (
+export const prepareGroupAvailabilityData = (
     yTimes: string[],
     xDays: string[],
     availability: EventDataAvailability
@@ -35,5 +35,3 @@ export const formatXDays = (xDays: string[]): string[] => {
         new Date(Number(timeStamp)).toDateString().slice(0, 15)
     );
 };
-
-export default prepareGroupAvailabilityData;

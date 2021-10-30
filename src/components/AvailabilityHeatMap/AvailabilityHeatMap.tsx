@@ -4,43 +4,14 @@ import HeatMap from 'react-heatmap-grid';
 import { EventDataAvailability } from '../../interfaces/Event';
 
 type AvailabilityHeatMapProps = {
-    // forModal: boolean;
-    // availability: EventDataAvailability;
-    availability: number[][];
-    xDaysFormated: string[];
-    yTimes: string[];
+    data: number[][];
+    yLabels: string[];
+    xLabels: string[];
     onClick: (x: number, y: number) => void;
 };
 
 function AvailabilityHeatMap(props: AvailabilityHeatMapProps): JSX.Element {
-    const { availability, xDaysFormated, yTimes, onClick } = props;
-    // const yTimes = Object.keys(availability).sort();
-    // const xDays = Object.keys(availability[yTimes[0]]).sort();
-    // const xDaysFormated = xDays.map((timeStamp) =>
-    //     new Date(Number(timeStamp)).toDateString().slice(0, 15)
-    // );
-    // const [availabilityData, setAvailabilityData] = React.useState<number[][]>(
-    //     forModal
-    //         ? new Array(yTimes.length)
-    //               .fill(0)
-    //               .map(() => new Array(xDays.length).fill(0))
-    //         : new Array(yTimes.length).fill(0).map((_j, y) => {
-    //               return new Array(xDays.length).fill(0).map((_k, x) => {
-    //                   return availability[yTimes[y]][xDays[x]].length;
-    //               });
-    //           })
-    // );
-    // const handleClicks = (x: number, y: number) => {
-    //     if (forModal) {
-    //         const avail = [...availabilityData];
-    //         if (avail[y][x] === 0) {
-    //             avail[y][x] = 1;
-    //         } else {
-    //             avail[y][x] = 0;
-    //         }
-    //         setAvailabilityData(avail);
-    //     }
-    // };
+    const { data, yLabels, xLabels, onClick } = props;
 
     const getOpacity = (value: number, min: number, max: number) => {
         if (max - min !== 0) {
@@ -65,16 +36,15 @@ function AvailabilityHeatMap(props: AvailabilityHeatMapProps): JSX.Element {
                 }}
             >
                 <HeatMap
-                    xLabels={xDaysFormated}
-                    yLabels={yTimes}
+                    xLabels={xLabels}
+                    yLabels={yLabels}
                     xLabelsLocation="top"
                     xLabelWidth={60}
                     yLabelWidth={60}
                     // cellRender={value => null}
-                    data={availability}
+                    data={data}
                     squares={false}
                     height={30}
-                    // onClick={(x: number, y: number) => handleClicks(x, y)}
                     onClick={(x: number, y: number) => onClick(x, y)}
                     cellStyle={(
                         // eslint-disable-next-line
