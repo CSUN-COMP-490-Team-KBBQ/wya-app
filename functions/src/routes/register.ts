@@ -18,7 +18,8 @@ router.post('/', async (req, res) => {
             email,
             firstName,
             lastName,
-            events: {},
+            events: [],
+            availability: {},
         });
         functions.logger.info(`User ${uid} successfully created.`);
         res.status(200).send(user.toJSON());

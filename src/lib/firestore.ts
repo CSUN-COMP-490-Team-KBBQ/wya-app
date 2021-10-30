@@ -1,6 +1,5 @@
 import {
     doc,
-    setDoc,
     getFirestore,
     getDoc,
     DocumentData,
@@ -10,6 +9,7 @@ import {
     FirestoreError,
     Unsubscribe,
 } from 'firebase/firestore';
+import axios from 'axios';
 import app from './firebase';
 import EventData, { EventDataAvailability } from '../interfaces/Event';
 
@@ -67,18 +67,26 @@ const formatAvailability = (
 
 export const createEvent = (data: EventData): Promise<string> => {
     return new Promise((resolve, reject) => {
-        const eventDocRef = getDocRef(`/events/${data.eventId}`);
         const availability = formatAvailability(
             data.startDate,
             data.endDate,
             data.startTime,
             data.endTime
         );
-        setDoc(eventDocRef, {
-            ...data,
-            availability,
-        })
-            .then(() => {
+        // rather than handling this on the client side we will POST the form data to the cloud function api
+        axios
+            .post(
+                'https://us-central1-kbbq-wya-35414.cloudfunctions.net/api/create-event',
+                JSON.stringify({ ...data, availability }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+            .then((res) => {
+                // eslint-disable-next-line
+                console.log(res.data);
                 resolve(data.eventId);
             })
             .catch(reject);
