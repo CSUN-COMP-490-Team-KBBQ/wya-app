@@ -5,23 +5,46 @@ import Modal from 'react-bootstrap/Modal';
 import Calendar from 'react-calendar';
 import EventList from '../../components/EventList/EventList';
 import UserData, { UserDataAvailability } from '../../interfaces/User';
-import AvailabilityMap from '../../components/AvailabilityMap/AvailabilityMap';
+import HeatMapData from '../../interfaces/HeatMapData';
+import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
+import { LABELS, createZeroStateArray } from '../../lib/AvailabilityHeatMap';
 import { useUserContext } from '../../contexts/UserContext';
 import { getDocSnapshot$ } from '../../lib/firestore';
 
 type UpdateAvailabilityModalProps = {
     show: boolean;
-    availability: UserDataAvailability;
+    heatMapData: HeatMapData;
     onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
-    forModal: boolean;
 };
 
 function UpdateAvailabilityModal({
-    availability,
-    forModal,
+    heatMapData,
     show,
     onHide,
 }: UpdateAvailabilityModalProps): JSX.Element {
+    const { yData, xData, zeroState } = heatMapData;
+
+    const [userAvailabilityData, setUserAvailabilityData] =
+        React.useState<number[][]>(zeroState);
+
+    const onClickHeatMapHandle = (x: number, y: number) => {
+        const newUserAvailabilityData = JSON.parse(
+            JSON.stringify(userAvailabilityData)
+        );
+        if (newUserAvailabilityData[y][x] === 0)
+            newUserAvailabilityData[y][x] = 1;
+        else newUserAvailabilityData[y][x] = 0;
+
+        setUserAvailabilityData(newUserAvailabilityData);
+    };
+
+    const onClickCancelHandle = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        setUserAvailabilityData(zeroState);
+        return onHide ? onHide(e) : undefined;
+    };
+
     return (
         <Modal
             show={show}
@@ -33,13 +56,20 @@ function UpdateAvailabilityModal({
                 <Modal.Title>Enter Your Availability</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <AvailabilityMap
-                    forModal={forModal}
-                    availability={availability}
+                <AvailabilityHeatMap
+                    yLabels={yData}
+                    xLabels={xData}
+                    data={userAvailabilityData}
+                    onClick={onClickHeatMapHandle}
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onHide}>Cancel</Button>
+                <Button
+                    variant="secondary"
+                    onClick={(e) => onClickCancelHandle(e)}
+                >
+                    Cancel
+                </Button>
                 <Button onClick={onHide}>Update</Button>
             </Modal.Footer>
         </Modal>
@@ -51,12 +81,22 @@ export default function CalendarPage(): JSX.Element {
     const [userData, setUserData] = React.useState<UserData>();
     const [value, onChange] = React.useState(new Date());
     const [modalShow, setModalShow] = React.useState<boolean>(false);
+    const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
 
     React.useEffect(() => {
         if (user) {
             return getDocSnapshot$(`/users/${user.uid}`, {
                 next: (snapshot) => {
                     setUserData(snapshot.data() as UserData);
+                    setHeatMapData({
+                        yData: LABELS.yLabels,
+                        xData: LABELS.xLabels,
+                        mapData: [[0]],
+                        zeroState: createZeroStateArray(
+                            LABELS.yLabels.length,
+                            LABELS.xLabels.length
+                        ),
+                    });
                 },
             });
         }
@@ -64,7 +104,7 @@ export default function CalendarPage(): JSX.Element {
         return undefined;
     }, [user]);
 
-    return userData !== undefined ? (
+    return userData !== undefined && heatMapData !== undefined ? (
         <div>
             <h1>CalendarPage</h1>
 
@@ -81,8 +121,7 @@ export default function CalendarPage(): JSX.Element {
                     Edit Availability
                 </Button>
                 <UpdateAvailabilityModal
-                    forModal
-                    availability={userData.availability}
+                    heatMapData={heatMapData}
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                 />
