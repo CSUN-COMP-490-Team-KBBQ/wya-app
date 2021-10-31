@@ -1,17 +1,16 @@
 import React from 'react';
 import './AvailabilityHeatMap.css';
 import HeatMap from 'react-heatmap-grid';
-import { EventDataAvailability } from '../../interfaces/Event';
 
 type AvailabilityHeatMapProps = {
-    data: number[][];
     yLabels: string[];
     xLabels: string[];
+    data: number[][];
     onClick: (x: number, y: number) => void;
 };
 
 function AvailabilityHeatMap(props: AvailabilityHeatMapProps): JSX.Element {
-    const { data, yLabels, xLabels, onClick } = props;
+    const { yLabels, xLabels, data, onClick } = props;
 
     const getOpacity = (value: number, min: number, max: number) => {
         if (max - min !== 0) {
@@ -27,9 +26,9 @@ function AvailabilityHeatMap(props: AvailabilityHeatMapProps): JSX.Element {
         <div>
             <div
                 style={{
+                    backgroundColor: 'white',
                     fontSize: '13px',
                     width: 'auto',
-                    // backgroundColor: 'lightyellow',
                     margin: '10px',
                     // temp set width for mock data
                     maxWidth: '1024px',
@@ -41,7 +40,6 @@ function AvailabilityHeatMap(props: AvailabilityHeatMapProps): JSX.Element {
                     xLabelsLocation="top"
                     xLabelWidth={60}
                     yLabelWidth={60}
-                    // cellRender={value => null}
                     data={data}
                     squares={false}
                     height={30}

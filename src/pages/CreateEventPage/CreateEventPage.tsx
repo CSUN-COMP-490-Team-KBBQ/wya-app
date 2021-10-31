@@ -1,6 +1,6 @@
 import React from 'react';
 import CreateEventForm from '../../components/CreateEventForm/CreateEventForm';
-import EventData from '../../interfaces/Event';
+import EventData from '../../interfaces/EventData';
 
 import './CreateEventPage.css';
 

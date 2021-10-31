@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 import axios from 'axios';
 import app from './firebase';
-import EventData, { EventDataAvailability } from '../interfaces/Event';
+import EventData, { EventDataAvailability } from '../interfaces/EventData';
 
 const firestore = getFirestore(app);
 
