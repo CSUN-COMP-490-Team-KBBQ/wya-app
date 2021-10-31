@@ -8,6 +8,9 @@
 # Vscode
 .vscode/
 
+# Vim file
+*.swp
+
 # testing
 /coverage
 
