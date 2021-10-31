@@ -31,7 +31,9 @@ function AddAvailabilityModal({
         React.useState<number[][]>(zeroState);
 
     const onClickHeatMapHandle = (x: number, y: number) => {
-        const newUserAvailabilityData = [...userAvailabilityData];
+        const newUserAvailabilityData = JSON.parse(
+            JSON.stringify(userAvailabilityData)
+        );
         if (newUserAvailabilityData[y][x] === 0)
             newUserAvailabilityData[y][x] = 1;
         else newUserAvailabilityData[y][x] = 0;
