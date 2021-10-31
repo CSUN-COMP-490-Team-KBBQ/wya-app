@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 import axios from 'axios';
 import app from './firebase';
-import EventData, { EventDataAvailability } from '../interfaces/Event';
+import EventData, { EventDataAvailability } from '../interfaces/EventData';
 
 const firestore = getFirestore(app);
 
@@ -34,7 +34,7 @@ const formatAvailability = (
     let tempDateTimeStamp = startDateTimeStamp;
     let tempTimeTimeStamp = startTimeTimeStamp;
     const days = {};
-    const availabilityMap = {};
+    const AvailabilityHeatMap = {};
 
     // creating days map
     let i = 0;
@@ -52,17 +52,17 @@ const formatAvailability = (
     // creating availability map
     i = 0;
     while (tempTimeTimeStamp <= endTimeTimeStamp) {
-        const tempAvailabilityMap = {
+        const tempAvailabilityHeatMap = {
             [tempTimeTimeStamp.toTimeString().slice(0, 5)]: days,
         };
-        Object.assign(availabilityMap, tempAvailabilityMap);
+        Object.assign(AvailabilityHeatMap, tempAvailabilityHeatMap);
         tempTimeTimeStamp = new Date(
             startTimeTimeStamp.getTime() + i * TIMEINCREMENT.getTime()
         );
         i += 1;
     }
 
-    return availabilityMap;
+    return AvailabilityHeatMap;
 };
 
 export const createEvent = (data: EventData): Promise<string> => {

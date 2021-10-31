@@ -1,25 +1,51 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import AvailabilityMap from '../../components/AvailabilityMap/AvailabilityMap';
 
-import EventData, { EventDataAvailability } from '../../interfaces/Event';
+import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
+import EventData from '../../interfaces/EventData';
 import { getDocSnapshot$ } from '../../lib/firestore';
+import HeatMapData from '../../interfaces/HeatMapData';
+import {
+    getYTimesSorted,
+    getXDaysSorted,
+    formatXDays,
+    createAvailabilityDataArray,
+    createZeroStateArray,
+} from '../../lib/AvailabilityHeatMap';
 
-// eslint-disable-next-line
 type AddAvailabilityModalProps = {
+    heatMapData: HeatMapData;
     show: boolean;
-    availability: EventDataAvailability;
     onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
-    forModal: boolean;
 };
 
 function AddAvailabilityModal({
-    availability,
+    heatMapData,
     show,
     onHide,
-    forModal,
 }: AddAvailabilityModalProps): JSX.Element {
+    const { yData, xData, zeroState } = heatMapData;
+
+    const [userAvailabilityData, setUserAvailabilityData] =
+        React.useState<number[][]>(zeroState);
+
+    const onClickHeatMapHandle = (x: number, y: number) => {
+        const newUserAvailabilityData = [...userAvailabilityData];
+        if (newUserAvailabilityData[y][x] === 0)
+            newUserAvailabilityData[y][x] = 1;
+        else newUserAvailabilityData[y][x] = 0;
+
+        setUserAvailabilityData(newUserAvailabilityData);
+    };
+
+    const onClickCancelHandle = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        setUserAvailabilityData(zeroState);
+        return onHide ? onHide(e) : undefined;
+    };
+
     return (
         <Modal
             show={show}
@@ -31,13 +57,18 @@ function AddAvailabilityModal({
                 <Modal.Title>Select Availability</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <AvailabilityMap
-                    forModal={forModal}
-                    availability={availability}
+                <AvailabilityHeatMap
+                    yLabels={yData}
+                    xLabels={xData}
+                    data={userAvailabilityData}
+                    onClick={onClickHeatMapHandle}
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>
+                <Button
+                    variant="secondary"
+                    onClick={(e) => onClickCancelHandle(e)}
+                >
                     Cancel
                 </Button>
                 <Button onClick={onHide}>Submit</Button>
@@ -55,34 +86,51 @@ export default function EventPage({
         };
     };
 }): JSX.Element {
-    const [eventData, setEventData] = React.useState<EventData>();
     const [modalShow, setModalShow] = React.useState<boolean>(false);
+    const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
 
     React.useEffect(() => {
         return getDocSnapshot$(`/events/${match.params.id}`, {
             next: (snapshot) => {
-                setEventData(snapshot.data() as EventData);
+                const event = snapshot.data() as EventData;
+                const tempYTimes = getYTimesSorted(event.availability);
+                const tempXDays = getXDaysSorted(
+                    tempYTimes,
+                    event.availability
+                );
+                setHeatMapData({
+                    yData: tempYTimes,
+                    xData: formatXDays(tempXDays),
+                    mapData: createAvailabilityDataArray(
+                        tempYTimes,
+                        tempXDays,
+                        event.availability
+                    ),
+                    zeroState: createZeroStateArray(
+                        tempYTimes.length,
+                        tempXDays.length
+                    ),
+                });
             },
         });
     }, []);
 
-    return eventData ? (
+    return heatMapData ? (
         <div>
             <h1>EventPage</h1>
-            <pre>{JSON.stringify(eventData || {}, null, 2)}</pre>
-
             <h2>Group Availabilities</h2>
-            <AvailabilityMap
-                forModal={false}
-                availability={eventData.availability}
+            <AvailabilityHeatMap
+                yLabels={heatMapData.yData}
+                xLabels={heatMapData.xData}
+                data={heatMapData.mapData}
+                onClick={() => undefined}
             />
             <Button type="button" onClick={() => setModalShow(true)}>
                 add Availability
             </Button>
 
             <AddAvailabilityModal
-                forModal
-                availability={eventData.availability}
+                heatMapData={heatMapData}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
             />
