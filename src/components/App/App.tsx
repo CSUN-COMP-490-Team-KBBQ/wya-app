@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
                         component={CreateEventPage}
                     />
                     <Route path="/event/:id" exact component={EventPage} />
-                    <Route path="/calendar" exact component={CalendarPage} />
+                    <PrivateRoute path="/calendar" component={CalendarPage} />
                 </Switch>
             </BrowserRouter>
         </UserAuthProvider>
