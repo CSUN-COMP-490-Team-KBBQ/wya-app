@@ -8,6 +8,7 @@ import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import CreateEventPage from '../../pages/CreateEventPage/CreateEventPage';
 import EventPage from '../../pages/EventPage/EventPage';
 import CalendarPage from '../../pages/CalendarPage/CalendarPage';
+import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import { UserAuthProvider } from '../../contexts/UserContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,6 +27,7 @@ export default function App(): JSX.Element {
                     />
                     <PrivateRoute path="/event/:id" component={EventPage} />
                     <PrivateRoute path="/calendar" component={CalendarPage} />
+                    <Route path="*" exact component={NotFoundPage} />
                 </Switch>
             </BrowserRouter>
         </UserAuthProvider>
