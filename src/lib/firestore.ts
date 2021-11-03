@@ -8,10 +8,13 @@ import {
     DocumentSnapshot,
     FirestoreError,
     Unsubscribe,
+    updateDoc,
+    runTransaction,
 } from 'firebase/firestore';
 import axios from 'axios';
 import app from './firebase';
 import EventData, { EventDataAvailability } from '../interfaces/EventData';
+import { UserDataAvailability } from '../interfaces/User';
 
 const firestore = getFirestore(app);
 
@@ -108,6 +111,89 @@ export const getDocSnapshot$ = (
 ): Unsubscribe => {
     const docRef = getDocRef(path);
     return onSnapshot(docRef, observer);
+};
+
+export const updateCalendarAvailability = (
+    data: number[][],
+    uid: string
+): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const userDocRef = getDocRef(`/users/${uid}`);
+        const availabilityData: UserDataAvailability = {};
+
+        for (let i = 0; i < data[0].length; i += 1) {
+            switch (i) {
+                case 0: {
+                    const dateData = [];
+                    for (let j = 0; j < data.length; j += 1) {
+                        dateData.push(data[j][i]);
+                        availabilityData.Sunday = { cellData: dateData };
+                    }
+                    break;
+                }
+                case 1: {
+                    const dateData = [];
+                    for (let j = 0; j < data.length; j += 1) {
+                        dateData.push(data[j][i]);
+                        availabilityData.Monday = { cellData: dateData };
+                    }
+                    break;
+                }
+                case 2: {
+                    const dateData = [];
+                    for (let j = 0; j < data.length; j += 1) {
+                        dateData.push(data[j][i]);
+                        availabilityData.Tuesday = { cellData: dateData };
+                    }
+                    break;
+                }
+                case 3: {
+                    const dateData = [];
+                    for (let j = 0; j < data.length; j += 1) {
+                        dateData.push(data[j][i]);
+                        availabilityData.Wednesday = { cellData: dateData };
+                    }
+                    break;
+                }
+                case 4: {
+                    const dateData = [];
+                    for (let j = 0; j < data.length; j += 1) {
+                        dateData.push(data[j][i]);
+                        availabilityData.Thursday = { cellData: dateData };
+                    }
+                    break;
+                }
+                case 5: {
+                    const dateData = [];
+                    for (let j = 0; j < data.length; j += 1) {
+                        dateData.push(data[j][i]);
+                        availabilityData.Friday = { cellData: dateData };
+                    }
+                    break;
+                }
+                case 6: {
+                    const dateData = [];
+                    for (let j = 0; j < data.length; j += 1) {
+                        dateData.push(data[j][i]);
+                        availabilityData.Saturday = { cellData: dateData };
+                    }
+                    break;
+                }
+                default: {
+                    console.log('Error');
+                    break;
+                }
+            }
+        }
+
+        updateDoc(userDocRef, 'availability', {
+            ...availabilityData,
+        })
+            .then(() => {
+                resolve(uid);
+            })
+            .catch(reject);
+    });
 };
 
 export default firestore;
