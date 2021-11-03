@@ -4,12 +4,15 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Calendar from 'react-calendar';
 import EventList from '../../components/EventList/EventList';
-import UserData, { UserDataAvailability } from '../../interfaces/User';
+import UserData from '../../interfaces/User';
 import HeatMapData from '../../interfaces/HeatMapData';
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
 import { LABELS, createZeroStateArray } from '../../lib/AvailabilityHeatMap';
 import { useUserContext } from '../../contexts/UserContext';
-import { getDocSnapshot$ } from '../../lib/firestore';
+import {
+    getDocSnapshot$,
+    updateCalendarAvailability,
+} from '../../lib/firestore';
 
 type UpdateAvailabilityModalProps = {
     uid: string;
@@ -50,11 +53,13 @@ function UpdateAvailabilityModal({
     const onClickUpdateHandle = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        // updateCalendarAvailability(userAvailabilityData, uid)
-        return onHide ? onHide(e) : undefined;
+        updateCalendarAvailability(userAvailabilityData, uid)
+            .then((eventId) => {
+                return onHide ? onHide(e) : undefined;
+            })
+            // eslint-disable-next-line
+            .catch(console.error);
     };
-
-    // TODO: on checkbox/button click, data is cleared in modal
 
     return (
         <Modal
