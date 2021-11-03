@@ -9,7 +9,6 @@ import {
     FirestoreError,
     Unsubscribe,
     updateDoc,
-    runTransaction,
 } from 'firebase/firestore';
 import axios from 'axios';
 import app from './firebase';
@@ -127,7 +126,7 @@ export const updateCalendarAvailability = (
                     const dateData = [];
                     for (let j = 0; j < data.length; j += 1) {
                         dateData.push(data[j][i]);
-                        availabilityData.Sunday = { cellData: dateData };
+                        availabilityData.Sunday = dateData;
                     }
                     break;
                 }
@@ -135,7 +134,7 @@ export const updateCalendarAvailability = (
                     const dateData = [];
                     for (let j = 0; j < data.length; j += 1) {
                         dateData.push(data[j][i]);
-                        availabilityData.Monday = { cellData: dateData };
+                        availabilityData.Monday = dateData;
                     }
                     break;
                 }
@@ -143,7 +142,7 @@ export const updateCalendarAvailability = (
                     const dateData = [];
                     for (let j = 0; j < data.length; j += 1) {
                         dateData.push(data[j][i]);
-                        availabilityData.Tuesday = { cellData: dateData };
+                        availabilityData.Tuesday = dateData;
                     }
                     break;
                 }
@@ -151,7 +150,7 @@ export const updateCalendarAvailability = (
                     const dateData = [];
                     for (let j = 0; j < data.length; j += 1) {
                         dateData.push(data[j][i]);
-                        availabilityData.Wednesday = { cellData: dateData };
+                        availabilityData.Wednesday = dateData;
                     }
                     break;
                 }
@@ -159,7 +158,7 @@ export const updateCalendarAvailability = (
                     const dateData = [];
                     for (let j = 0; j < data.length; j += 1) {
                         dateData.push(data[j][i]);
-                        availabilityData.Thursday = { cellData: dateData };
+                        availabilityData.Thursday = dateData;
                     }
                     break;
                 }
@@ -167,7 +166,7 @@ export const updateCalendarAvailability = (
                     const dateData = [];
                     for (let j = 0; j < data.length; j += 1) {
                         dateData.push(data[j][i]);
-                        availabilityData.Friday = { cellData: dateData };
+                        availabilityData.Friday = dateData;
                     }
                     break;
                 }
@@ -175,7 +174,7 @@ export const updateCalendarAvailability = (
                     const dateData = [];
                     for (let j = 0; j < data.length; j += 1) {
                         dateData.push(data[j][i]);
-                        availabilityData.Saturday = { cellData: dateData };
+                        availabilityData.Saturday = dateData;
                     }
                     break;
                 }
