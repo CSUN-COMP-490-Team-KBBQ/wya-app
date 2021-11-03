@@ -16,8 +16,5 @@ export interface EventInfo {
 }
 
 export interface UserDataAvailability {
-    [day: string]: {
-        // should be type boolean, not string[]
-        cellData: number[];
-    };
+    [day: string]: number[];
 }

@@ -7,7 +7,11 @@ import EventList from '../../components/EventList/EventList';
 import UserData from '../../interfaces/User';
 import HeatMapData from '../../interfaces/HeatMapData';
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
-import { LABELS, createZeroStateArray } from '../../lib/AvailabilityHeatMap';
+import {
+    LABELS,
+    createZeroStateArray,
+    createCalendarAvailabilityDataArray,
+} from '../../lib/AvailabilityHeatMap';
 import { useUserContext } from '../../contexts/UserContext';
 import {
     getDocSnapshot$,
@@ -54,7 +58,7 @@ function UpdateAvailabilityModal({
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         updateCalendarAvailability(userAvailabilityData, uid)
-            .then((eventId) => {
+            .then(() => {
                 return onHide ? onHide(e) : undefined;
             })
             // eslint-disable-next-line
@@ -115,8 +119,8 @@ export default function CalendarPage(): JSX.Element {
                                       LABELS.xLabels.length
                                   )
                                 : createCalendarAvailabilityDataArray(
-                                      LABELS.yLabels.length,
-                                      LABELS.xLabels.length,
+                                      LABELS.yLabels,
+                                      LABELS.xLabels,
                                       newUserData.availability
                                   ),
                         zeroState: [[]],
