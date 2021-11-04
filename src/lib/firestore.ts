@@ -14,6 +14,7 @@ import axios from 'axios';
 import app from './firebase';
 import EventData, { EventDataAvailability } from '../interfaces/EventData';
 import { UserDataAvailability } from '../interfaces/User';
+import { LABELS } from './AvailabilityHeatMap';
 
 const firestore = getFirestore(app);
 
@@ -120,69 +121,12 @@ export const updateCalendarAvailability = (
         const userDocRef = getDocRef(`/users/${uid}`);
         const availabilityData: UserDataAvailability = {};
 
-        for (let i = 0; i < data[0].length; i += 1) {
-            switch (i) {
-                case 0: {
-                    const dateData = [];
-                    for (let j = 0; j < data.length; j += 1) {
-                        dateData.push(data[j][i]);
-                        availabilityData.Sunday = dateData;
-                    }
-                    break;
-                }
-                case 1: {
-                    const dateData = [];
-                    for (let j = 0; j < data.length; j += 1) {
-                        dateData.push(data[j][i]);
-                        availabilityData.Monday = dateData;
-                    }
-                    break;
-                }
-                case 2: {
-                    const dateData = [];
-                    for (let j = 0; j < data.length; j += 1) {
-                        dateData.push(data[j][i]);
-                        availabilityData.Tuesday = dateData;
-                    }
-                    break;
-                }
-                case 3: {
-                    const dateData = [];
-                    for (let j = 0; j < data.length; j += 1) {
-                        dateData.push(data[j][i]);
-                        availabilityData.Wednesday = dateData;
-                    }
-                    break;
-                }
-                case 4: {
-                    const dateData = [];
-                    for (let j = 0; j < data.length; j += 1) {
-                        dateData.push(data[j][i]);
-                        availabilityData.Thursday = dateData;
-                    }
-                    break;
-                }
-                case 5: {
-                    const dateData = [];
-                    for (let j = 0; j < data.length; j += 1) {
-                        dateData.push(data[j][i]);
-                        availabilityData.Friday = dateData;
-                    }
-                    break;
-                }
-                case 6: {
-                    const dateData = [];
-                    for (let j = 0; j < data.length; j += 1) {
-                        dateData.push(data[j][i]);
-                        availabilityData.Saturday = dateData;
-                    }
-                    break;
-                }
-                default: {
-                    console.log('Error');
-                    break;
-                }
+        for (let j = 0; j < LABELS.yLabels.length; j += 1) {
+            const dateData = [];
+            for (let i = 0; i < LABELS.xLabels.length; i += 1) {
+                dateData.push(data[j][i]);
             }
+            availabilityData[LABELS.yLabels[j]] = dateData;
         }
 
         updateDoc(userDocRef, 'availability', {

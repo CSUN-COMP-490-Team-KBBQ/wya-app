@@ -37,25 +37,11 @@ export const createCalendarAvailabilityDataArray = (
     xDays: string[],
     availability: UserDataAvailability
 ): number[][] => {
-    const arr = new Array(yTimes.length).fill(0).map((_k, y) => {
+    return new Array(yTimes.length).fill(0).map((_k, y) => {
         return new Array(xDays.length).fill(0).map((_j, x) => {
-            return availability[xDays[x]][y];
+            return availability[yTimes[y]][x];
         });
     });
-
-    // const arr = new Array(96).fill(0).map(() => new Array(7).fill(0));
-
-    // for (let i = 0; i < 96; i += 1) {
-    //     arr[i][0] = availability.Sunday.cellData[i];
-    //     arr[i][1] = availability.Monday.cellData[i];
-    //     arr[i][2] = availability.Tuesday.cellData[i];
-    //     arr[i][3] = availability.Wednesday.cellData[i];
-    //     arr[i][4] = availability.Thursday.cellData[i];
-    //     arr[i][5] = availability.Friday.cellData[i];
-    //     arr[i][6] = availability.Saturday.cellData[i];
-    // }
-
-    return arr;
 };
 
 export const createZeroStateArray = (
