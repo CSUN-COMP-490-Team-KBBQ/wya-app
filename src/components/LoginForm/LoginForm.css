@@ -4,3 +4,12 @@
 .row {
     padding-bottom: .5rem;
 }
+
+#forgot-password-link {
+    margin-left: 2%;
+    text-decoration: none;
+    color: white; 
+}
+#forgot-password-link:hover {
+    color: blue;
+}

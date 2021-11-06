@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { logIn } from '../../lib/auth';
 import { useUserContext } from '../../contexts/UserContext';
 
@@ -68,6 +68,9 @@ export default function LoginForm(): JSX.Element {
             <Form.Group as={Row}>
                 <Col sm={{ span: 10, offset: 2 }}>
                     <Button type="submit">Log in</Button>
+                    <Link id="forgot-password-link" to="/login">
+                        Forgot password?
+                    </Link>
                 </Col>
             </Form.Group>
         </Form>
