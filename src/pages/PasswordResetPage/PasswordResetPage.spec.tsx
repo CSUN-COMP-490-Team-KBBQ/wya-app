@@ -4,5 +4,5 @@ import PasswordResetPage from './PasswordResetPage';
 
 it('renders component', () => {
     const { queryByText } = render(<PasswordResetPage />);
-    expect(queryByText('PasswordResetPage')).toBeTruthy();
+    expect(queryByText('Password Reset')).toBeTruthy();
 });
