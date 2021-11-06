@@ -12,20 +12,22 @@ import { useUserContext } from '../../contexts/UserContext';
 import { getDocSnapshot$ } from '../../lib/firestore';
 
 type UpdateAvailabilityModalProps = {
+    uid: string;
     show: boolean;
     heatMapData: HeatMapData;
     onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
 function UpdateAvailabilityModal({
+    uid,
     heatMapData,
     show,
     onHide,
 }: UpdateAvailabilityModalProps): JSX.Element {
-    const { yData, xData, zeroState } = heatMapData;
+    const { yData, xData, mapData } = heatMapData;
 
     const [userAvailabilityData, setUserAvailabilityData] =
-        React.useState<number[][]>(zeroState);
+        React.useState<number[][]>(mapData);
 
     const onClickHeatMapHandle = (x: number, y: number) => {
         const newUserAvailabilityData = JSON.parse(
@@ -41,9 +43,18 @@ function UpdateAvailabilityModal({
     const onClickCancelHandle = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        setUserAvailabilityData(zeroState);
+        setUserAvailabilityData(mapData);
         return onHide ? onHide(e) : undefined;
     };
+
+    const onClickUpdateHandle = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        // updateCalendarAvailability(userAvailabilityData, uid)
+        return onHide ? onHide(e) : undefined;
+    };
+
+    // TODO: on checkbox/button click, data is cleared in modal
 
     return (
         <Modal
@@ -70,7 +81,7 @@ function UpdateAvailabilityModal({
                 >
                     Cancel
                 </Button>
-                <Button onClick={onHide}>Update</Button>
+                <Button onClick={(e) => onClickUpdateHandle(e)}>Update</Button>
             </Modal.Footer>
         </Modal>
     );
@@ -87,15 +98,23 @@ export default function CalendarPage(): JSX.Element {
         if (user) {
             return getDocSnapshot$(`/users/${user.uid}`, {
                 next: (snapshot) => {
-                    setUserData(snapshot.data() as UserData);
+                    const newUserData = snapshot.data() as UserData;
+                    setUserData(newUserData);
                     setHeatMapData({
                         yData: LABELS.yLabels,
                         xData: LABELS.xLabels,
-                        mapData: [[0]],
-                        zeroState: createZeroStateArray(
-                            LABELS.yLabels.length,
-                            LABELS.xLabels.length
-                        ),
+                        mapData:
+                            Object.values(newUserData.availability).length === 0
+                                ? createZeroStateArray(
+                                      LABELS.yLabels.length,
+                                      LABELS.xLabels.length
+                                  )
+                                : createCalendarAvailabilityDataArray(
+                                      LABELS.yLabels.length,
+                                      LABELS.xLabels.length,
+                                      newUserData.availability
+                                  ),
+                        zeroState: [[]],
                     });
                 },
             });
@@ -121,6 +140,7 @@ export default function CalendarPage(): JSX.Element {
                     Edit Availability
                 </Button>
                 <UpdateAvailabilityModal
+                    uid={userData.uid}
                     heatMapData={heatMapData}
                     show={modalShow}
                     onHide={() => setModalShow(false)}

@@ -1,5 +1,5 @@
 export default interface UserData {
-    userId: string;
+    uid: string;
     email: string;
     events: EventInfo[];
     firstName: string;
