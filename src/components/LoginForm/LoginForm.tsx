@@ -68,7 +68,7 @@ export default function LoginForm(): JSX.Element {
             <Form.Group as={Row}>
                 <Col sm={{ span: 10, offset: 2 }}>
                     <Button type="submit">Log in</Button>
-                    <Link id="forgot-password-link" to="/login">
+                    <Link id="forgot-password-link" to="/password-reset">
                         Forgot password?
                     </Link>
                 </Col>
