@@ -31,8 +31,8 @@ export default function CalendarPage(): JSX.Element {
         </div>
     ) : (
         <div>
+            {/* TODO: Add loading page */}
             <h1>CalendarPage</h1>
-            <div>Please log in to get started</div>
         </div>
     );
 }

@@ -6,6 +6,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
  - firebase emulators is currently unstable because of node version mismatch
 
+ - Unit Tests needed for Auth and PrivateRoute components
+
 ## Available Scripts
 
 In the project directory, you can run:
