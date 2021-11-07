@@ -8,6 +8,7 @@ import './PasswordResetPage.css';
 
 export default function PasswordResetPage(): JSX.Element {
     const history = useHistory();
+    const [displayError, setDisplayError] = React.useState<string>('');
 
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -15,14 +16,14 @@ export default function PasswordResetPage(): JSX.Element {
         const formValue = Object.fromEntries(formData.entries());
         const { email } = formValue;
 
-        console.log(JSON.stringify(email));
         passwordReset(email as string)
             .then(() => {
-                console.log('email sent for password reset');
                 history.push('/login');
             })
-            // eslint-disable-next-line
-            .catch(console.error);
+            .catch((err) => {
+                const errorResponse = `Error: ${err.code}`;
+                setDisplayError(errorResponse);
+            });
     };
 
     return (
@@ -30,6 +31,9 @@ export default function PasswordResetPage(): JSX.Element {
             <h1>Password Reset</h1>
             <Form onSubmit={onSubmitHandler} className="password-reset-form">
                 <Form.Group controlId="passwordResetEmail">
+                    {displayError.length > 0 && (
+                        <p id="displayError">{displayError}</p>
+                    )}
                     <Form.Label>
                         Enter the email address you signed up with to get a
                         reset password link.
