@@ -1,0 +1,27 @@
+#profilePage {
+    margin-top: 150px;
+}
+
+#profilePage h1 {
+    margin: 25px;
+}
+
+#profilePage h2 {
+    text-align: left;
+    margin: auto;
+}
+
+.change-password-form {
+    width: 40%;
+    padding-top: 15px;
+    margin: auto;
+}
+
+.change-password-form .form-label {
+    color: white;
+    font-size: medium;
+}
+
+#passwordUpdateBtn {
+    margin-top: 15px;
+}
