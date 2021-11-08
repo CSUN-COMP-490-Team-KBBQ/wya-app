@@ -9,6 +9,7 @@ import PasswordResetPage from '../../pages/PasswordResetPage/PasswordResetPage';
 import CreateEventPage from '../../pages/CreateEventPage/CreateEventPage';
 import EventPage from '../../pages/EventPage/EventPage';
 import CalendarPage from '../../pages/CalendarPage/CalendarPage';
+import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import { UserAuthProvider } from '../../contexts/UserContext';
 
@@ -33,6 +34,7 @@ export default function App(): JSX.Element {
                     />
                     <PrivateRoute path="/event/:id" component={EventPage} />
                     <PrivateRoute path="/calendar" component={CalendarPage} />
+                    <PrivateRoute path="/profile" component={ProfilePage} />
                     <Route path="*" exact component={NotFoundPage} />
                 </Switch>
             </BrowserRouter>

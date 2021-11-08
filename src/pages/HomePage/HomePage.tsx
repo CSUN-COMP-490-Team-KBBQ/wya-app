@@ -1,6 +1,6 @@
 import React from 'react';
 import './HomePage.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { useUserContext } from '../../contexts/UserContext';
 import { logOut } from '../../lib/auth';
@@ -8,6 +8,8 @@ import finallogo from '../../assets/wya test 4.png';
 
 export default function HomePage(): JSX.Element {
     const user = useUserContext();
+    const history = useHistory();
+
     return (
         <div>
             {user ? (
@@ -19,6 +21,13 @@ export default function HomePage(): JSX.Element {
                             onClick={logOut}
                         >
                             Log out
+                        </Button>
+                        <Button
+                            variant="light"
+                            className="btn-sm"
+                            onClick={() => history.push('/profile')}
+                        >
+                            Profile
                         </Button>
                     </header>
                     <h1 className="f-header">Main Menu</h1>
