@@ -9,7 +9,7 @@ import './ProfilePage.css';
 
 function ChangePasswordForm(): JSX.Element {
     return (
-        <Form.Group controlId="updatePasswordForm">
+        <Form.Group>
             <Form.Label>Old Password</Form.Label>
             <Form.Control
                 type="password"
@@ -76,8 +76,10 @@ export default function ProfilePage(): JSX.Element {
                         .then(() => {
                             setDisplaySuccess('Password successfully updated!');
                         })
-                        // eslint-disable-next-line
-                        .catch(console.error);
+                        .catch((err) => {
+                            const errorResponse = `Error: ${err.code}`;
+                            setDisplayError(errorResponse);
+                        });
                 })
                 .catch((err) => {
                     const errorResponse = `Error: ${err.code}`;
