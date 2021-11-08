@@ -4,6 +4,7 @@ import {
     signInWithEmailAndPassword,
     User,
     sendPasswordResetEmail,
+    updatePassword,
 } from 'firebase/auth';
 import axios, { AxiosResponse } from 'axios';
 import app from './firebase';
@@ -42,6 +43,13 @@ export const registerUser = (
 export const passwordReset = (email: string): Promise<void> => {
     return new Promise((resolve, reject) => {
         sendPasswordResetEmail(auth, email)
+    });
+};
+
+export const changePassword = (newPassword: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        // eslint-disable-next-line
+        updatePassword(auth.currentUser!, newPassword)
             .then(() => resolve())
             .catch(reject);
     });
