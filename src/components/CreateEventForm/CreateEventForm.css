@@ -1,3 +1,9 @@
 .event-description {
     height: 200px;
 }
+
+.timePicker-input{
+    width: 350px;
+    padding-right:0;
+    margin-right:0;
+}

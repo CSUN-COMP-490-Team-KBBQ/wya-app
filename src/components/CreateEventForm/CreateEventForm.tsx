@@ -7,10 +7,13 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuid } from 'uuid';
+import TimePicker from 'rc-time-picker';
+import moment from 'moment';
 import { createEvent } from '../../lib/firestore';
 import { useUserContext } from '../../contexts/UserContext';
 
 import './CreateEventForm.css';
+import 'rc-time-picker/assets/index.css';
 
 interface Guest {
     uid: string;
@@ -87,6 +90,20 @@ export default function CreateEventForm(
     const yyyy = today.getFullYear();
     const currentDate = String(`${yyyy}-${mm}-${dd}`);
 
+    const [startTimeValue, setStartTimeValue] = React.useState<moment.Moment>(
+        moment()
+    );
+    const [endTimeValue, setEndTimeValue] = React.useState<moment.Moment>(
+        moment()
+    );
+
+    const handleStartValueChange = (value: any) => {
+        setStartTimeValue(value);
+    };
+    const handleEndValueChange = (value: any) => {
+        setEndTimeValue(value);
+    };
+
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
@@ -103,11 +120,20 @@ export default function CreateEventForm(
             // eslint-disable-next-line
             .catch(console.error);
     };
-
     return (
         <Form data-testid="CreateEventForm" onSubmit={onSubmitHandler}>
             <input type="hidden" name="hostId" value={user?.uid} />
             <input type="hidden" name="eventId" value={uuid()} />
+            <input
+                type="hidden"
+                name="startTime"
+                value={startTimeValue.format('HH:mm')}
+            />
+            <input
+                type="hidden"
+                name="endTime"
+                value={endTimeValue.format('HH:mm')}
+            />
             <Row>
                 <FloatingLabel controlId="eventName" label="Event Name">
                     <Form.Control
@@ -158,28 +184,28 @@ export default function CreateEventForm(
                     </FloatingLabel>
                 </Col>
             </Row>
-
             <Row>
                 <Col>
-                    <FloatingLabel
-                        controlId="eventStartTime"
-                        label="Start Time"
-                    >
-                        <Form.Control
-                            type="time"
-                            placeholder="Start Time"
-                            name="startTime"
-                        />
-                    </FloatingLabel>
+                    <TimePicker
+                        className="timePicker-input"
+                        placeholder="StartTime"
+                        showSecond={false}
+                        minuteStep={15}
+                        value={startTimeValue}
+                        onChange={(value) => handleStartValueChange(value)}
+                        name="startTime"
+                    />
                 </Col>
                 <Col>
-                    <FloatingLabel controlId="eventEndTime" label="End Time">
-                        <Form.Control
-                            type="time"
-                            placeholder="End Time"
-                            name="endTime"
-                        />
-                    </FloatingLabel>
+                    <TimePicker
+                        className="timePicker-input"
+                        placeholder="FinishTime"
+                        showSecond={false}
+                        minuteStep={15}
+                        value={endTimeValue}
+                        onChange={(value) => handleEndValueChange(value)}
+                        name="endTime"
+                    />
                 </Col>
             </Row>
 
