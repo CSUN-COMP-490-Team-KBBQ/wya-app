@@ -1,33 +1,11 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
+import ChangePasswordForm from '../../components/ChangePasswordForm/ChangePasswordForm';
 import { useUserContext } from '../../contexts/UserContext';
 import { logIn, changePassword } from '../../lib/auth';
 import './ProfilePage.css';
-
-function ChangePasswordForm(): JSX.Element {
-    return (
-        <Form.Group>
-            <Form.Label>Old Password</Form.Label>
-            <Form.Control
-                type="password"
-                name="oldPassword"
-                className="form-input"
-            />
-            <Form.Label>New Password</Form.Label>
-            <Form.Control
-                type="password"
-                name="newPassword"
-                className="form-input"
-            />
-            <Button id="passwordUpdateBtn" type="submit">
-                Update Password
-            </Button>
-        </Form.Group>
-    );
-}
 
 export default function ProfilePage(): JSX.Element {
     const user = useUserContext();
