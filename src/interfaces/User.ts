@@ -1,9 +1,10 @@
 export default interface UserData {
-    userId: string;
+    uid: string;
     email: string;
     events: EventInfo[];
     firstName: string;
     lastName: string;
+    availability: UserDataAvailability;
 }
 
 export interface EventInfo {
@@ -12,4 +13,8 @@ export interface EventInfo {
     description: string;
     startDate: string;
     role: string;
+}
+
+export interface UserDataAvailability {
+    [day: string]: number[];
 }

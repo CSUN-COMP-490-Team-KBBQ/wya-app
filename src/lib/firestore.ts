@@ -8,10 +8,13 @@ import {
     DocumentSnapshot,
     FirestoreError,
     Unsubscribe,
+    updateDoc,
 } from 'firebase/firestore';
 import axios from 'axios';
 import app from './firebase';
 import EventData, { EventDataAvailability } from '../interfaces/EventData';
+import { UserDataAvailability } from '../interfaces/User';
+import { LABELS } from './AvailabilityHeatMap';
 
 const firestore = getFirestore(app);
 
@@ -108,6 +111,32 @@ export const getDocSnapshot$ = (
 ): Unsubscribe => {
     const docRef = getDocRef(path);
     return onSnapshot(docRef, observer);
+};
+
+export const updateCalendarAvailability = (
+    data: number[][],
+    uid: string
+): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const userDocRef = getDocRef(`/users/${uid}`);
+        const availabilityData: UserDataAvailability = {};
+
+        for (let j = 0; j < LABELS.yLabels.length; j += 1) {
+            const dateData = [];
+            for (let i = 0; i < LABELS.xLabels.length; i += 1) {
+                dateData.push(data[j][i]);
+            }
+            availabilityData[LABELS.yLabels[j]] = dateData;
+        }
+
+        updateDoc(userDocRef, 'availability', {
+            ...availabilityData,
+        })
+            .then(() => {
+                resolve(uid);
+            })
+            .catch(reject);
+    });
 };
 
 export default firestore;
