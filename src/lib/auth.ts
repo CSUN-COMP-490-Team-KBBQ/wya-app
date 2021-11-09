@@ -43,6 +43,8 @@ export const registerUser = (
 export const passwordReset = (email: string): Promise<void> => {
     return new Promise((resolve, reject) => {
         sendPasswordResetEmail(auth, email)
+            .then(() => resolve())
+            .catch(reject);
     });
 };
 
