@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import { firestore as Firestore } from 'firebase-admin';
 
 const updateEventHostsRecord: RequestHandler = async (req, res, next) => {
     const functions = req.app.locals.functions;
@@ -12,7 +13,7 @@ const updateEventHostsRecord: RequestHandler = async (req, res, next) => {
             const doc = await transaction.get(docRef);
             if (doc.exists) {
                 await transaction.update(docRef, {
-                    events: FirebaseFirestore.FieldValue.arrayUnion({
+                    events: Firestore.FieldValue.arrayUnion({
                         eventId,
                         name,
                         description,

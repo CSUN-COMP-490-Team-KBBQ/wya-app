@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import { firestore as Firestore } from 'firebase-admin';
 
 const updateEventGuestsRecord: RequestHandler = async (req, res, next) => {
     const functions = req.app.locals.functions;
@@ -17,16 +18,14 @@ const updateEventGuestsRecord: RequestHandler = async (req, res, next) => {
                     if (!querySnapshot.empty) {
                         querySnapshot.forEach(async (doc) => {
                             await transaction.update(doc.ref, {
-                                events: FirebaseFirestore.FieldValue.arrayUnion(
-                                    {
-                                        eventId,
-                                        name,
-                                        description,
-                                        startDate,
-                                        startTime,
-                                        role: 'GUEST',
-                                    }
-                                ),
+                                events: Firestore.FieldValue.arrayUnion({
+                                    eventId,
+                                    name,
+                                    description,
+                                    startDate,
+                                    startTime,
+                                    role: 'GUEST',
+                                }),
                             });
                         });
                     }
