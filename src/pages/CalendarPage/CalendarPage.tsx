@@ -47,17 +47,13 @@ function UpdateAvailabilityModal({
         setUserAvailabilityData(newUserAvailabilityData);
     };
 
-    const onClickClearHandle = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
+    const onClickClearHandle = () => {
         setUserAvailabilityData(
             createZeroStateArray(LABELS.yLabels.length, LABELS.xLabels.length)
         );
     };
 
-    const onClickResetHandle = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
+    const onClickResetHandle = () => {
         setUserAvailabilityData(mapData);
     };
 
@@ -98,8 +94,8 @@ function UpdateAvailabilityModal({
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={(e) => onClickResetHandle(e)}>Reset</Button>
-                <Button onClick={(e) => onClickClearHandle(e)}>Clear</Button>
+                <Button onClick={() => onClickResetHandle()}>Reset</Button>
+                <Button onClick={() => onClickClearHandle()}>Clear</Button>
                 <Button
                     variant="secondary"
                     onClick={(e) => onClickCancelHandle(e)}
