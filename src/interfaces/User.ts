@@ -12,6 +12,7 @@ export interface EventInfo {
     name: string;
     description: string;
     startDate: string;
+    startTime: string;
     role: string;
 }
 

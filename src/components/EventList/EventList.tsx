@@ -10,7 +10,7 @@ interface EventListProps {
 }
 
 function sortEvents(events: EventInfo[]): EventInfo[] {
-    return Object.values(events).sort((a, b) => {
+    return events.sort((a, b) => {
         const aStart = Date.parse(a.startDate);
         const bStart = Date.parse(b.startDate);
         return aStart - bStart;
