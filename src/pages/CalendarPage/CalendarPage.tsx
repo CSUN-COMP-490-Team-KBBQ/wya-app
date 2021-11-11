@@ -31,7 +31,7 @@ function UpdateAvailabilityModal({
     show,
     onHide,
 }: UpdateAvailabilityModalProps): JSX.Element {
-    const { yData, xData, mapData } = heatMapData;
+    const { yData, xData, mapData, zeroState } = heatMapData;
 
     const [userAvailabilityData, setUserAvailabilityData] =
         React.useState<number[][]>(mapData);
@@ -45,6 +45,14 @@ function UpdateAvailabilityModal({
         else newUserAvailabilityData[y][x] = 0;
 
         setUserAvailabilityData(newUserAvailabilityData);
+    };
+
+    const onClickClearHandle = () => {
+        setUserAvailabilityData(zeroState);
+    };
+
+    const onClickResetHandle = () => {
+        setUserAvailabilityData(mapData);
     };
 
     const onClickCancelHandle = (
@@ -84,13 +92,12 @@ function UpdateAvailabilityModal({
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    variant="secondary"
-                    onClick={(e) => onClickCancelHandle(e)}
-                >
+                <Button onClick={onClickResetHandle}>Reset</Button>
+                <Button onClick={onClickClearHandle}>Clear</Button>
+                <Button variant="secondary" onClick={onClickCancelHandle}>
                     Cancel
                 </Button>
-                <Button onClick={(e) => onClickUpdateHandle(e)}>Update</Button>
+                <Button onClick={onClickUpdateHandle}>Update</Button>
             </Modal.Footer>
         </Modal>
     );
@@ -108,22 +115,23 @@ export default function CalendarPage(): JSX.Element {
             return getDocSnapshot$(`/users/${user.uid}`, {
                 next: (snapshot) => {
                     const newUserData = snapshot.data() as UserData;
+                    const zeroState = createZeroStateArray(
+                        LABELS.yLabels.length,
+                        LABELS.xLabels.length
+                    );
                     setUserData(newUserData);
                     setHeatMapData({
                         yData: LABELS.yLabels,
                         xData: LABELS.xLabels,
                         mapData:
                             Object.values(newUserData.availability).length === 0
-                                ? createZeroStateArray(
-                                      LABELS.yLabels.length,
-                                      LABELS.xLabels.length
-                                  )
+                                ? zeroState
                                 : createCalendarAvailabilityDataArray(
                                       LABELS.yLabels,
                                       LABELS.xLabels,
                                       newUserData.availability
                                   ),
-                        zeroState: [[]],
+                        zeroState,
                     });
                 },
             });
