@@ -92,15 +92,12 @@ function UpdateAvailabilityModal({
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => onClickResetHandle()}>Reset</Button>
-                <Button onClick={() => onClickClearHandle()}>Clear</Button>
-                <Button
-                    variant="secondary"
-                    onClick={(e) => onClickCancelHandle(e)}
-                >
+                <Button onClick={onClickResetHandle}>Reset</Button>
+                <Button onClick={onClickClearHandle}>Clear</Button>
+                <Button variant="secondary" onClick={onClickCancelHandle}>
                     Cancel
                 </Button>
-                <Button onClick={(e) => onClickUpdateHandle(e)}>Update</Button>
+                <Button onClick={onClickUpdateHandle}>Update</Button>
             </Modal.Footer>
         </Modal>
     );
