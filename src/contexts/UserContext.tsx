@@ -41,7 +41,7 @@ export const useUserContext = (): User | null => {
     const user = React.useContext(UserContext);
     if (user === undefined) {
         throw new Error(
-            'useUserContext hook must be used within an AuthProvider'
+            'useUserContext hook must be used within an UserAuthProvider'
         );
     }
     return user;
