@@ -12,32 +12,42 @@ import CalendarPage from '../../pages/CalendarPage/CalendarPage';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import { UserAuthProvider } from '../../contexts/UserContext';
+import { UserRecordProvider } from '../../contexts/UserRecordContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App(): JSX.Element {
     return (
         <UserAuthProvider>
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/" exact component={HomePage} />
-                    <Route path="/login" exact component={LoginPage} />
-                    <Route path="/register" exact component={RegisterPage} />
-                    <Route
-                        path="/password-reset"
-                        exact
-                        component={PasswordResetPage}
-                    />
-                    <PrivateRoute
-                        path="/create-event"
-                        component={CreateEventPage}
-                    />
-                    <PrivateRoute path="/event/:id" component={EventPage} />
-                    <PrivateRoute path="/calendar" component={CalendarPage} />
-                    <PrivateRoute path="/profile" component={ProfilePage} />
-                    <Route path="*" exact component={NotFoundPage} />
-                </Switch>
-            </BrowserRouter>
+            <UserRecordProvider>
+                <BrowserRouter>
+                    <Switch>
+                        <Route path="/" exact component={HomePage} />
+                        <Route path="/login" exact component={LoginPage} />
+                        <Route
+                            path="/register"
+                            exact
+                            component={RegisterPage}
+                        />
+                        <Route
+                            path="/password-reset"
+                            exact
+                            component={PasswordResetPage}
+                        />
+                        <PrivateRoute
+                            path="/create-event"
+                            component={CreateEventPage}
+                        />
+                        <PrivateRoute path="/event/:id" component={EventPage} />
+                        <PrivateRoute
+                            path="/calendar"
+                            component={CalendarPage}
+                        />
+                        <PrivateRoute path="/profile" component={ProfilePage} />
+                        <Route path="*" exact component={NotFoundPage} />
+                    </Switch>
+                </BrowserRouter>
+            </UserRecordProvider>
         </UserAuthProvider>
     );
 }
