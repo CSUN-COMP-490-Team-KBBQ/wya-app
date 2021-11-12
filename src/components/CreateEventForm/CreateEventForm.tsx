@@ -115,16 +115,6 @@ export default function CreateEventForm(
         <Form data-testid="CreateEventForm" onSubmit={onSubmitHandler}>
             <input type="hidden" name="hostId" value={user?.uid} />
             <input type="hidden" name="eventId" value={uuid()} />
-            <input
-                type="hidden"
-                name="startTime"
-                value={startTimeValue.format('HH:mm')}
-            />
-            <input
-                type="hidden"
-                name="endTime"
-                value={endTimeValue.format('HH:mm')}
-            />
             <Row>
                 <FloatingLabel controlId="eventName" label="Event Name">
                     <Form.Control
