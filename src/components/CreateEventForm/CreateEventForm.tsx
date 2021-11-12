@@ -97,10 +97,10 @@ export default function CreateEventForm(
         moment()
     );
 
-    const handleStartValueChange = (value: any) => {
+    const handleStartValueChange = (value: moment.Moment) => {
         setStartTimeValue(value);
     };
-    const handleEndValueChange = (value: any) => {
+    const handleEndValueChange = (value: moment.Moment) => {
         setEndTimeValue(value);
     };
 
