@@ -7,10 +7,13 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuid } from 'uuid';
+import TimePicker from 'rc-time-picker';
+import moment from 'moment';
 import { createEvent } from '../../lib/firestore';
 import { useUserContext } from '../../contexts/UserContext';
 
 import './CreateEventForm.css';
+import 'rc-time-picker/assets/index.css';
 
 interface Guest {
     uid: string;
@@ -86,6 +89,11 @@ export default function CreateEventForm(
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
     const yyyy = today.getFullYear();
     const currentDate = String(`${yyyy}-${mm}-${dd}`);
+    const now = moment().startOf('hour');
+
+    const [startTimeValue, setStartTimeValue] =
+        React.useState<moment.Moment>(now);
+    const [endTimeValue, setEndTimeValue] = React.useState<moment.Moment>(now);
 
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -103,7 +111,6 @@ export default function CreateEventForm(
             // eslint-disable-next-line
             .catch(console.error);
     };
-
     return (
         <Form data-testid="CreateEventForm" onSubmit={onSubmitHandler}>
             <input type="hidden" name="hostId" value={user?.uid} />
@@ -158,28 +165,32 @@ export default function CreateEventForm(
                     </FloatingLabel>
                 </Col>
             </Row>
-
             <Row>
                 <Col>
-                    <FloatingLabel
-                        controlId="eventStartTime"
-                        label="Start Time"
-                    >
-                        <Form.Control
-                            type="time"
-                            placeholder="Start Time"
-                            name="startTime"
-                        />
-                    </FloatingLabel>
+                    <h4>Day Start</h4>
+                    <TimePicker
+                        className="timePicker-input"
+                        placement="bottomRight"
+                        placeholder="StartTime"
+                        showSecond={false}
+                        minuteStep={15}
+                        value={startTimeValue}
+                        onChange={setStartTimeValue}
+                        name="startTime"
+                    />
                 </Col>
                 <Col>
-                    <FloatingLabel controlId="eventEndTime" label="End Time">
-                        <Form.Control
-                            type="time"
-                            placeholder="End Time"
-                            name="endTime"
-                        />
-                    </FloatingLabel>
+                    <h4>Day End</h4>
+                    <TimePicker
+                        className="timePicker-input"
+                        placement="bottomRight"
+                        placeholder="FinishTime"
+                        showSecond={false}
+                        minuteStep={15}
+                        value={endTimeValue}
+                        onChange={setEndTimeValue}
+                        name="endTime"
+                    />
                 </Col>
             </Row>
 
