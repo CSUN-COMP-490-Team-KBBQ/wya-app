@@ -131,6 +131,7 @@ export default function CalendarPage(): JSX.Element {
                                       LABELS.xLabels,
                                       newUserData.availability
                                   ),
+                        preloadData: [[]],
                         zeroState,
                     });
                 },
