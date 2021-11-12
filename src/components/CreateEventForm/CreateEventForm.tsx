@@ -95,13 +95,6 @@ export default function CreateEventForm(
         React.useState<moment.Moment>(now);
     const [endTimeValue, setEndTimeValue] = React.useState<moment.Moment>(now);
 
-    const handleStartValueChange = (value: moment.Moment) => {
-        setStartTimeValue(value);
-    };
-    const handleEndValueChange = (value: moment.Moment) => {
-        setEndTimeValue(value);
-    };
-
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
@@ -192,7 +185,7 @@ export default function CreateEventForm(
                         showSecond={false}
                         minuteStep={15}
                         value={startTimeValue}
-                        onChange={(value) => handleStartValueChange(value)}
+                        onChange={setStartTimeValue}
                         name="startTime"
                     />
                 </Col>
@@ -205,7 +198,7 @@ export default function CreateEventForm(
                         showSecond={false}
                         minuteStep={15}
                         value={endTimeValue}
-                        onChange={(value) => handleEndValueChange(value)}
+                        onChange={setEndTimeValue}
                         name="endTime"
                     />
                 </Col>
