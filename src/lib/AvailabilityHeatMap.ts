@@ -170,19 +170,15 @@ export const createPreloadArray = (
         .fill(0)
         .map(() => new Array(xDays.length).fill(0));
 
-    for (let i = 0; i < 96; i += 1) {
+    for (let i = 0; i < yTimes.length; i += 1) {
         for (let j = 0; j < 7; j += 1) {
-            if (avail[LABELS.yLabels[i]][j] === 1) {
-                const yIndex = yTimes.findIndex((item) => {
-                    return item === LABELS.yLabels[i];
-                });
-
+            if (avail[yTimes[i]][j] === 1) {
                 const xIndex = xDays.findIndex((item) => {
                     return item.slice(0, 3) === LABELS.xLabels[j].slice(0, 3);
                 });
 
                 for (let k = 0; xIndex + k < xDays.length; k += 7) {
-                    preloadedAvail[yIndex][xIndex + k] = 1;
+                    preloadedAvail[i][xIndex + k] = 1;
                 }
             }
         }
