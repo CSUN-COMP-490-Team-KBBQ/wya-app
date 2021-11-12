@@ -89,13 +89,11 @@ export default function CreateEventForm(
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
     const yyyy = today.getFullYear();
     const currentDate = String(`${yyyy}-${mm}-${dd}`);
+    const now = moment().startOf('hour');
 
-    const [startTimeValue, setStartTimeValue] = React.useState<moment.Moment>(
-        moment()
-    );
-    const [endTimeValue, setEndTimeValue] = React.useState<moment.Moment>(
-        moment()
-    );
+    const [startTimeValue, setStartTimeValue] =
+        React.useState<moment.Moment>(now);
+    const [endTimeValue, setEndTimeValue] = React.useState<moment.Moment>(now);
 
     const handleStartValueChange = (value: moment.Moment) => {
         setStartTimeValue(value);
