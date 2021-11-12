@@ -186,8 +186,10 @@ export default function CreateEventForm(
             </Row>
             <Row>
                 <Col>
+                    <h4>Day Start</h4>
                     <TimePicker
                         className="timePicker-input"
+                        placement="bottomRight"
                         placeholder="StartTime"
                         showSecond={false}
                         minuteStep={15}
@@ -197,8 +199,10 @@ export default function CreateEventForm(
                     />
                 </Col>
                 <Col>
+                    <h4>Day End</h4>
                     <TimePicker
                         className="timePicker-input"
+                        placement="bottomRight"
                         placeholder="FinishTime"
                         showSecond={false}
                         minuteStep={15}
