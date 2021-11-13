@@ -13,7 +13,6 @@ import {
     createAvailabilityDataArray,
     createZeroStateArray,
     createPreloadArray,
-    LABELS,
 } from '../../lib/AvailabilityHeatMap';
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 
@@ -107,8 +106,8 @@ export default function EventPage({
                     );
                     const formatedTempXDays = formatXDays(tempXDays);
                     const zeroState = createZeroStateArray(
-                        LABELS.yLabels.length,
-                        LABELS.xLabels.length
+                        tempYTimes.length,
+                        tempXDays.length
                     );
 
                     setHeatMapData({
