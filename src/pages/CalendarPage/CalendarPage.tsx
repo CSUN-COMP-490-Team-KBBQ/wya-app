@@ -4,7 +4,6 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Calendar from 'react-calendar';
 import EventList from '../../components/EventList/EventList';
-import UserData from '../../interfaces/User';
 import HeatMapData from '../../interfaces/HeatMapData';
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
 import {
@@ -12,11 +11,8 @@ import {
     createZeroStateArray,
     createCalendarAvailabilityDataArray,
 } from '../../lib/AvailabilityHeatMap';
-import { useUserContext } from '../../contexts/UserContext';
-import {
-    getDocSnapshot$,
-    updateCalendarAvailability,
-} from '../../lib/firestore';
+import { useUserRecordContext } from '../../contexts/UserRecordContext';
+import { updateCalendarAvailability } from '../../lib/firestore';
 
 type UpdateAvailabilityModalProps = {
     uid: string;
@@ -104,44 +100,36 @@ function UpdateAvailabilityModal({
 }
 
 export default function CalendarPage(): JSX.Element {
-    const user = useUserContext();
-    const [userData, setUserData] = React.useState<UserData>();
+    const userRecord = useUserRecordContext();
+
     const [value, onChange] = React.useState(new Date());
     const [modalShow, setModalShow] = React.useState<boolean>(false);
     const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
 
     React.useEffect(() => {
-        if (user) {
-            return getDocSnapshot$(`/users/${user.uid}`, {
-                next: (snapshot) => {
-                    const newUserData = snapshot.data() as UserData;
-                    const zeroState = createZeroStateArray(
-                        LABELS.yLabels.length,
-                        LABELS.xLabels.length
-                    );
-                    setUserData(newUserData);
-                    setHeatMapData({
-                        yData: LABELS.yLabels,
-                        xData: LABELS.xLabels,
-                        mapData:
-                            Object.values(newUserData.availability).length === 0
-                                ? zeroState
-                                : createCalendarAvailabilityDataArray(
-                                      LABELS.yLabels,
-                                      LABELS.xLabels,
-                                      newUserData.availability
-                                  ),
-                        preloadData: [[]],
-                        zeroState,
-                    });
-                },
+        if (userRecord) {
+            const zeroState = createZeroStateArray(
+                LABELS.yLabels.length,
+                LABELS.xLabels.length
+            );
+            setHeatMapData({
+                yData: LABELS.yLabels,
+                xData: LABELS.xLabels,
+                mapData:
+                    Object.values(userRecord.availability).length === 0
+                        ? zeroState
+                        : createCalendarAvailabilityDataArray(
+                              LABELS.yLabels,
+                              LABELS.xLabels,
+                              userRecord.availability
+                          ),
+                preloadData: [[]],
+                zeroState,
             });
         }
+    }, [userRecord]);
 
-        return undefined;
-    }, [user]);
-
-    return userData !== undefined && heatMapData !== undefined ? (
+    return !!userRecord && heatMapData !== undefined ? (
         <div>
             <h1>CalendarPage</h1>
 
@@ -158,7 +146,7 @@ export default function CalendarPage(): JSX.Element {
                     Edit Availability
                 </Button>
                 <UpdateAvailabilityModal
-                    uid={userData.uid}
+                    uid={userRecord.uid}
                     heatMapData={heatMapData}
                     show={modalShow}
                     onHide={() => setModalShow(false)}
@@ -166,7 +154,7 @@ export default function CalendarPage(): JSX.Element {
             </div>
             <EventList
                 elementId="calendar-event-list"
-                events={userData.events}
+                events={userRecord.events}
             />
         </div>
     ) : (
