@@ -3,6 +3,8 @@ import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import EventPage from './EventPage';
 
+jest.mock('firebase/auth');
+
 it('renders page', () => {
     const { queryByText } = render(
         <BrowserRouter>

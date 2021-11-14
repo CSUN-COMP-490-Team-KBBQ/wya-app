@@ -12,7 +12,9 @@ import {
     formatXDays,
     createAvailabilityDataArray,
     createZeroStateArray,
+    createPreloadArray,
 } from '../../lib/AvailabilityHeatMap';
+import { useUserRecordContext } from '../../contexts/UserRecordContext';
 
 type AddAvailabilityModalProps = {
     heatMapData: HeatMapData;
@@ -25,10 +27,10 @@ function AddAvailabilityModal({
     show,
     onHide,
 }: AddAvailabilityModalProps): JSX.Element {
-    const { yData, xData, zeroState } = heatMapData;
+    const { yData, xData, preloadData } = heatMapData;
 
     const [userAvailabilityData, setUserAvailabilityData] =
-        React.useState<number[][]>(zeroState);
+        React.useState<number[][]>(preloadData);
 
     const onClickHeatMapHandle = (x: number, y: number) => {
         const newUserAvailabilityData = JSON.parse(
@@ -44,7 +46,7 @@ function AddAvailabilityModal({
     const onClickCancelHandle = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        setUserAvailabilityData(zeroState);
+        setUserAvailabilityData(preloadData);
         return onHide ? onHide(e) : undefined;
     };
 
@@ -88,34 +90,48 @@ export default function EventPage({
         };
     };
 }): JSX.Element {
+    const userRecord = useUserRecordContext();
     const [modalShow, setModalShow] = React.useState<boolean>(false);
     const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
 
     React.useEffect(() => {
-        return getDocSnapshot$(`/events/${match.params.id}`, {
-            next: (snapshot) => {
-                const event = snapshot.data() as EventData;
-                const tempYTimes = getYTimesSorted(event.availability);
-                const tempXDays = getXDaysSorted(
-                    tempYTimes,
-                    event.availability
-                );
-                setHeatMapData({
-                    yData: tempYTimes,
-                    xData: formatXDays(tempXDays),
-                    mapData: createAvailabilityDataArray(
+        if (userRecord) {
+            getDocSnapshot$(`/events/${match.params.id}`, {
+                next: (eventSnapshot) => {
+                    const event = eventSnapshot.data() as EventData;
+                    const tempYTimes = getYTimesSorted(event.availability);
+                    const tempXDays = getXDaysSorted(
                         tempYTimes,
-                        tempXDays,
                         event.availability
-                    ),
-                    zeroState: createZeroStateArray(
+                    );
+                    const formatedTempXDays = formatXDays(tempXDays);
+                    const zeroState = createZeroStateArray(
                         tempYTimes.length,
                         tempXDays.length
-                    ),
-                });
-            },
-        });
-    }, []);
+                    );
+
+                    setHeatMapData({
+                        yData: tempYTimes,
+                        xData: formatedTempXDays,
+                        mapData: createAvailabilityDataArray(
+                            tempYTimes,
+                            tempXDays,
+                            event.availability
+                        ),
+                        preloadData:
+                            Object.values(userRecord.availability).length === 0
+                                ? zeroState
+                                : createPreloadArray(
+                                      tempYTimes,
+                                      formatedTempXDays,
+                                      userRecord.availability
+                                  ),
+                        zeroState,
+                    });
+                },
+            });
+        }
+    }, [userRecord]);
 
     return heatMapData ? (
         <div>
@@ -132,6 +148,7 @@ export default function EventPage({
             </Button>
 
             <AddAvailabilityModal
+                // userAvail={heatMapData.preloadData}
                 heatMapData={heatMapData}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
