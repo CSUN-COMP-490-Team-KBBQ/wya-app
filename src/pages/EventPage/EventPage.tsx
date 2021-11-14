@@ -3,8 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
-import EventData from '../../interfaces/EventData';
-import { getDocSnapshot$ } from '../../lib/firestore';
+import EventData, { EventDataAvailability } from '../../interfaces/EventData';
+import { getDocSnapshot$, updateEventAvailability } from '../../lib/firestore';
 import HeatMapData from '../../interfaces/HeatMapData';
 import {
     getYTimesSorted,
@@ -20,12 +20,69 @@ type AddAvailabilityModalProps = {
     heatMapData: HeatMapData;
     show: boolean;
     onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    eventAvailability: EventDataAvailability;
+    eventId: string;
+    uid: string;
 };
+
+function appendUserAvailabilityToGroup(
+    eventAvailability: EventDataAvailability,
+    userAvailability: number[][],
+    uid: string
+): EventDataAvailability {
+    // combine data (time and day) in useravailability find same spot in EventDataAvailability and append user or email?
+    // want name of people who attend
+    // whoever is there, add to yourself
+    // ask ivan or jan if using userid or user email (in this function) need to identify
+    // useUserRecordContext (???) ask where to place
+    // userAvailability[i]
+
+    // const startTimeIndex = LABELS.yLabels.findIndex((item) => {
+    //     return item === Object.keys(eventAvailability)[0];
+    // });
+
+    const yTimes = Object.keys(eventAvailability).sort();
+    const xDays = Object.keys(
+        eventAvailability[Object.keys(eventAvailability)[0]]
+    ).sort();
+
+    // const startDayIndex = LABELS.xLabels.findIndex((item) => {
+    //     return item.slice(0, 3) === Object.keys(eventAvailability)[0]
+    // });
+
+    for (let i = 0; i < userAvailability.length; i += 1) {
+        for (let j = 0; j < userAvailability[0].length; j += 1) {
+            if (userAvailability[i][j] === 1) {
+                if (eventAvailability[yTimes[i]][xDays[j]].includes(uid)) {
+                    // eslint-disable-next-line
+                    console.log('User already HERE');
+                } else {
+                    eventAvailability[yTimes[i]][xDays[j]].push(uid);
+                }
+            } else if (eventAvailability[yTimes[i]][xDays[j]].includes(uid)) {
+                const removeIndex = eventAvailability[yTimes[i]][
+                    xDays[j]
+                ].findIndex((item) => {
+                    return item === uid;
+                });
+                eventAvailability[yTimes[i]][xDays[j]].splice(removeIndex, 1);
+            } else {
+                // eslint-disable-next-line
+                console.log('User is already NOT HERE');
+            }
+        }
+    }
+
+    return eventAvailability;
+}
 
 function AddAvailabilityModal({
     heatMapData,
     show,
     onHide,
+    eventAvailability,
+    eventId,
+    uid,
 }: AddAvailabilityModalProps): JSX.Element {
     const { yData, xData, preloadData } = heatMapData;
 
@@ -48,6 +105,22 @@ function AddAvailabilityModal({
     ) => {
         setUserAvailabilityData(preloadData);
         return onHide ? onHide(e) : undefined;
+    };
+
+    const onSubmitHandler = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        const newEventAvailability = appendUserAvailabilityToGroup(
+            eventAvailability,
+            userAvailabilityData,
+            uid
+        );
+        updateEventAvailability(newEventAvailability, eventId)
+            .then(() => {
+                return onHide ? onHide(e) : undefined;
+            })
+            // eslint-disable-next-line
+            .catch(console.error);
     };
 
     return (
@@ -75,7 +148,7 @@ function AddAvailabilityModal({
                 >
                     Cancel
                 </Button>
-                <Button onClick={onHide}>Submit</Button>
+                <Button onClick={onSubmitHandler}>Submit</Button>
             </Modal.Footer>
         </Modal>
     );
@@ -93,12 +166,14 @@ export default function EventPage({
     const userRecord = useUserRecordContext();
     const [modalShow, setModalShow] = React.useState<boolean>(false);
     const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
+    const eventAvailability = React.useRef<EventDataAvailability>();
 
     React.useEffect(() => {
         if (userRecord) {
             getDocSnapshot$(`/events/${match.params.id}`, {
                 next: (eventSnapshot) => {
                     const event = eventSnapshot.data() as EventData;
+                    eventAvailability.current = event.availability;
                     const tempYTimes = getYTimesSorted(event.availability);
                     const tempXDays = getXDaysSorted(
                         tempYTimes,
@@ -133,7 +208,7 @@ export default function EventPage({
         }
     }, [userRecord]);
 
-    return heatMapData ? (
+    return heatMapData && eventAvailability.current && userRecord ? (
         <div>
             <h1>EventPage</h1>
             <h2>Group Availabilities</h2>
@@ -152,6 +227,9 @@ export default function EventPage({
                 heatMapData={heatMapData}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
+                eventAvailability={eventAvailability.current}
+                eventId={match.params.id}
+                uid={userRecord.uid}
             />
         </div>
     ) : (
