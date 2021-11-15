@@ -9,11 +9,13 @@ import './RegisterForm.css';
 import RegisterFormData from '../../interfaces/RegisterFormData';
 import { registerUser, logIn } from '../../lib/auth';
 import { useUserContext } from '../../contexts/UserContext';
+import Recaptcha from '../Recaptcha/Recaptcha';
 
-export default async function RegisterForm(): Promise<JSX.Element> {
+export default function RegisterForm(): JSX.Element {
     const history = useHistory();
     const user = useUserContext();
-    const reRef = useRef<ReCAPTCHA>();
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+
     React.useEffect(() => {
         if (user) {
             // eslint-disable-next-line
@@ -22,13 +24,7 @@ export default async function RegisterForm(): Promise<JSX.Element> {
         }
     });
 
-    <ReCAPTCHA
-        sitekey={process.env.RECAPTCHA_SITE_KEY}
-        size="invisible"
-        ref={reRef}
-    />;
-
-    const registerHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    const registerHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         const formValue: RegisterFormData = Object.fromEntries(
@@ -36,20 +32,21 @@ export default async function RegisterForm(): Promise<JSX.Element> {
             // eslint-disable-next-line
         ) as any;
         const { email, password } = formValue;
-        registerUser(formValue)
-            .then(async ({ data }) => {
-                // eslint-disable-next-line
-                console.log(`User successfully created!`, data);
-                await logIn(email, password);
-                history.push('/');
-            })
+        // eslint-disable-next-line
+        console.log(formValue);
+
+        try {
+            await recaptchaRef.current!.executeAsync();
+            const { data } = await registerUser(formValue);
             // eslint-disable-next-line
-            .catch(console.error);
+            console.log(`User successfully created!`, data);
+            await logIn(email, password);
+            history.push('/');
+        } catch (error) {
+            // eslint-disable-next-line
+            console.error(error);
+        }
     };
-
-    const token = await reRef.current.executeAsync();
-
-    console.log(token, 'token');
 
     return (
         <Form onSubmit={registerHandler} className="register-form">
@@ -76,12 +73,12 @@ export default async function RegisterForm(): Promise<JSX.Element> {
                     <Form.Control type="password" name="password" />
                 </Form.Group>
             </Row>
-            token
             <Row>
                 <Form.Group>
                     <Button type="submit">Register</Button>
                 </Form.Group>
             </Row>
+            <Recaptcha recaptchaRef={recaptchaRef} />
         </Form>
     );
 }
