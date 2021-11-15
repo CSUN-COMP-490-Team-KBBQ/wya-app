@@ -8,9 +8,7 @@ export const UserAuthProvider: React.FC = ({ children }) => {
     const [currentUser, setCurrentUser] = React.useState<User | null>(null);
 
     React.useEffect(() => {
-        return auth.onAuthStateChanged((user) => {
-            setCurrentUser(user);
-        });
+        return auth.onAuthStateChanged(setCurrentUser);
     }, []);
 
     return (
