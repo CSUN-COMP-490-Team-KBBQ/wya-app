@@ -5,6 +5,7 @@ import HomePage from './HomePage';
 
 jest.mock('firebase/app');
 jest.mock('firebase/auth');
+jest.mock('firebase/firestore');
 
 it('renders component', () => {
     const { queryAllByText } = render(
