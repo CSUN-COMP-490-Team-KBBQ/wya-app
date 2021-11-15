@@ -11,13 +11,16 @@ export const UserRecordProvider: React.FC = ({ children }) => {
     const user = useUserContext();
 
     React.useEffect(() => {
-        return getDocSnapshot$(`/users/${user?.uid}`, {
-            next: (snapshot) => {
-                if (snapshot.exists()) {
-                    setUserRecord(snapshot.data() as UserData);
-                }
-            },
-        });
+        if (user) {
+            return getDocSnapshot$(`/users/${user.uid}`, {
+                next: (snapshot) => {
+                    if (snapshot.exists()) {
+                        setUserRecord(snapshot.data() as UserData);
+                    }
+                },
+            });
+        }
+        return setUserRecord(null);
     }, [user]);
 
     return (
