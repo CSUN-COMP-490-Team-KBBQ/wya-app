@@ -32,8 +32,6 @@ export default function RegisterForm(): JSX.Element {
             // eslint-disable-next-line
         ) as any;
         const { email, password } = formValue;
-        // eslint-disable-next-line
-        console.log(formValue);
 
         try {
             await recaptchaRef.current!.executeAsync();
