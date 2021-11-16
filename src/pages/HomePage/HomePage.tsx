@@ -7,7 +7,7 @@ import { logOut } from '../../lib/auth';
 import finallogo from '../../assets/wya test 4.png';
 
 export default function HomePage(): JSX.Element {
-    const userRecord = useUserRecordContext();
+    const { userRecord } = useUserRecordContext();
     const history = useHistory();
 
     return userRecord ? (

@@ -100,7 +100,7 @@ function UpdateAvailabilityModal({
 }
 
 export default function CalendarPage(): JSX.Element {
-    const userRecord = useUserRecordContext();
+    const { userRecord } = useUserRecordContext();
 
     const [value, onChange] = React.useState(new Date());
     const [modalShow, setModalShow] = React.useState<boolean>(false);
