@@ -2,13 +2,26 @@ import React from 'react';
 import { User } from 'firebase/auth';
 import auth from '../lib/auth';
 
-const UserContext = React.createContext<User | null>(null);
+type UserState = {
+    pending: boolean;
+    user: User | null;
+};
+
+const UserContext = React.createContext<UserState>({
+    pending: true,
+    user: null,
+});
 
 export const UserAuthProvider: React.FC = ({ children }) => {
-    const [currentUser, setCurrentUser] = React.useState<User | null>(null);
+    const [currentUser, setCurrentUser] = React.useState<UserState>({
+        pending: true,
+        user: null,
+    });
 
     React.useEffect(() => {
-        return auth.onAuthStateChanged(setCurrentUser);
+        return auth.onAuthStateChanged((user) =>
+            setCurrentUser({ pending: false, user })
+        );
     }, []);
 
     return (
@@ -18,7 +31,7 @@ export const UserAuthProvider: React.FC = ({ children }) => {
     );
 };
 
-export const useUserContext = (): User | null => {
+export const useUserContext = (): UserState => {
     const user = React.useContext(UserContext);
     if (user === undefined) {
         throw new Error(
