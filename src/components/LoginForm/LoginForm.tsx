@@ -11,7 +11,7 @@ import './LoginForm.css';
 
 export default function LoginForm(): JSX.Element {
     const history = useHistory();
-    const { user } = useUserContext();
+    const { pending, user } = useUserContext();
     React.useEffect(() => {
         if (!pending && user) {
             // eslint-disable-next-line
