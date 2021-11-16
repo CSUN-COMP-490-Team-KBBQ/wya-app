@@ -5,11 +5,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useHistory } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
-import './RegisterForm.css';
+import Recaptcha from '../Recaptcha/Recaptcha';
 import RegisterFormData from '../../interfaces/RegisterFormData';
 import { registerUser, logIn } from '../../lib/auth';
 import { useUserContext } from '../../contexts/UserContext';
-import Recaptcha from '../Recaptcha/Recaptcha';
+
+import './RegisterForm.css';
 
 export default function RegisterForm(): JSX.Element {
     const history = useHistory();
