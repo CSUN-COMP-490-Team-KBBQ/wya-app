@@ -35,7 +35,7 @@ export const UserRecordProvider: React.FC = ({ children }) => {
                 },
             });
         }
-        setUserRecordState({ pending, userRecord: null });
+        return setUserRecordState({ pending, userRecord: null });
     }, [user]);
 
     return (
