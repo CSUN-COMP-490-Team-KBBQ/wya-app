@@ -13,19 +13,19 @@ const UserContext = React.createContext<UserState>({
 });
 
 export const UserAuthProvider: React.FC = ({ children }) => {
-    const [currentUser, setCurrentUser] = React.useState<UserState>({
+    const [userState, setUserState] = React.useState<UserState>({
         pending: true,
         user: null,
     });
 
     React.useEffect(() => {
         return auth.onAuthStateChanged((user) =>
-            setCurrentUser({ pending: false, user })
+            setUserState({ pending: false, user })
         );
     }, []);
 
     return (
-        <UserContext.Provider value={currentUser}>
+        <UserContext.Provider value={userState}>
             {children}
         </UserContext.Provider>
     );
