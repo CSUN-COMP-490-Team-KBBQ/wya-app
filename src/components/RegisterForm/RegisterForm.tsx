@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useHistory } from 'react-router-dom';
-
-import './RegisterForm.css';
+import ReCAPTCHA from 'react-google-recaptcha';
+import Recaptcha from '../Recaptcha/Recaptcha';
 import RegisterFormData from '../../interfaces/RegisterFormData';
 import { registerUser, logIn } from '../../lib/auth';
 import { useUserContext } from '../../contexts/UserContext';
 
+import './RegisterForm.css';
+
 export default function RegisterForm(): JSX.Element {
     const history = useHistory();
     const user = useUserContext();
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+
     React.useEffect(() => {
         if (user) {
             // eslint-disable-next-line
@@ -20,7 +24,8 @@ export default function RegisterForm(): JSX.Element {
             history.push('/');
         }
     });
-    const registerHandler = (e: React.FormEvent<HTMLFormElement>) => {
+
+    const registerHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         const formValue: RegisterFormData = Object.fromEntries(
@@ -28,15 +33,18 @@ export default function RegisterForm(): JSX.Element {
             // eslint-disable-next-line
         ) as any;
         const { email, password } = formValue;
-        registerUser(formValue)
-            .then(async ({ data }) => {
-                // eslint-disable-next-line
-                console.log(`User successfully created!`, data);
-                await logIn(email, password);
-                history.push('/');
-            })
+
+        try {
+            await recaptchaRef.current!.executeAsync();
+            const { data } = await registerUser(formValue);
             // eslint-disable-next-line
-            .catch(console.error);
+            console.log(`User successfully created!`, data);
+            await logIn(email, password);
+            history.push('/');
+        } catch (error) {
+            // eslint-disable-next-line
+            console.error(error);
+        }
     };
 
     return (
@@ -52,26 +60,24 @@ export default function RegisterForm(): JSX.Element {
                     <Form.Control type="text" name="lastName" />
                 </Form.Group>
             </Row>
-
             <Row>
                 <Form.Group controlId="registerEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" />
                 </Form.Group>
             </Row>
-
             <Row>
                 <Form.Group controlId="registerPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" name="password" />
                 </Form.Group>
             </Row>
-
             <Row>
                 <Form.Group>
                     <Button type="submit">Register</Button>
                 </Form.Group>
             </Row>
+            <Recaptcha recaptchaRef={recaptchaRef} />
         </Form>
     );
 }

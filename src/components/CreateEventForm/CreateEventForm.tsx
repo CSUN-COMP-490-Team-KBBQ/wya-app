@@ -9,6 +9,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuid } from 'uuid';
 import TimePicker from 'rc-time-picker';
 import moment from 'moment';
+import ReCAPTCHA from 'react-google-recaptcha';
+import Recaptcha from '../Recaptcha/Recaptcha';
 import { createEvent } from '../../lib/firestore';
 import { useUserContext } from '../../contexts/UserContext';
 
@@ -83,6 +85,7 @@ export default function CreateEventForm(
     const [guests, updateGuests] = React.useState<{
         [key: string]: Guest;
     }>({});
+    const recaptchaRef = React.useRef<ReCAPTCHA>(null);
 
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -95,7 +98,7 @@ export default function CreateEventForm(
         React.useState<moment.Moment>(now);
     const [endTimeValue, setEndTimeValue] = React.useState<moment.Moment>(now);
 
-    const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         // eslint-disable-next-line
@@ -104,12 +107,15 @@ export default function CreateEventForm(
         // eslint-disable-next-line
         console.log('USER_CREATE_EVENT', formValue);
         if (setFormHook) setFormHook(formValue);
-        createEvent(formValue)
-            .then((eventId) => {
-                history.push(`/event/${eventId}`);
-            })
+
+        try {
+            await recaptchaRef.current!.executeAsync();
+            const eventId = await createEvent(formValue);
+            history.push(`/event/${eventId}`);
+        } catch (error) {
             // eslint-disable-next-line
-            .catch(console.error);
+            console.error(error);
+        }
     };
     return (
         <Form data-testid="CreateEventForm" onSubmit={onSubmitHandler}>
@@ -201,6 +207,7 @@ export default function CreateEventForm(
             <Row>
                 <Button type="submit">Create</Button>
             </Row>
+            <Recaptcha recaptchaRef={recaptchaRef} />
         </Form>
     );
 }
