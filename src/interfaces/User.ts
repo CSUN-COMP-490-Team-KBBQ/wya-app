@@ -17,5 +17,5 @@ export interface EventInfo {
 }
 
 export interface UserDataAvailability {
-    [day: string]: number[];
+    [time: string]: number[];
 }

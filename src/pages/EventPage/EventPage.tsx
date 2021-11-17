@@ -30,25 +30,10 @@ function appendUserAvailabilityToGroup(
     userAvailability: number[][],
     uid: string
 ): EventDataAvailability {
-    // combine data (time and day) in useravailability find same spot in EventDataAvailability and append user or email?
-    // want name of people who attend
-    // whoever is there, add to yourself
-    // ask ivan or jan if using userid or user email (in this function) need to identify
-    // useUserRecordContext (???) ask where to place
-    // userAvailability[i]
-
-    // const startTimeIndex = LABELS.yLabels.findIndex((item) => {
-    //     return item === Object.keys(eventAvailability)[0];
-    // });
-
     const yTimes = Object.keys(eventAvailability).sort();
     const xDays = Object.keys(
         eventAvailability[Object.keys(eventAvailability)[0]]
     ).sort();
-
-    // const startDayIndex = LABELS.xLabels.findIndex((item) => {
-    //     return item.slice(0, 3) === Object.keys(eventAvailability)[0]
-    // });
 
     for (let i = 0; i < userAvailability.length; i += 1) {
         for (let j = 0; j < userAvailability[0].length; j += 1) {
