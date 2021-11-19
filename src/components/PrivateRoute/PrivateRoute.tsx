@@ -21,6 +21,7 @@ export default function PrivateRoute(props: RouteProps): JSX.Element {
             </div>
         );
     }
+
     return user ? (
         <Route path={path} exact component={component} />
     ) : (
