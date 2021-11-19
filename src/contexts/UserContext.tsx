@@ -7,16 +7,16 @@ type UserState = {
     user: User | null;
 };
 
-const UserContext = React.createContext<UserState>({
+const initialUserState = {
     pending: true,
     user: null,
-});
+};
+
+const UserContext = React.createContext<UserState>(initialUserState);
 
 export const UserAuthProvider: React.FC = ({ children }) => {
-    const [userState, setUserState] = React.useState<UserState>({
-        pending: true,
-        user: null,
-    });
+    const [userState, setUserState] =
+        React.useState<UserState>(initialUserState);
 
     React.useEffect(() => {
         return auth.onAuthStateChanged((user) =>

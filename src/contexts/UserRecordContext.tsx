@@ -8,17 +8,18 @@ type UserRecordState = {
     userRecord: UserData | null;
 };
 
-const UserRecordContext = React.createContext<UserRecordState>({
+const initialUserRecordState = {
     pending: true,
     userRecord: null,
-});
+};
+
+const UserRecordContext = React.createContext<UserRecordState>(
+    initialUserRecordState
+);
 
 export const UserRecordProvider: React.FC = ({ children }) => {
     const [userRecordState, setUserRecordState] =
-        React.useState<UserRecordState>({
-            pending: true,
-            userRecord: null,
-        });
+        React.useState<UserRecordState>(initialUserRecordState);
 
     const { pending, user } = useUserContext();
 
