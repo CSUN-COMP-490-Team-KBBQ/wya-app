@@ -143,13 +143,8 @@ export const updateEventAvailability = (
     data: EventDataAvailability,
     eventId: string
 ): Promise<void> => {
-    return new Promise((resolve, reject) => {
-        const eventDocRef = getDocRef(`/events/${eventId}`);
-
-        updateDoc(eventDocRef, 'availability', data)
-            .then(() => resolve())
-            .catch(reject);
-    });
+    const eventDocRef = getDocRef(`/events/${eventId}`);
+    return updateDoc(eventDocRef, 'availability', data);
 };
 
 export default firestore;
