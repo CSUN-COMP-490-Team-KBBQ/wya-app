@@ -5,6 +5,7 @@ import EventData from '../../interfaces/EventData';
 import './CreateEventPage.css';
 
 export default function CreateEventPage(): JSX.Element {
+    // eslint-disable-next-line
     const [form, setForm] = React.useState<EventData>();
     return (
         <div>
