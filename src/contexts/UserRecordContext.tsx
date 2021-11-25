@@ -24,7 +24,10 @@ export const UserRecordProvider: React.FC = ({ children }) => {
     const { pending, user } = useUserContext();
 
     React.useEffect(() => {
-        if (!pending && user) {
+        if (pending) {
+            return setUserRecordState({ pending, userRecord: null });
+        }
+        if (user) {
             return getDocSnapshot$(`/users/${user.uid}`, {
                 next: (snapshot) => {
                     if (snapshot.exists()) {
@@ -36,7 +39,7 @@ export const UserRecordProvider: React.FC = ({ children }) => {
                 },
             });
         }
-        return setUserRecordState({ pending, userRecord: null });
+        return setUserRecordState({ pending: false, userRecord: null });
     }, [user]);
 
     return (
