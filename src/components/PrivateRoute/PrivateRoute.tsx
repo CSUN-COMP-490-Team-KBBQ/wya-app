@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
-import Spinner from 'react-bootstrap/Spinner';
+import PageSpinner from '../PageSpinner/PageSpinner';
 import { useUserContext } from '../../contexts/UserContext';
 import './PrivateRoute.css';
 
@@ -8,23 +8,16 @@ export default function PrivateRoute(props: RouteProps): JSX.Element {
     const { pending, user } = useUserContext();
     const { path, component } = props;
 
+    /**
+     * If pending then we show page spinner.
+     * If user then we show private component.
+     * Else redirect to HomePage.
+     */
     if (pending) {
-        return (
-            <div
-                style={{
-                    position: 'absolute',
-                    left: '50%',
-                    top: '50%',
-                }}
-            >
-                <Spinner animation="border" />
-            </div>
-        );
+        return <PageSpinner />;
     }
-
-    return user ? (
-        <Route path={path} exact component={component} />
-    ) : (
-        <Redirect to="/" />
-    );
+    if (user) {
+        return <Route path={path} exact component={component} />;
+    }
+    return <Redirect to="/" />;
 }
