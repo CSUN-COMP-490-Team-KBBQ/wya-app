@@ -196,6 +196,13 @@ export default function EventPage({
     const eventAvailability = React.useRef<EventDataAvailability>();
     const [scheduleSelectorData, setScheduleSelectorData] =
         React.useState<ScheduleSelectorData>();
+    const isUserAHost = (): boolean => {
+        if (!userRecord) return false;
+
+        return userRecord.events.some(
+            (e) => e.eventId === match.params.id && e.role === 'HOST'
+        );
+    };
 
     React.useEffect(() => {
         if (userRecord) {
@@ -249,6 +256,8 @@ export default function EventPage({
             <Button type="button" onClick={() => setModalShow(true)}>
                 add Availability
             </Button>
+
+            {isUserAHost() && <Button>Finalize Event</Button>}
 
             <AddAvailabilityModal
                 heatMapData={heatMapData}
