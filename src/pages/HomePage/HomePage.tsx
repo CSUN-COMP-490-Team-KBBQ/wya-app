@@ -5,44 +5,56 @@ import Button from 'react-bootstrap/Button';
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import { logOut } from '../../lib/auth';
 import finallogo from '../../assets/wya test 4.png';
+import PageSpinner from '../../components/PageSpinner/PageSpinner';
 
 export default function HomePage(): JSX.Element {
-    const { userRecord } = useUserRecordContext();
+    const { pending, userRecord } = useUserRecordContext();
     const history = useHistory();
 
-    return userRecord ? (
-        <div>
-            <header>
-                <Button variant="light" className="btn-sm" onClick={logOut}>
-                    Log out
-                </Button>
-                <Button
-                    variant="light"
-                    className="btn-sm"
-                    onClick={() => history.push('/profile')}
-                >
-                    Profile
-                </Button>
-            </header>
-            <h1 className="f-header">Main Menu</h1>
-            <pre className="s-header">
-                Welcome: {`${userRecord.firstName}!`}
-            </pre>
-            <div className="text-center">
-                <Link
-                    to="/create-event"
-                    className="btn-links btn btn-info btn-lg"
-                >
-                    Create Event
-                </Link>
+    if (pending) {
+        return <PageSpinner />;
+    }
+
+    if (userRecord) {
+        return (
+            <div>
+                <header>
+                    <Button variant="light" className="btn-sm" onClick={logOut}>
+                        Log out
+                    </Button>
+                    <Button
+                        variant="light"
+                        className="btn-sm"
+                        onClick={() => history.push('/profile')}
+                    >
+                        Profile
+                    </Button>
+                </header>
+                <h1 className="f-header">Main Menu</h1>
+                <pre className="s-header">
+                    Welcome: {`${userRecord.firstName}!`}
+                </pre>
+                <div className="text-center">
+                    <Link
+                        to="/create-event"
+                        className="btn-links btn btn-info btn-lg"
+                    >
+                        Create Event
+                    </Link>
+                </div>
+                <div className="text-center">
+                    <Link
+                        to="/calendar"
+                        className="btn-links btn btn-info btn-lg"
+                    >
+                        Current Calendar
+                    </Link>{' '}
+                </div>
             </div>
-            <div className="text-center">
-                <Link to="/calendar" className="btn-links btn btn-info btn-lg">
-                    Current Calendar
-                </Link>{' '}
-            </div>
-        </div>
-    ) : (
+        );
+    }
+
+    return (
         <div>
             <img src={finallogo} alt="logo" />
             <h1>
