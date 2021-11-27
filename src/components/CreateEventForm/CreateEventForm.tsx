@@ -5,7 +5,6 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuid } from 'uuid';
 import TimePicker from 'rc-time-picker';
 import moment from 'moment';
@@ -13,78 +12,15 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import Recaptcha from '../Recaptcha/Recaptcha';
 import { createEvent } from '../../lib/firestore';
 import { useUserContext } from '../../contexts/UserContext';
+import GuestList from '../GuestList/GuestList';
 
 import './CreateEventForm.css';
 import 'rc-time-picker/assets/index.css';
 
-interface Guest {
-    uid: string;
-}
-
-interface GuestListProps {
-    guests: { [key: string]: Guest };
-    updateGuests: React.Dispatch<
-        React.SetStateAction<{ [key: string]: Guest }>
-    >;
-}
-
-export function GuestList(props: GuestListProps): JSX.Element {
-    const { guests, updateGuests } = props;
-    const inputRef = React.useRef<HTMLInputElement>();
-    const onClickHandler = () => {
-        if (inputRef.current) {
-            const newGuestUID = inputRef.current.value;
-            guests[`${newGuestUID}`] = { uid: newGuestUID };
-            updateGuests({ ...guests });
-            inputRef.current.value = '';
-        }
-    };
-    return (
-        <div>
-            <h4>Guest List</h4>
-            <Row>
-                <ListGroup>
-                    {Object.keys(guests).map((guest) => (
-                        <ListGroup.Item key={uuid()}>{guest}</ListGroup.Item>
-                    ))}
-                </ListGroup>
-            </Row>
-            <Row>
-                <Col>
-                    <FloatingLabel controlId="addGuest" label="Guest UID">
-                        <Form.Control
-                            type="text"
-                            placeholder="Guest UID"
-                            ref={(node: HTMLInputElement) => {
-                                inputRef.current = node;
-                            }}
-                        />
-                    </FloatingLabel>
-                </Col>
-                <Col>
-                    <Button type="button" onClick={onClickHandler}>
-                        Add Guest
-                    </Button>
-                </Col>
-            </Row>
-        </div>
-    );
-}
-
-interface CreateEventFormProps {
-    // eslint-disable-next-line
-    setFormHook?: React.Dispatch<React.SetStateAction<any>>;
-}
-
-export default function CreateEventForm(
-    props: CreateEventFormProps
-): JSX.Element {
-    const { setFormHook } = props;
+export default function CreateEventForm(): JSX.Element {
     const { user } = useUserContext();
     const history = useHistory();
-    const [guests, updateGuests] = React.useState<{
-        [key: string]: Guest;
-    }>({});
+    const [guests, updateGuests] = React.useState<string[]>([]);
     const recaptchaRef = React.useRef<ReCAPTCHA>(null);
 
     const today = new Date();
@@ -104,9 +40,6 @@ export default function CreateEventForm(
         // eslint-disable-next-line
         let formValue = Object.fromEntries(formData.entries()) as any;
         formValue = { ...formValue, guests };
-        // eslint-disable-next-line
-        console.log('USER_CREATE_EVENT', formValue);
-        if (setFormHook) setFormHook(formValue);
 
         try {
             await recaptchaRef.current!.executeAsync();
