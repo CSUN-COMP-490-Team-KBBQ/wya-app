@@ -8,6 +8,7 @@ const FAKE_USER_EVENTS = [
         name: 'test event',
         description: '',
         startDate: '2021-11-01',
+        startTime: '9:00',
         role: 'Guest',
     },
 ];
