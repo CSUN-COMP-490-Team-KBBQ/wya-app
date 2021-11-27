@@ -1,0 +1,29 @@
+.remove-icon {
+    color: grey;
+    cursor: pointer;
+}
+
+.remove-icon:hover {
+    color: red;
+}
+
+.guests-list-item {
+    display: flex;
+
+}
+
+.guests-list-item > div {
+    flex-grow: 1;
+}
+
+.remove-icon-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
