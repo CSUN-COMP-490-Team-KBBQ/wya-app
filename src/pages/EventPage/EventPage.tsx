@@ -6,6 +6,7 @@ import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/Availabili
 import EventData, { EventDataAvailability } from '../../interfaces/EventData';
 import { getDocSnapshot$, updateEventAvailability } from '../../lib/firestore';
 import HeatMapData from '../../interfaces/HeatMapData';
+import ConfirmEventModal from '../../components/ConfirmEventModal/ConfirmEventModal';
 import {
     getYTimesSorted,
     getXDaysSorted,
@@ -17,6 +18,8 @@ import {
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import AvailabilityScheduleSelector from '../../components/AvailabilityScheduleSelector/AvailabilityScheduleSelector';
 import ScheduleSelectorData from '../../interfaces/ScheduleSelectorData';
+
+import './EventPage.css';
 
 type AddAvailabilityModalProps = {
     heatMapData: HeatMapData;
@@ -191,6 +194,7 @@ export default function EventPage({
     };
 }): JSX.Element {
     const { userRecord } = useUserRecordContext();
+    const eventInfo = React.useRef<EventData>();
     const [modalShow, setModalShow] = React.useState<boolean>(false);
     const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
     const eventAvailability = React.useRef<EventDataAvailability>();
@@ -210,6 +214,7 @@ export default function EventPage({
                 next: (eventSnapshot) => {
                     const event = eventSnapshot.data() as EventData;
                     eventAvailability.current = event.availability;
+                    eventInfo.current = event;
                     const tempYTimes = getYTimesSorted(event.availability);
                     const tempXDays = getXDaysSorted(
                         tempYTimes,
@@ -257,7 +262,12 @@ export default function EventPage({
                 add Availability
             </Button>
 
-            {isUserAHost() && <Button>Finalize Event</Button>}
+            {isUserAHost() && (
+                <ConfirmEventModal
+                    event={eventInfo.current!}
+                    heatMapData={heatMapData}
+                />
+            )}
 
             <AddAvailabilityModal
                 heatMapData={heatMapData}
