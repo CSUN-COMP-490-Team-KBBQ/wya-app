@@ -21,18 +21,28 @@ service cloud.firestore {
       // check that requesting uid matches hostId
       return request.auth.uid == resource.data.hostId;
     }
-    function isGuest() {
+    function isGuest(eventId) {
       // check that the requesting uid is a guest
-      return request.auth.uid in resource.data.guests;
+      return exists(/databases/$(database)/documents/events/$(eventId)/guests/$(request.auth.uid));
     }
     function isSafeEventWrite() {
       // check that the hostId does not change during the write
       return request.resource.data.hostId == resource.data.hostId;
     }
-    match /events/{document=**} {
-    	allow read: if isGuest() || isHost();
-      allow create: if true;
+    match /events/{EVENTID} {
+    	allow read: if isGuest(EVENTID);
+      allow create, delete: if isHost();
       allow update: if isHost() && isSafeEventWrite();
+    }
+  	
+    // checks for /events/EVENTID/guests/
+  	function isSaveEventGuestWrite() {
+    	// check that the uid of the guest does not change during the write
+      return request.resource.data.uid == resource.data.uid;
+    }
+    match /events/{EVENTID}/guests/{GUESTID} {
+    	allow read: if true;
+      allow update: if isGuest(EVENTID) && isSaveEventGuestWrite();
       allow delete: if isHost();
     }
   }
