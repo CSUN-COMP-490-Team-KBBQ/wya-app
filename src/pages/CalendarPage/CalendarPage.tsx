@@ -4,57 +4,46 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Calendar from 'react-calendar';
 import EventList from '../../components/EventList/EventList';
-import HeatMapData from '../../interfaces/HeatMapData';
-import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
-import {
-    LABELS,
-    createZeroStateArray,
-    createCalendarAvailabilityDataArray,
-} from '../../lib/AvailabilityHeatMap';
+import AvailabilityScheduleSelector from '../../components/AvailabilityScheduleSelector/AvailabilityScheduleSelector';
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import { updateCalendarAvailability } from '../../lib/firestore';
+import ScheduleSelectorData from '../../interfaces/ScheduleSelectorData';
+import { createCalendarAvailabilityDataArray } from '../../lib/Availability';
 
 type UpdateAvailabilityModalProps = {
     uid: string;
     show: boolean;
-    heatMapData: HeatMapData;
+    scheduleSelectorData: ScheduleSelectorData;
     onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
 function UpdateAvailabilityModal({
     uid,
-    heatMapData,
+    scheduleSelectorData,
     show,
     onHide,
 }: UpdateAvailabilityModalProps): JSX.Element {
-    const { yData, xData, mapData, zeroState } = heatMapData;
+    const { scheduleData } = scheduleSelectorData;
 
     const [userAvailabilityData, setUserAvailabilityData] =
-        React.useState<number[][]>(mapData);
+        React.useState<Array<Date>>(scheduleData);
 
-    const onClickHeatMapHandle = (x: number, y: number) => {
-        const newUserAvailabilityData = JSON.parse(
-            JSON.stringify(userAvailabilityData)
-        );
-        if (newUserAvailabilityData[y][x] === 0)
-            newUserAvailabilityData[y][x] = 1;
-        else newUserAvailabilityData[y][x] = 0;
-
-        setUserAvailabilityData(newUserAvailabilityData);
+    const onClickScheduleSelectorHandle = (newSchedule: Array<Date>) => {
+        setUserAvailabilityData(newSchedule);
     };
 
     const onClickClearHandle = () => {
-        setUserAvailabilityData(zeroState);
+        setUserAvailabilityData([]);
     };
 
     const onClickResetHandle = () => {
-        setUserAvailabilityData(mapData);
+        setUserAvailabilityData(scheduleData);
     };
 
     const onClickCancelHandle = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        setUserAvailabilityData(mapData);
+        setUserAvailabilityData(scheduleData);
         return onHide ? onHide(e) : undefined;
     };
 
@@ -80,11 +69,13 @@ function UpdateAvailabilityModal({
                 <Modal.Title>Enter Your Availability</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <AvailabilityHeatMap
-                    yLabels={yData}
-                    xLabels={xData}
-                    data={userAvailabilityData}
-                    onClick={onClickHeatMapHandle}
+                <AvailabilityScheduleSelector
+                    startTime={0}
+                    endTime={24}
+                    scheduleData={userAvailabilityData}
+                    days={7}
+                    startDate={new Date('January 04, 1970')}
+                    handleChange={onClickScheduleSelectorHandle}
                 />
             </Modal.Body>
             <Modal.Footer>
@@ -104,32 +95,20 @@ export default function CalendarPage(): JSX.Element {
 
     const [value, onChange] = React.useState(new Date());
     const [modalShow, setModalShow] = React.useState<boolean>(false);
-    const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
+    const [scheduleSelectorData, setScheduleSelectorData] =
+        React.useState<ScheduleSelectorData>();
 
     React.useEffect(() => {
         if (userRecord) {
-            const zeroState = createZeroStateArray(
-                LABELS.yLabels.length,
-                LABELS.xLabels.length
-            );
-            setHeatMapData({
-                yData: LABELS.yLabels,
-                xData: LABELS.xLabels,
-                mapData:
-                    Object.values(userRecord.availability).length === 0
-                        ? zeroState
-                        : createCalendarAvailabilityDataArray(
-                              LABELS.yLabels,
-                              LABELS.xLabels,
-                              userRecord.availability
-                          ),
-                preloadData: [[]],
-                zeroState,
+            setScheduleSelectorData({
+                scheduleData: createCalendarAvailabilityDataArray(
+                    userRecord.availability
+                ),
             });
         }
     }, [userRecord]);
 
-    return !!userRecord && heatMapData !== undefined ? (
+    return userRecord && scheduleSelectorData !== undefined ? (
         <div>
             <h1>CalendarPage</h1>
 
@@ -147,7 +126,7 @@ export default function CalendarPage(): JSX.Element {
                 </Button>
                 <UpdateAvailabilityModal
                     uid={userRecord.uid}
-                    heatMapData={heatMapData}
+                    scheduleSelectorData={scheduleSelectorData}
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                 />

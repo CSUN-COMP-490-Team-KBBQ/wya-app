@@ -8,7 +8,7 @@ import {
     formatXDays,
     createAvailabilityDataArray,
     createZeroStateArray,
-} from '../../lib/AvailabilityHeatMap';
+} from '../../lib/Availability';
 
 const FAKE_AVAILABILITY = {
     '04:15': {
