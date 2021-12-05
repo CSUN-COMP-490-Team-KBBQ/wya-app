@@ -54,24 +54,30 @@ export default function RegisterForm(): JSX.Element {
                 <Form onSubmit={registerHandler} className="form-register">
                     <Row>
                         <Form.Group as={Col} controlId="registerFirstName">
-                            <Form.Label>First Name</Form.Label>
+                            <Form.Label style={{ margin: 0 }}>
+                                First Name
+                            </Form.Label>
                             <Form.Control type="text" name="firstName" />
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="registerLastName">
-                            <Form.Label>Last Name</Form.Label>
+                            <Form.Label style={{ margin: 0 }}>
+                                Last Name
+                            </Form.Label>
                             <Form.Control type="text" name="lastName" />
                         </Form.Group>
                     </Row>
                     <Row>
                         <Form.Group controlId="registerEmail">
-                            <Form.Label>Email</Form.Label>
+                            <Form.Label style={{ margin: 0 }}>Email</Form.Label>
                             <Form.Control type="email" name="email" />
                         </Form.Group>
                     </Row>
                     <Row>
                         <Form.Group controlId="registerPassword">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label style={{ margin: 0 }}>
+                                Password
+                            </Form.Label>
                             <Form.Control type="password" name="password" />
                         </Form.Group>
                     </Row>
