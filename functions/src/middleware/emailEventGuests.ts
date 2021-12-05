@@ -18,30 +18,34 @@ const emailEventGuests: RequestHandler = async (req, _res, next) => {
                 pass,
             },
         });
-        Object.keys(guests).forEach((email) => {
-            functions.logger.info(`Sending event invitation email to ${email}`);
-            const mailOptions = {
-                from: user,
-                to: email,
-                subject: 'You have been invited to join an event!',
-                html: `
-                    <h1>WYA</h1>
-                    <p>The following event is waiting for you to join: ${name}.</p>
-                    <p>Click here to view event: <a href="${eventUrl}">${eventUrl}</a></p>`,
-            };
+        guests.forEach((email: string) => {
+            if (email) {
+                functions.logger.info(
+                    `Sending event invitation email to ${email}`
+                );
+                const mailOptions = {
+                    from: user,
+                    to: email,
+                    subject: 'You have been invited to join an event!',
+                    html: `
+                        <h1>WYA</h1>
+                        <p>The following event is waiting for you to join: ${name}.</p>
+                        <p>Click here to view event: <a href="${eventUrl}">${eventUrl}</a></p>`,
+                };
 
-            // eslint-disable-next-line
-            transporter.sendMail(mailOptions, (err: any, info: any) => {
-                if (err) {
-                    functions.logger.error(err);
-                    functions.logger.error('Error sending email');
-                } else {
-                    functions.logger.info(
-                        `Event invitation email sent to ${email} `
-                    );
-                    functions.logger.info(`Response: ${info.response} `);
-                }
-            });
+                // eslint-disable-next-line
+                transporter.sendMail(mailOptions, (err: any, info: any) => {
+                    if (err) {
+                        functions.logger.error(err);
+                        functions.logger.error('Error sending email');
+                    } else {
+                        functions.logger.info(
+                            `Event invitation email sent to ${email} `
+                        );
+                        functions.logger.info(`Response: ${info.response} `);
+                    }
+                });
+            }
         });
     } catch (e) {
         functions.logger.error(e);
