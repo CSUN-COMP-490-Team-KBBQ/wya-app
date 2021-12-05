@@ -3,16 +3,19 @@ import { RequestHandler } from 'express';
 const createEventGuestsCol: RequestHandler = async (req, res, next) => {
     const functions = req.app.locals.functions;
     const firestore: FirebaseFirestore.Firestore = req.app.locals.firestore;
-    const { eventId, guests } = req.body;
+    const guestUIDs: string[] = res.locals.guestUIDs;
+    const { eventId } = req.body;
+
     try {
         functions.logger.info('Creating event guest subcollection');
         const batch = firestore.batch();
-        Object.keys(guests).forEach((guest) => {
-            if (guest) {
+        // we check if uid is truthy because one of the possible values is ''
+        guestUIDs.forEach((uid) => {
+            if (uid) {
                 batch.create(
-                    firestore.doc(`/events/${eventId}/guests/${guest}`),
+                    firestore.doc(`/events/${eventId}/guests/${uid}`),
                     {
-                        email: guest,
+                        uid,
                         status: 'PENDING',
                     }
                 );

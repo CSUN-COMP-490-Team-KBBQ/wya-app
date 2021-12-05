@@ -4,12 +4,14 @@ import createEventRecord from '../middleware/createEventRecord';
 import emailEventGuests from '../middleware/emailEventGuests';
 import updateEventGuestsRecord from '../middleware/updateEventGuestsRecord';
 import updateEventHostsRecord from '../middleware/updateEventHostsRecord';
+import fetchEventGuestsUID from '../middleware/fetchEventGuestsUID';
 
 const router = Router();
 
 router.post(
     '/',
     createEventRecord,
+    fetchEventGuestsUID,
     createEventGuestsCol,
     updateEventGuestsRecord,
     updateEventHostsRecord,

@@ -4,34 +4,30 @@ import { firestore as Firestore } from 'firebase-admin';
 const updateEventGuestsRecord: RequestHandler = async (req, res, next) => {
     const functions = req.app.locals.functions;
     const firestore: FirebaseFirestore.Firestore = req.app.locals.firestore;
-    const { guests, eventId, name, description, startDate, startTime } =
-        req.body;
+    const { eventId, name, description, startDate, startTime } = req.body;
+    const guestUIDs = res.locals.guestUIDs;
     try {
         functions.logger.info('Updating event guests user records');
-        await Promise.all(
-            Object.keys(guests).map((guest) => {
-                const queryRef = firestore
-                    .collection('/users')
-                    .where('email', '==', guest);
-                return firestore.runTransaction(async (transaction) => {
-                    const querySnapshot = await transaction.get(queryRef);
-                    if (!querySnapshot.empty) {
-                        querySnapshot.forEach(async (doc) => {
-                            await transaction.update(doc.ref, {
-                                events: Firestore.FieldValue.arrayUnion({
-                                    eventId,
-                                    name,
-                                    description,
-                                    startDate,
-                                    startTime,
-                                    role: 'GUEST',
-                                }),
-                            });
-                        });
-                    }
+        await firestore.runTransaction(async (tx) => {
+            const query = await firestore
+                .collection('users')
+                .where('uid', 'in', guestUIDs);
+            const querySnapshot = await tx.get(query);
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach(async (doc) => {
+                    await tx.update(doc.ref, {
+                        events: Firestore.FieldValue.arrayUnion({
+                            eventId,
+                            name,
+                            description,
+                            startDate,
+                            startTime,
+                            role: 'GUEST',
+                        }),
+                    });
                 });
-            })
-        );
+            }
+        });
         next();
     } catch (e) {
         functions.logger.error(e);
