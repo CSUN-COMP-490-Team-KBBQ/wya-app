@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import createEventGuestsCol from '../middleware/createEventGuestsCol';
 import createEventRecord from '../middleware/createEventRecord';
-// import emailEventGuests from '../middleware/emailEventGuests';
+import emailEventGuests from '../middleware/emailEventGuests';
 import updateEventGuestsRecord from '../middleware/updateEventGuestsRecord';
 import updateEventHostsRecord from '../middleware/updateEventHostsRecord';
 import fetchEventGuestsUID from '../middleware/fetchEventGuestsUID';
@@ -15,7 +15,7 @@ router.post(
     createEventGuestsCol,
     updateEventGuestsRecord,
     updateEventHostsRecord,
-    // emailEventGuests,
+    emailEventGuests,
     (req, res) => {
         res.status(200).json(req.body);
     }
