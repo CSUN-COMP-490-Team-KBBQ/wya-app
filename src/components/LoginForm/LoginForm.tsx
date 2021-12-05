@@ -43,7 +43,7 @@ export default function LoginForm(): JSX.Element {
             <Col className="form-container">
                 <Form onSubmit={logInHandler} className="form-login">
                     <Form.Group as={Row} controlId="loginEmail">
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label style={{ margin: 0 }}>Email</Form.Label>
                         <Col>
                             <Form.Control
                                 type="email"
@@ -54,7 +54,7 @@ export default function LoginForm(): JSX.Element {
                     </Form.Group>
 
                     <Form.Group as={Row} controlId="loginPassword">
-                        <Form.Label>Password</Form.Label>
+                        <Form.Label style={{ margin: 0 }}>Password</Form.Label>
                         <Col>
                             <Form.Control
                                 type="password"
