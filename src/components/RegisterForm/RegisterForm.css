@@ -1,3 +1,37 @@
+.clickable-link {
+    text-decoration: none;
+    color: white;
+    font-size: small;
+    font-style: italic;
+}
+.clickable-link:hover {
+    color: blue;
+}
+
+.form-register {
+    width: 40%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-button {
+    width: 100%;
+    margin-top: .5rem;
+}
+
+.form-label {
+    margin: 0;
+}
+
+.form-text {
+    margin: 0;
+}
+
 .row {
-    padding-bottom: .5rem;
+    margin-bottom: .75rem;
 }

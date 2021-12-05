@@ -3,7 +3,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useHistory } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import { useHistory, Link } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Recaptcha from '../Recaptcha/Recaptcha';
 import RegisterFormData from '../../interfaces/RegisterFormData';
@@ -48,36 +49,43 @@ export default function RegisterForm(): JSX.Element {
     };
 
     return (
-        <Form onSubmit={registerHandler} className="register-form">
-            <Row>
-                <Form.Group as={Col} controlId="registerFirstName">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" name="firstName" />
-                </Form.Group>
+        <Container>
+            <Col className="form-container">
+                <Form onSubmit={registerHandler} className="form-register">
+                    <Row>
+                        <Form.Group as={Col} controlId="registerFirstName">
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control type="text" name="firstName" />
+                        </Form.Group>
 
-                <Form.Group as={Col} controlId="registerLastName">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" name="lastName" />
-                </Form.Group>
-            </Row>
-            <Row>
-                <Form.Group controlId="registerEmail">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" />
-                </Form.Group>
-            </Row>
-            <Row>
-                <Form.Group controlId="registerPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" name="password" />
-                </Form.Group>
-            </Row>
-            <Row>
-                <Form.Group>
-                    <Button type="submit">Register</Button>
-                </Form.Group>
-            </Row>
-            <Recaptcha recaptchaRef={recaptchaRef} />
-        </Form>
+                        <Form.Group as={Col} controlId="registerLastName">
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control type="text" name="lastName" />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group controlId="registerEmail">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type="email" name="email" />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group controlId="registerPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" name="password" />
+                        </Form.Group>
+                    </Row>
+                    <Button type="submit" className="form-button">
+                        Register
+                    </Button>
+                    <Form.Text>
+                        <Link className="clickable-link" to="/login">
+                            Have an account?
+                        </Link>
+                    </Form.Text>
+                    <Recaptcha recaptchaRef={recaptchaRef} />
+                </Form>
+            </Col>
+        </Container>
     );
 }
