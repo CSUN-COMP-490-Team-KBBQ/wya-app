@@ -90,7 +90,7 @@ export default function EventPage({
         };
     };
 }): JSX.Element {
-    const userRecord = useUserRecordContext();
+    const { userRecord } = useUserRecordContext();
     const [modalShow, setModalShow] = React.useState<boolean>(false);
     const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
 

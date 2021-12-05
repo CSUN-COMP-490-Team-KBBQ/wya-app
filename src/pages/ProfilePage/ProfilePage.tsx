@@ -8,7 +8,7 @@ import { logIn, changePassword } from '../../lib/auth';
 import './ProfilePage.css';
 
 export default function ProfilePage(): JSX.Element {
-    const user = useUserContext();
+    const { user } = useUserContext();
     const [displaySuccess, setDisplaySuccess] = React.useState<string>('');
     const [displayError, setDisplayError] = React.useState<string>('');
 

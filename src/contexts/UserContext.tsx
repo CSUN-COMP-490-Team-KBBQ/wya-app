@@ -1,43 +1,37 @@
 import React from 'react';
-import Spinner from 'react-bootstrap/Spinner';
 import { User } from 'firebase/auth';
 import auth from '../lib/auth';
 
-const UserContext = React.createContext<User | null>(null);
+type UserState = {
+    pending: boolean;
+    user: User | null;
+};
+
+const initialUserState = {
+    pending: true,
+    user: null,
+};
+
+const UserContext = React.createContext<UserState>(initialUserState);
 
 export const UserAuthProvider: React.FC = ({ children }) => {
-    const [currentUser, setCurrentUser] = React.useState<User | null>(null);
-    const [pending, setPending] = React.useState<boolean>(true);
+    const [userState, setUserState] =
+        React.useState<UserState>(initialUserState);
 
     React.useEffect(() => {
-        return auth.onAuthStateChanged((user) => {
-            setCurrentUser(user);
-            setPending(false);
-        });
+        return auth.onAuthStateChanged((user) =>
+            setUserState({ pending: false, user })
+        );
     }, []);
 
-    if (pending) {
-        return (
-            <div
-                style={{
-                    position: 'absolute',
-                    left: '50%',
-                    top: '50%',
-                }}
-            >
-                <Spinner animation="border" />
-            </div>
-        );
-    }
-
     return (
-        <UserContext.Provider value={currentUser}>
+        <UserContext.Provider value={userState}>
             {children}
         </UserContext.Provider>
     );
 };
 
-export const useUserContext = (): User | null => {
+export const useUserContext = (): UserState => {
     const user = React.useContext(UserContext);
     if (user === undefined) {
         throw new Error(

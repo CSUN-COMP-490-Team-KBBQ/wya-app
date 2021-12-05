@@ -14,7 +14,7 @@ import './RegisterForm.css';
 
 export default function RegisterForm(): JSX.Element {
     const history = useHistory();
-    const user = useUserContext();
+    const { user } = useUserContext();
     const recaptchaRef = useRef<ReCAPTCHA>(null);
 
     React.useEffect(() => {

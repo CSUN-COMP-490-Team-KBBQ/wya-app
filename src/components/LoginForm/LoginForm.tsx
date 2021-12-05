@@ -11,9 +11,9 @@ import './LoginForm.css';
 
 export default function LoginForm(): JSX.Element {
     const history = useHistory();
-    const user = useUserContext();
+    const { pending, user } = useUserContext();
     React.useEffect(() => {
-        if (user) {
+        if (!pending && user) {
             // eslint-disable-next-line
             console.log('User already logged in, redirecting to home page');
             history.push('/');

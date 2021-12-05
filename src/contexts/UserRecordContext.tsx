@@ -3,31 +3,53 @@ import UserData from '../interfaces/User';
 import { getDocSnapshot$ } from '../lib/firestore';
 import { useUserContext } from './UserContext';
 
-const UserRecordContext = React.createContext<UserData | null>(null);
+type UserRecordState = {
+    pending: boolean;
+    userRecord: UserData | null;
+};
+
+const initialUserRecordState = {
+    pending: true,
+    userRecord: null,
+};
+
+const UserRecordContext = React.createContext<UserRecordState>(
+    initialUserRecordState
+);
 
 export const UserRecordProvider: React.FC = ({ children }) => {
-    const [userRecord, setUserRecord] = React.useState<UserData | null>(null);
+    const [userRecordState, setUserRecordState] =
+        React.useState<UserRecordState>(initialUserRecordState);
 
-    const user = useUserContext();
+    const { pending, user } = useUserContext();
 
     React.useEffect(() => {
-        return getDocSnapshot$(`/users/${user?.uid}`, {
-            next: (snapshot) => {
-                if (snapshot.exists()) {
-                    setUserRecord(snapshot.data() as UserData);
-                }
-            },
-        });
+        if (pending) {
+            return setUserRecordState({ pending, userRecord: null });
+        }
+        if (user) {
+            return getDocSnapshot$(`/users/${user.uid}`, {
+                next: (snapshot) => {
+                    if (snapshot.exists()) {
+                        setUserRecordState({
+                            pending: false,
+                            userRecord: snapshot.data() as UserData,
+                        });
+                    }
+                },
+            });
+        }
+        return setUserRecordState({ pending: false, userRecord: null });
     }, [user]);
 
     return (
-        <UserRecordContext.Provider value={userRecord}>
+        <UserRecordContext.Provider value={userRecordState}>
             {children}
         </UserRecordContext.Provider>
     );
 };
 
-export const useUserRecordContext = (): UserData | null => {
+export const useUserRecordContext = (): UserRecordState => {
     const userRecord = React.useContext(UserRecordContext);
     if (userRecord === undefined) {
         throw new Error(

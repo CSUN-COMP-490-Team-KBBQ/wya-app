@@ -80,7 +80,7 @@ export default function CreateEventForm(
     props: CreateEventFormProps
 ): JSX.Element {
     const { setFormHook } = props;
-    const user = useUserContext();
+    const { user } = useUserContext();
     const history = useHistory();
     const [guests, updateGuests] = React.useState<{
         [key: string]: Guest;
