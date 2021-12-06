@@ -11,7 +11,6 @@ import {
     getXDaysSorted,
     formatXDays,
     createAvailabilityDataArray,
-    createZeroStateArray,
     createPreloadArray,
     cleanUpUserAvailability,
 } from '../../lib/Availability';
@@ -56,6 +55,7 @@ function appendUserAvailabilityToGroup(
         const temp = new Date(userAvailability[i].toDateString().slice(0, 15));
         const day = temp.getTime().toString();
         if (eventAvailability[time][day].includes(uid)) {
+            // eslint-disable-next-line
             console.log('User already HERE');
         } else {
             eventAvailability[time][day].push(uid);
@@ -109,6 +109,7 @@ function AddAvailabilityModal({
             .catch(console.error);
     };
 
+    // add appropriate 15 minute increment to startTime
     const startTimeFormatted = (timeString: string): number => {
         const minutesString = timeString.slice(3, 5);
         const hoursNum = Number(timeString.slice(0, 2));
@@ -126,6 +127,7 @@ function AddAvailabilityModal({
         return hoursNum;
     };
 
+    // adds appropriate 15 minutes increment since endTime is rounded down
     const endTimeFormatted = (timeString: string): number => {
         const minutesString = timeString.slice(3, 5);
         const hoursNum = Number(timeString.slice(0, 2));
@@ -204,10 +206,6 @@ export default function EventPage({
                         event.availability
                     );
                     const formatedTempXDays = formatXDays(tempXDays);
-                    const zeroState = createZeroStateArray(
-                        tempYTimes.length,
-                        tempXDays.length
-                    );
 
                     setHeatMapData({
                         yData: tempYTimes,

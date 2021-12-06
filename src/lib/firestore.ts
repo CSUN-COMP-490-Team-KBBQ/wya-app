@@ -13,8 +13,6 @@ import {
 import axios from 'axios';
 import app from './firebase';
 import EventData, { EventDataAvailability } from '../interfaces/EventData';
-import { UserDataAvailability } from '../interfaces/User';
-import { LABELS } from './Availability';
 
 const firestore = getFirestore(app);
 
