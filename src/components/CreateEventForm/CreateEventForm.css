@@ -1,9 +1,37 @@
-.event-description {
-    height: 200px;
+.date-picker-input {
+    cursor: pointer;
 }
 
-.timePicker-input{
-    width: 350px;
-    padding-right:0;
-    margin-right:0;
+/* Discourage the ability to type in a given time */
+.rc-time-picker > input {
+    width: 100%;
+    height: 38px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.rc-time-picker-panel-input {
+    pointer-events: none;
+}
+/* --- */
+
+.time-picker-input {
+    width: 100%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-create-event {
+    width: 100%;
+}
+
+.form-button {
+    width: 100%;
+    margin-top: 0.5rem;
 }

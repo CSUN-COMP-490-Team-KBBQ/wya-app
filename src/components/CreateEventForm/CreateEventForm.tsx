@@ -1,9 +1,9 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import { useHistory } from 'react-router-dom';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import { v4 as uuid } from 'uuid';
 import TimePicker from 'rc-time-picker';
@@ -51,96 +51,128 @@ export default function CreateEventForm(): JSX.Element {
         }
     };
     return (
-        <Form data-testid="CreateEventForm" onSubmit={onSubmitHandler}>
-            <input type="hidden" name="hostId" value={user?.uid} />
-            <input type="hidden" name="eventId" value={uuid()} />
-            <Row>
-                <FloatingLabel controlId="eventName" label="Event Name">
-                    <Form.Control
-                        type="text"
-                        placeholder="Event Name"
-                        name="name"
-                    />
-                </FloatingLabel>
-            </Row>
-
-            <Row>
-                <FloatingLabel
-                    controlId="eventDescription"
-                    label="Event Description"
+        <Container>
+            <Col className="form-container">
+                <Form
+                    data-testid="CreateEventForm"
+                    onSubmit={onSubmitHandler}
+                    className="form-create-event"
                 >
-                    <Form.Control
-                        as="textarea"
-                        name="description"
-                        style={{ height: '100px' }}
-                        placeholder="Event Description"
-                    />
-                </FloatingLabel>
-            </Row>
+                    <input type="hidden" name="hostId" value={user?.uid} />
+                    <input type="hidden" name="eventId" value={uuid()} />
+                    <Row>
+                        <Col sm={6}>
+                            <Row>
+                                <Form.Group controlId="eventName">
+                                    <Form.Label style={{ margin: 0 }}>
+                                        Name
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Name your event"
+                                        name="name"
+                                        autoComplete="off"
+                                    />
+                                </Form.Group>
+                            </Row>
 
-            <Row>
-                <Col>
-                    <FloatingLabel
-                        controlId="eventStartDate"
-                        label="Event Start"
-                    >
-                        <Form.Control
-                            type="date"
-                            placeholder="Event Start"
-                            name="startDate"
-                            min={currentDate}
-                        />
-                    </FloatingLabel>
-                </Col>
+                            <Row>
+                                <Form.Group controlId="eventDescription">
+                                    <Form.Label style={{ margin: 0 }}>
+                                        Description
+                                    </Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        name="description"
+                                        style={{ height: '75px' }}
+                                        placeholder="Describe your event"
+                                        autoComplete="off"
+                                    />
+                                </Form.Group>
+                            </Row>
 
-                <Col>
-                    <FloatingLabel controlId="eventEndDate" label="Event End">
-                        <Form.Control
-                            type="date"
-                            placeholder="Event End"
-                            name="endDate"
-                            min={currentDate}
-                        />
-                    </FloatingLabel>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h4>Day Start</h4>
-                    <TimePicker
-                        className="timePicker-input"
-                        placement="bottomRight"
-                        placeholder="StartTime"
-                        showSecond={false}
-                        minuteStep={15}
-                        value={startTimeValue}
-                        onChange={setStartTimeValue}
-                        name="startTime"
-                    />
-                </Col>
-                <Col>
-                    <h4>Day End</h4>
-                    <TimePicker
-                        className="timePicker-input"
-                        placement="bottomRight"
-                        placeholder="FinishTime"
-                        showSecond={false}
-                        minuteStep={15}
-                        value={endTimeValue}
-                        onChange={setEndTimeValue}
-                        name="endTime"
-                    />
-                </Col>
-            </Row>
+                            <Row>
+                                <Col sm={6}>
+                                    <Form.Group controlId="eventStartDate">
+                                        <Form.Label style={{ margin: 0 }}>
+                                            Start Date
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder="Event Start"
+                                            name="startDate"
+                                            min={currentDate}
+                                            className="date-picker-input"
+                                        />
+                                    </Form.Group>
+                                </Col>
 
-            <Row>
-                <GuestList guests={guests} updateGuests={updateGuests} />
-            </Row>
+                                <Col sm={6}>
+                                    <Form.Group controlId="eventEndDate">
+                                        <Form.Label style={{ margin: 0 }}>
+                                            End Date
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder="Event End"
+                                            name="endDate"
+                                            min={currentDate}
+                                            className="date-picker-input"
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Label style={{ margin: 0 }}>
+                                        Start Time
+                                    </Form.Label>
+                                    <TimePicker
+                                        className="time-picker-input"
+                                        placement="bottomRight"
+                                        placeholder="Start time"
+                                        showSecond={false}
+                                        minuteStep={15}
+                                        value={startTimeValue}
+                                        onChange={setStartTimeValue}
+                                        name="startTime"
+                                        allowEmpty={false}
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Label style={{ margin: 0 }}>
+                                        End Time
+                                    </Form.Label>
+                                    <TimePicker
+                                        className="time-picker-input"
+                                        placement="bottomRight"
+                                        placeholder="End time"
+                                        showSecond={false}
+                                        minuteStep={15}
+                                        value={endTimeValue}
+                                        onChange={setEndTimeValue}
+                                        name="endTime"
+                                        allowEmpty={false}
+                                    />
+                                </Col>
+                            </Row>
+                            <Button type="submit" className="form-button">
+                                Create
+                            </Button>
+                        </Col>
+                        <Col sm={6}>
+                            <Row>
+                                <GuestList
+                                    guests={guests}
+                                    updateGuests={updateGuests}
+                                />
+                            </Row>
+                        </Col>
+                    </Row>
 
-            <Row>
-                <Button type="submit">Create</Button>
-            </Row>
-            <Recaptcha recaptchaRef={recaptchaRef} />
-        </Form>
+                    <Recaptcha recaptchaRef={recaptchaRef} />
+                </Form>
+            </Col>
+        </Container>
     );
 }
