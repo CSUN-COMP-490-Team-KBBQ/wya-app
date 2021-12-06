@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
@@ -25,13 +25,13 @@ function GuestListItem({
         <div className="guests-list-item">
             <div>{guest}</div>
             <div
-                className="remove-icon-container"
+                className="container-icon-remove"
                 onClick={() => {
                     onRemoveHandler(index);
                 }}
                 aria-hidden="true"
             >
-                <i className="bi bi-dash-square-fill remove-icon" />
+                <i className="bi bi-dash-square-fill icon-remove" />
             </div>
         </div>
     );
@@ -62,41 +62,66 @@ export default function GuestList({
     };
 
     return (
-        <Card data-testid="guests-list">
-            <Card.Header>Guests List</Card.Header>
-            <Card.Body>
-                <Row>
-                    <ListGroup>
-                        {guests.map((guest: string, index: number) => (
-                            <ListGroup.Item key={uuid()}>
-                                <GuestListItem
-                                    guest={guest}
-                                    index={index}
-                                    onRemoveHandler={onRemoveHandler}
+        <Container fluid>
+            <Form.Label style={{ margin: 0 }}>Guest List</Form.Label>
+            <Card data-testid="guests-list">
+                <Card.Body>
+                    <Row style={{ marginLeft: 0, marginRight: 0 }}>
+                        <ListGroup style={{ paddingRight: 0 }}>
+                            {guests.length > 0 ? (
+                                guests.map((guest: string, index: number) => (
+                                    <ListGroup.Item key={uuid()}>
+                                        <GuestListItem
+                                            guest={guest}
+                                            index={index}
+                                            onRemoveHandler={onRemoveHandler}
+                                        />
+                                    </ListGroup.Item>
+                                ))
+                            ) : (
+                                <ListGroup.Item
+                                    style={{
+                                        fontStyle: 'italic',
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    Empty
+                                </ListGroup.Item>
+                            )}
+                        </ListGroup>
+                    </Row>
+                    <Row style={{ marginLeft: 0, marginRight: 0 }}>
+                        <Col sm={10} style={{ paddingLeft: 0 }}>
+                            <Form.Group>
+                                <Form.Label style={{ margin: 0 }}>
+                                    Email
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Invite a guest"
+                                    autoComplete="off"
+                                    ref={(node: HTMLInputElement) => {
+                                        inputRef.current = node;
+                                    }}
                                 />
-                            </ListGroup.Item>
-                        ))}
-                    </ListGroup>
-                </Row>
-                <Row>
-                    <Col sm={10}>
-                        <FloatingLabel controlId="addGuest" label="Guest Email">
-                            <Form.Control
-                                type="text"
-                                placeholder="Guest Email"
-                                ref={(node: HTMLInputElement) => {
-                                    inputRef.current = node;
-                                }}
-                            />
-                        </FloatingLabel>
-                    </Col>
-                    <Col sm={2} className="button-container">
-                        <Button type="button" onClick={onClickHandler}>
-                            Add Guest
-                        </Button>
-                    </Col>
-                </Row>
-            </Card.Body>
-        </Card>
+                            </Form.Group>
+                        </Col>
+                        <Col
+                            sm={2}
+                            className="container-button-invite"
+                            style={{ paddingLeft: 0, paddingRight: 0 }}
+                        >
+                            <Button
+                                type="button"
+                                onClick={onClickHandler}
+                                style={{ width: '100%' }}
+                            >
+                                Invite
+                            </Button>
+                        </Col>
+                    </Row>
+                </Card.Body>
+            </Card>
+        </Container>
     );
 }
