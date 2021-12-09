@@ -233,6 +233,7 @@ function EventFinalized({
         <div>
             <h1>{name}</h1>
             <p>{description}</p>
+            {/* add who is hosting here? */}
             <p>day: {day}</p>
             <p>starts: {startTime}</p>
             <p>ends: {endTime}</p>
