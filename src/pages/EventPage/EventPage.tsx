@@ -184,6 +184,15 @@ function AddAvailabilityModal({
     );
 }
 
+/**
+ *
+ *  Refactor needed!
+ *
+ *  Once an established style for the app
+ *  is designed and event stages are outlined,
+ *  update this component to refect the changes.
+ *
+ */
 export default function EventPage({
     match,
 }: {
