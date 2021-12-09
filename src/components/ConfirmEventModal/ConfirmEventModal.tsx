@@ -5,59 +5,9 @@ import Select from 'react-select';
 
 import EventData from '../../interfaces/EventData';
 import HeatMapData from '../../interfaces/HeatMapData';
+import { updateEvent } from '../../lib/firestore';
 
 import './ConfirmEventModal.css';
-
-function ConfirmEventForm(props: {
-    event: EventData;
-    days: string[];
-    times: string[];
-}): JSX.Element {
-    const { event, days, times } = props;
-    const dayOptions = days.map((time) => ({ value: time, label: time }));
-    const timeOptions = times.map((time) => ({ value: time, label: time }));
-
-    const [day, setDay] = React.useState<string>(dayOptions[0].value);
-    const [startTime, setStartTime] = React.useState<string>(
-        timeOptions[0].value
-    );
-    const [endTime, setEndTime] = React.useState<string>(timeOptions[1].value);
-
-    return (
-        <div>
-            <h2>{event.name.toUpperCase()}</h2>
-            <h5>Description</h5>
-            <p>{event.description}</p>
-            <h5>Guests</h5>
-            <p>guest list</p>
-            <h5>Date</h5>
-            <Select
-                className="confirm-event-options"
-                options={dayOptions}
-                isSearchable={false}
-                placeholder="Day"
-                value={{ value: day, label: day }}
-                onChange={(opt) => setDay(opt!.value)}
-            />
-            <Select
-                className="confirm-event-options"
-                options={timeOptions}
-                isSearchable={false}
-                placeholder="Starts"
-                value={{ value: startTime, label: startTime }}
-                onChange={(opt) => setStartTime(opt!.value)}
-            />
-            <Select
-                className="confirm-event-options"
-                options={timeOptions}
-                isSearchable={false}
-                placeholder="Ends"
-                value={{ value: endTime, label: endTime }}
-                onChange={(opt) => setEndTime(opt!.value)}
-            />
-        </div>
-    );
-}
 
 interface ConfirmEventModalProps {
     event: EventData;
@@ -71,6 +21,16 @@ export default function ConfirmEventModal(
     const { event, heatMapData } = props;
     const { yData, xData } = heatMapData;
 
+    // prepping Select component options
+    const dayOptions = xData.map((time) => ({ value: time, label: time }));
+    const timeOptions = yData.map((time) => ({ value: time, label: time }));
+
+    // defining Select component onChange values
+    const [day, setDay] = React.useState<string>();
+    const [startTime, setStartTime] = React.useState<string>();
+    const [endTime, setEndTime] = React.useState<string>();
+
+    // defining modal visability handlers
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -92,11 +52,35 @@ export default function ConfirmEventModal(
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ConfirmEventForm
-                        event={event}
-                        days={xData}
-                        times={yData}
-                    />
+                    <div>
+                        <h2>{event.name.toUpperCase()}</h2>
+                        <h5>Description</h5>
+                        <p>{event.description}</p>
+                        <h5>Guests</h5>
+                        <p>guest list</p>
+                        <h5>Date</h5>
+                        <Select
+                            className="confirm-event-options"
+                            options={dayOptions}
+                            isSearchable={false}
+                            placeholder="Day"
+                            onChange={(opt) => setDay(opt!.value)}
+                        />
+                        <Select
+                            className="confirm-event-options"
+                            options={timeOptions}
+                            isSearchable={false}
+                            placeholder="Starts"
+                            onChange={(opt) => setStartTime(opt!.value)}
+                        />
+                        <Select
+                            className="confirm-event-options"
+                            options={timeOptions}
+                            isSearchable={false}
+                            placeholder="Ends"
+                            onChange={(opt) => setEndTime(opt!.value)}
+                        />
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={handleClose}>Cancel</Button>

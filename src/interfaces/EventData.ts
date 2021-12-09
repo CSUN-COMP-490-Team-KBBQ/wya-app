@@ -8,13 +8,14 @@ export default interface EventData {
     startTime: string;
     endTime: string;
     guests: string[];
+    availability: EventDataAvailability;
     /**
-     *  Field for finalizing an event.
+     *  Fields for finalizing an event.
      *  Temp added here as part of the solution developed
      *  because of time contraints to MVP.
      */
     isFinalized: boolean;
-    availability: EventDataAvailability;
+    day: string;
 }
 
 export interface EventDataAvailability {
