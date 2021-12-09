@@ -197,7 +197,6 @@ export default function EventPage({
     const eventInfo = React.useRef<EventData>();
     const [modalShow, setModalShow] = React.useState<boolean>(false);
     const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
-    const eventAvailability = React.useRef<EventDataAvailability>();
     const [scheduleSelectorData, setScheduleSelectorData] =
         React.useState<ScheduleSelectorData>();
     const isUserAHost = (): boolean => {
@@ -213,7 +212,6 @@ export default function EventPage({
             getDocSnapshot$(`/events/${match.params.id}`, {
                 next: (eventSnapshot) => {
                     const event = eventSnapshot.data() as EventData;
-                    eventAvailability.current = event.availability;
                     eventInfo.current = event;
                     const tempYTimes = getYTimesSorted(event.availability);
                     const tempXDays = getXDaysSorted(
@@ -245,39 +243,82 @@ export default function EventPage({
         }
     }, [userRecord]);
 
+    /**
+     * Renders a final event
+     * Needs to be updated once a proper solution
+     *  is developed
+     *
+     */
+    const eventFinalized = (event: EventData): JSX.Element => {
+        const { name, day, description, startTime, endTime } = event;
+
+        return (
+            <div>
+                <h1>{name}</h1>
+                <p>{description}</p>
+                <p>day: {day}</p>
+                <p>starts: {startTime}</p>
+                <p>ends: {endTime}</p>
+            </div>
+        );
+    };
+
+    /**
+     * Renders an event in the planning stage
+     * Needs to be updated once a proper solution
+     *  is developed
+     *
+     */
+    const eventPlanning = (
+        userId: string,
+        event: EventData,
+        heatMap: HeatMapData,
+        scheduleSelector: ScheduleSelectorData
+    ): JSX.Element => {
+        return (
+            <div>
+                <h1>EventPage</h1>
+                <h2>Group Availabilities</h2>
+                <AvailabilityHeatMap
+                    yLabels={heatMap.yData}
+                    xLabels={heatMap.xDataFormatted}
+                    data={heatMap.mapData}
+                    onClick={() => undefined}
+                />
+                <Button type="button" onClick={() => setModalShow(true)}>
+                    add Availability
+                </Button>
+
+                {isUserAHost() && !event.isFinalized && (
+                    <ConfirmEventModal event={event} heatMapData={heatMap} />
+                )}
+
+                <AddAvailabilityModal
+                    heatMapData={heatMap}
+                    scheduleSelectorData={scheduleSelector}
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                    eventAvailability={event.availability}
+                    eventId={match.params.id}
+                    uid={userId}
+                />
+            </div>
+        );
+    };
+
     return heatMapData &&
-        eventAvailability.current &&
+        eventInfo.current &&
         userRecord &&
         scheduleSelectorData !== undefined ? (
         <div>
-            <h1>EventPage</h1>
-            <h2>Group Availabilities</h2>
-            <AvailabilityHeatMap
-                yLabels={heatMapData.yData}
-                xLabels={heatMapData.xDataFormatted}
-                data={heatMapData.mapData}
-                onClick={() => undefined}
-            />
-            <Button type="button" onClick={() => setModalShow(true)}>
-                add Availability
-            </Button>
-
-            {isUserAHost() && (
-                <ConfirmEventModal
-                    event={eventInfo.current!}
-                    heatMapData={heatMapData}
-                />
-            )}
-
-            <AddAvailabilityModal
-                heatMapData={heatMapData}
-                scheduleSelectorData={scheduleSelectorData}
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                eventAvailability={eventAvailability.current}
-                eventId={match.params.id}
-                uid={userRecord.uid}
-            />
+            {eventInfo.current.isFinalized
+                ? eventFinalized(eventInfo.current)
+                : eventPlanning(
+                      userRecord.uid,
+                      eventInfo.current,
+                      heatMapData,
+                      scheduleSelectorData
+                  )}
         </div>
     ) : (
         <div>
