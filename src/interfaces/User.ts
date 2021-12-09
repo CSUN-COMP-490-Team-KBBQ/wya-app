@@ -14,4 +14,11 @@ export interface EventInfo {
     startDate: string;
     startTime: string;
     role: string;
+    /**
+     *  Fields for finalizing an event.
+     *  Temp added here as part of the solution developed
+     *  because of time contraints to MVP.
+     */
+    accepted: boolean;
+    declined: boolean;
 }

@@ -16,6 +16,7 @@ export default interface EventData {
      */
     isFinalized: boolean;
     day: string;
+    rsvp: string[];
 }
 
 export interface EventDataAvailability {

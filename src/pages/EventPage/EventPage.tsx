@@ -1,10 +1,17 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
 import EventData, { EventDataAvailability } from '../../interfaces/EventData';
-import { getDocSnapshot$, updateEventAvailability } from '../../lib/firestore';
+import {
+    getDocSnapshot$,
+    updateEventAvailability,
+    updateEvent,
+    updateUserRecord,
+} from '../../lib/firestore';
 import HeatMapData from '../../interfaces/HeatMapData';
 import ConfirmEventModal from '../../components/ConfirmEventModal/ConfirmEventModal';
 import {
@@ -20,6 +27,7 @@ import AvailabilityScheduleSelector from '../../components/AvailabilityScheduleS
 import ScheduleSelectorData from '../../interfaces/ScheduleSelectorData';
 
 import './EventPage.css';
+import UserData from '../../interfaces/User';
 
 type AddAvailabilityModalProps = {
     heatMapData: HeatMapData;
@@ -192,10 +200,34 @@ function AddAvailabilityModal({
  */
 interface EventFinalizedProps {
     event: EventData;
+    user: UserData;
+    isHost: boolean;
 }
 
-function EventFinalized({ event }: EventFinalizedProps): JSX.Element {
-    const { name, day, description, startTime, endTime } = event;
+function EventFinalized({
+    event,
+    user,
+    isHost,
+}: EventFinalizedProps): JSX.Element {
+    const { name, day, description, startTime, endTime, rsvp } = event;
+    const { events, firstName, lastName } = user;
+    const eventInUserRecord = events.find((e) => e.eventId === event.eventId)!;
+    const { accepted, declined } = eventInUserRecord;
+
+    const handleAccept = () => {
+        eventInUserRecord.accepted = true;
+        eventInUserRecord.declined = false;
+        rsvp.push(`${firstName} ${lastName}`);
+
+        updateUserRecord(user);
+        updateEvent(event);
+    };
+
+    const handleDecline = () => {
+        eventInUserRecord.accepted = false;
+        eventInUserRecord.declined = true;
+        updateUserRecord(user);
+    };
 
     return (
         <div>
@@ -204,6 +236,36 @@ function EventFinalized({ event }: EventFinalizedProps): JSX.Element {
             <p>day: {day}</p>
             <p>starts: {startTime}</p>
             <p>ends: {endTime}</p>
+            {/* render for a guest only */}
+            {!isHost && !accepted && !declined && (
+                <div>
+                    <Button onClick={handleAccept}>Accept</Button>
+                    <Button onClick={handleDecline}>Decline</Button>
+                </div>
+            )}
+            {!isHost && declined && (
+                <Alert variant="info">
+                    You have declined this event. Did you want to accept?
+                    <span>
+                        <Button
+                            variant="light"
+                            style={{ margin: '0px 10px' }}
+                            onClick={handleAccept}
+                        >
+                            Yes
+                        </Button>
+                    </span>
+                </Alert>
+            )}
+            <div>
+                <h2>Attending</h2>
+                <ListGroup className="attending-list">
+                    {rsvp.map((guestName) => {
+                        // include key prop with unique key
+                        return <ListGroup.Item>{guestName}</ListGroup.Item>;
+                    })}
+                </ListGroup>
+            </div>
         </div>
     );
 }
@@ -326,7 +388,11 @@ export default function EventPage({
         scheduleSelectorData !== undefined
     ) {
         return eventInfo.current.isFinalized ? (
-            <EventFinalized event={eventInfo.current} />
+            <EventFinalized
+                event={eventInfo.current}
+                user={userRecord}
+                isHost={isUserAHost()}
+            />
         ) : (
             eventPlanning(
                 userRecord.uid,
