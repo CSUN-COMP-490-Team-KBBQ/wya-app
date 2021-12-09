@@ -99,6 +99,11 @@ export const getEventData = async (eventId: string): Promise<EventData> => {
     return (await getDoc(eventDocRef)).data() as EventData;
 };
 
+export const updateEvent = async (event: EventData): Promise<void> => {
+    const eventDocRef = getDocRef(`/events/${event.eventId}`);
+    return updateDoc(eventDocRef, { ...event });
+};
+
 export const getDocSnapshot$ = (
     path: string,
     observer: {
