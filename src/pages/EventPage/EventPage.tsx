@@ -306,21 +306,28 @@ export default function EventPage({
         );
     };
 
-    return heatMapData &&
+    if (
+        heatMapData &&
         eventInfo.current &&
         userRecord &&
-        scheduleSelectorData !== undefined ? (
-        <div>
-            {eventInfo.current.isFinalized
-                ? eventFinalized(eventInfo.current)
-                : eventPlanning(
-                      userRecord.uid,
-                      eventInfo.current,
-                      heatMapData,
-                      scheduleSelectorData
-                  )}
-        </div>
-    ) : (
+        scheduleSelectorData !== undefined
+    ) {
+        return (
+            <div>
+                {eventInfo.current.isFinalized
+                    ? eventFinalized(eventInfo.current)
+                    : eventPlanning(
+                          userRecord.uid,
+                          eventInfo.current,
+                          heatMapData,
+                          scheduleSelectorData
+                      )}
+            </div>
+        );
+    }
+
+    // default render
+    return (
         <div>
             <h1>EventPage</h1>
         </div>
