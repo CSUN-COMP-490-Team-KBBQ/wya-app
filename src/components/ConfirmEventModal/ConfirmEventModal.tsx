@@ -34,6 +34,26 @@ export default function ConfirmEventModal(
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const onSubmitHandler = () => {
+        if (day && startTime && endTime) {
+            if (startTime >= endTime) {
+                console.log('error: startTime must be less than end time');
+            }
+
+            const newEventData = {
+                ...event,
+                isFinalized: true,
+                day,
+                startTime,
+                endTime,
+            };
+
+            updateEvent(newEventData);
+        } else {
+            console.log('error: no input');
+        }
+    };
+
     return (
         <div>
             <Button type="button" onClick={handleShow}>
@@ -84,7 +104,7 @@ export default function ConfirmEventModal(
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleClose}>Update Event</Button>
+                    <Button onClick={onSubmitHandler}>Update Event</Button>
                 </Modal.Footer>
             </Modal>
         </div>
