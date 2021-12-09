@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Select from 'react-select';
 
@@ -18,6 +19,7 @@ export default function ConfirmEventModal(
     props: ConfirmEventModalProps
 ): JSX.Element {
     const [show, setShow] = React.useState<boolean>(false);
+    const [displayError, setDisplayError] = React.useState<string>('');
     const { event, heatMapData } = props;
     const { yData, xData } = heatMapData;
 
@@ -31,26 +33,31 @@ export default function ConfirmEventModal(
     const [endTime, setEndTime] = React.useState<string>();
 
     // defining modal visability handlers
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setDisplayError('');
+        setShow(false);
+    };
     const handleShow = () => setShow(true);
 
     const onSubmitHandler = () => {
         if (day && startTime && endTime) {
             if (startTime >= endTime) {
-                console.log('error: startTime must be less than end time');
+                setDisplayError(
+                    'The start time must be less than the end time!'
+                );
+            } else {
+                const newEventData = {
+                    ...event,
+                    isFinalized: true,
+                    day,
+                    startTime,
+                    endTime,
+                };
+
+                updateEvent(newEventData);
             }
-
-            const newEventData = {
-                ...event,
-                isFinalized: true,
-                day,
-                startTime,
-                endTime,
-            };
-
-            updateEvent(newEventData);
         } else {
-            console.log('error: no input');
+            setDisplayError('All values need to entered to complete!');
         }
     };
 
@@ -79,6 +86,11 @@ export default function ConfirmEventModal(
                         <h5>Guests</h5>
                         <p>guest list</p>
                         <h5>Date</h5>
+                        {displayError.length > 0 && (
+                            <Alert id="displayError" variant="danger">
+                                {displayError}
+                            </Alert>
+                        )}
                         <Select
                             className="confirm-event-options"
                             options={dayOptions}
