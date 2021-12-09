@@ -321,18 +321,14 @@ export default function EventPage({
         userRecord &&
         scheduleSelectorData !== undefined
     ) {
-        return (
-            <div>
-                {eventInfo.current.isFinalized
-                    ? eventFinalized(eventInfo.current)
-                    : eventPlanning(
-                          userRecord.uid,
-                          eventInfo.current,
-                          heatMapData,
-                          scheduleSelectorData
-                      )}
-            </div>
-        );
+        return eventInfo.current.isFinalized
+            ? eventFinalized(eventInfo.current)
+            : eventPlanning(
+                  userRecord.uid,
+                  eventInfo.current,
+                  heatMapData,
+                  scheduleSelectorData
+              );
     }
 
     // default render
