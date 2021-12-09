@@ -185,6 +185,30 @@ function AddAvailabilityModal({
 }
 
 /**
+ * Renders a final event
+ * Needs to be updated once a proper solution
+ *  is developed
+ *
+ */
+interface EventFinalizedProps {
+    event: EventData;
+}
+
+function EventFinalized({ event }: EventFinalizedProps): JSX.Element {
+    const { name, day, description, startTime, endTime } = event;
+
+    return (
+        <div>
+            <h1>{name}</h1>
+            <p>{description}</p>
+            <p>day: {day}</p>
+            <p>starts: {startTime}</p>
+            <p>ends: {endTime}</p>
+        </div>
+    );
+}
+
+/**
  *
  *  Refactor needed!
  *
@@ -253,26 +277,6 @@ export default function EventPage({
     }, [userRecord]);
 
     /**
-     * Renders a final event
-     * Needs to be updated once a proper solution
-     *  is developed
-     *
-     */
-    const eventFinalized = (event: EventData): JSX.Element => {
-        const { name, day, description, startTime, endTime } = event;
-
-        return (
-            <div>
-                <h1>{name}</h1>
-                <p>{description}</p>
-                <p>day: {day}</p>
-                <p>starts: {startTime}</p>
-                <p>ends: {endTime}</p>
-            </div>
-        );
-    };
-
-    /**
      * Renders an event in the planning stage
      * Needs to be updated once a proper solution
      *  is developed
@@ -321,14 +325,16 @@ export default function EventPage({
         userRecord &&
         scheduleSelectorData !== undefined
     ) {
-        return eventInfo.current.isFinalized
-            ? eventFinalized(eventInfo.current)
-            : eventPlanning(
-                  userRecord.uid,
-                  eventInfo.current,
-                  heatMapData,
-                  scheduleSelectorData
-              );
+        return eventInfo.current.isFinalized ? (
+            <EventFinalized event={eventInfo.current} />
+        ) : (
+            eventPlanning(
+                userRecord.uid,
+                eventInfo.current,
+                heatMapData,
+                scheduleSelectorData
+            )
+        );
     }
 
     // default render
