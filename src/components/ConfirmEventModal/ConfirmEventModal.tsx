@@ -57,7 +57,7 @@ export default function ConfirmEventModal(
                 updateEvent(newEventData);
             }
         } else {
-            setDisplayError('All values need to entered to complete!');
+            setDisplayError('All values need to be entered to update event!');
         }
     };
 
