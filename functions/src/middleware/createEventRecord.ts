@@ -13,6 +13,7 @@ const createEventRecord: RequestHandler = async (req, res, next) => {
      *
      */
     req.body.isFinalized = false;
+    req.body.rsvp = [];
 
     try {
         functions.logger.info('Creating event document');
