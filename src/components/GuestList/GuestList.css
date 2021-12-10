@@ -1,29 +1,35 @@
-.remove-icon {
+.icon-remove {
     color: grey;
     cursor: pointer;
 }
 
-.remove-icon:hover {
+.icon-remove:hover {
     color: red;
 }
 
 .guests-list-item {
     display: flex;
-
 }
 
 .guests-list-item > div {
     flex-grow: 1;
 }
 
-.remove-icon-container {
+.container-icon-remove {
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
 
-.button-container {
+.container-button-invite {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+}
+
+#group-list {
+    height: 173px;
+    background-color: #f7f7f7;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }

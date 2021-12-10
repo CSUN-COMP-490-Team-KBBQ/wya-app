@@ -13,5 +13,5 @@ it('renders page', () => {
             <CreateEventPage />
         </BrowserRouter>
     );
-    expect(queryByText('CreateEventPage')).toBeTruthy();
+    expect(queryByText('Create Event')).toBeTruthy();
 });
