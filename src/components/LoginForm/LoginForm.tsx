@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { useHistory, Link } from 'react-router-dom';
 import { logIn } from '../../lib/auth';
 import { useUserContext } from '../../contexts/UserContext';
@@ -38,41 +39,48 @@ export default function LoginForm(): JSX.Element {
     };
 
     return (
-        <Form onSubmit={logInHandler} className="login-form">
-            <Form.Group as={Row} controlId="loginEmail">
-                <Form.Label column sm={2}>
-                    Email
-                </Form.Label>
-                <Col sm={10}>
-                    <Form.Control
-                        type="email"
-                        name="email"
-                        className="form-input"
-                    />
-                </Col>
-            </Form.Group>
+        <Container>
+            <Col className="form-container">
+                <Form onSubmit={logInHandler} className="form-login">
+                    <Form.Group as={Row} controlId="loginEmail">
+                        <Form.Label style={{ margin: 0 }}>Email</Form.Label>
+                        <Col>
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                className="form-input"
+                            />
+                        </Col>
+                    </Form.Group>
 
-            <Form.Group as={Row} controlId="loginPassword">
-                <Form.Label column sm={2}>
-                    Password
-                </Form.Label>
-                <Col sm={10}>
-                    <Form.Control
-                        type="password"
-                        name="password"
-                        className="form-input"
-                    />
-                </Col>
-            </Form.Group>
-
-            <Form.Group as={Row}>
-                <Col sm={{ span: 10, offset: 2 }}>
-                    <Button type="submit">Log in</Button>
-                    <Link id="forgot-password-link" to="/password-reset">
-                        Forgot password?
-                    </Link>
-                </Col>
-            </Form.Group>
-        </Form>
+                    <Form.Group as={Row} controlId="loginPassword">
+                        <Form.Label style={{ margin: 0 }}>Password</Form.Label>
+                        <Col>
+                            <Form.Control
+                                type="password"
+                                name="password"
+                                className="form-input"
+                            />
+                        </Col>
+                        <Form.Text>
+                            <Link
+                                className="clickable-link"
+                                to="/password-reset"
+                            >
+                                Forgot your password?
+                            </Link>
+                        </Form.Text>
+                    </Form.Group>
+                    <Button type="submit" className="form-button">
+                        Log in
+                    </Button>
+                    <Form.Text>
+                        <Link className="clickable-link" to="/register">
+                            Don&apos;t have an account?
+                        </Link>
+                    </Form.Text>
+                </Form>
+            </Col>
+        </Container>
     );
 }

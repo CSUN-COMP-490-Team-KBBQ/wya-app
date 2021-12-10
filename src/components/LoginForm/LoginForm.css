@@ -1,15 +1,28 @@
-.login-form {
-    width: 60%;
+.clickable-link {
+    text-decoration: none;
+    color: white;
+    font-size: small;
+    font-style: italic;
 }
-.row {
-    padding-bottom: .5rem;
+.clickable-link:hover {
+    color: blue;
 }
 
-#forgot-password-link {
-    margin-left: 2%;
-    text-decoration: none;
-    color: white; 
+.form-login {
+    width: 40%;
 }
-#forgot-password-link:hover {
-    color: blue;
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-button {
+    width: 100%;
+}
+
+.row {
+    margin-bottom: .5rem;
 }
