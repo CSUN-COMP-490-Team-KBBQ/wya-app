@@ -84,8 +84,8 @@ export default function ConfirmEventModal(
                         <h2>{event.name.toUpperCase()}</h2>
                         <h5>Description</h5>
                         <p>{event.description}</p>
-                        <h5>Guests</h5>
-                        <p>guest list</p>
+                        {/* <h5>Guests</h5>
+                        <p>guest list</p> */}
                         <h5>Date</h5>
                         {displayError.length > 0 && (
                             <Alert id="displayError" variant="danger">
