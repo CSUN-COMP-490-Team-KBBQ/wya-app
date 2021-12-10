@@ -67,7 +67,7 @@ export default function GuestList({
             <Card data-testid="guests-list">
                 <Card.Body>
                     <Row style={{ marginLeft: 0, marginRight: 0 }}>
-                        <ListGroup style={{ paddingRight: 0 }}>
+                        <ListGroup id="group-list" style={{ paddingRight: 0 }}>
                             {guests.length > 0 ? (
                                 guests.map((guest: string, index: number) => (
                                     <ListGroup.Item key={uuid()}>

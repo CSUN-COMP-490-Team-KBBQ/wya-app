@@ -156,9 +156,6 @@ export default function CreateEventForm(): JSX.Element {
                                     />
                                 </Col>
                             </Row>
-                            <Button type="submit" className="form-button">
-                                Create
-                            </Button>
                         </Col>
                         <Col sm={6}>
                             <Row>
@@ -169,6 +166,9 @@ export default function CreateEventForm(): JSX.Element {
                             </Row>
                         </Col>
                     </Row>
+                    <Button type="submit" className="form-button">
+                        Create
+                    </Button>
 
                     <Recaptcha recaptchaRef={recaptchaRef} />
                 </Form>
