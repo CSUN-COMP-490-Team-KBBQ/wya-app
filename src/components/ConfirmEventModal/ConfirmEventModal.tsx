@@ -15,6 +15,41 @@ interface ConfirmEventModalProps {
     heatMapData: HeatMapData;
 }
 
+/**
+ *
+ * This function is used to correct the end time options
+ * for an event. Since the end time will always be 15mins
+ * from the value selected on the map, the values must be
+ * shifted to account for the block of time.
+ *
+ *  Example: If an event starts at 11:00am, then the options
+ *  to select an end time need to start at 11:15am to account
+ *  for this block of time.
+ *
+ */
+function shiftTimeOptions(
+    options: { value: string; label: string }[]
+): { value: string; label: string }[] {
+    // clone options and shift
+    const newOptions = options.map((opts) => ({ ...opts }));
+    newOptions.shift();
+
+    // get the last time from options and add 15 mins
+    const endTimeOption = newOptions.slice(-1)[0].value;
+    const endTimeDate = new Date(`1970-01-01T${endTimeOption}`);
+    const newEndTime = endTimeDate.getMinutes() + 15;
+    endTimeDate.setMinutes(newEndTime);
+
+    // trim the timezone and add the new time to array of options
+    const newEndTimeOption = endTimeDate.toTimeString().slice(0, 5);
+    newOptions.push({
+        value: newEndTimeOption,
+        label: newEndTimeOption,
+    });
+
+    return newOptions;
+}
+
 export default function ConfirmEventModal(
     props: ConfirmEventModalProps
 ): JSX.Element {
@@ -25,7 +60,11 @@ export default function ConfirmEventModal(
 
     // prepping Select component options
     const dayOptions = xData.map((time) => ({ value: time, label: time }));
-    const timeOptions = yData.map((time) => ({ value: time, label: time }));
+    const startTimeOptions = yData.map((time) => ({
+        value: time,
+        label: time,
+    }));
+    const endTimeOptions = shiftTimeOptions(startTimeOptions);
 
     // defining Select component onChange values
     const [day, setDay] = React.useState<string>();
@@ -101,14 +140,14 @@ export default function ConfirmEventModal(
                         />
                         <Select
                             className="confirm-event-options"
-                            options={timeOptions}
+                            options={startTimeOptions}
                             isSearchable={false}
                             placeholder="Starts"
                             onChange={(opt) => setStartTime(opt!.value)}
                         />
                         <Select
                             className="confirm-event-options"
-                            options={timeOptions}
+                            options={endTimeOptions}
                             isSearchable={false}
                             placeholder="Ends"
                             onChange={(opt) => setEndTime(opt!.value)}
