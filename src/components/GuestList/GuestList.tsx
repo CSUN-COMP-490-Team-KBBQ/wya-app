@@ -81,11 +81,16 @@ export default function GuestList({
                             ) : (
                                 <ListGroup.Item
                                     style={{
-                                        fontStyle: 'italic',
-                                        textAlign: 'center',
+                                        display: 'flex',
+                                        height: '100%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
                                     }}
                                 >
-                                    Empty
+                                    <span style={{ fontStyle: 'italic' }}>
+                                        Empty&nbsp;
+                                    </span>
+                                    <span>😔</span>
                                 </ListGroup.Item>
                             )}
                         </ListGroup>
