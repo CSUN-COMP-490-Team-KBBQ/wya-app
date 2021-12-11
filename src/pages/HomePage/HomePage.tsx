@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import { logOut } from '../../lib/auth';
-import finallogo from '../../assets/wya test 4.png';
+import finallogo from '../../assets/wya-logo.png';
 import PageSpinner from '../../components/PageSpinner/PageSpinner';
 
 export default function HomePage(): JSX.Element {

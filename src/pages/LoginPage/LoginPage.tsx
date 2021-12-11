@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import LoginForm from '../../components/LoginForm/LoginForm';
-import finallogo from '../../assets/wya test 4.png';
+import finallogo from '../../assets/wya-logo.png';
 import './LoginPage.css';
 
 export default function LoginPage(): JSX.Element {

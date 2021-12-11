@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import RegisterForm from '../../components/RegisterForm/RegisterForm';
-import finallogo from '../../assets/wya test 4.png';
+import finallogo from '../../assets/wya-logo.png';
 import './RegisterPage.css';
 
 export default function RegisterPage(): JSX.Element {
