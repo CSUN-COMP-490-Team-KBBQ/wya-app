@@ -165,11 +165,13 @@ export default function CreateEventForm(): JSX.Element {
                                     updateGuests={updateGuests}
                                 />
                             </Row>
+                            <div className="button-container">
+                                <Button type="submit" className="form-button">
+                                    Create
+                                </Button>
+                            </div>
                         </Col>
                     </Row>
-                    <Button type="submit" className="form-button">
-                        Create
-                    </Button>
 
                     <Recaptcha recaptchaRef={recaptchaRef} />
                 </Form>
