@@ -1,4 +1,4 @@
-.btn-links{
+.btn-links {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
@@ -6,23 +6,23 @@
     width: 20em !important;
 }
 
-header{
-    background-color: #AAAAAA;
+header {
+    background-color: #aaaaaa;
     text-align: right;
     margin-bottom: 1em;
 }
 
-.f-header{
+.f-header {
     text-align: center;
     font-size: 60px;
 }
 
-.s-header{
+.s-header {
     text-align: center;
     font-size: 2em;
 }
 h1 {
-    color:black;
+    color: black;
     font-size: large;
     text-align: center;
     margin-left: 10px;
@@ -30,25 +30,24 @@ h1 {
 }
 
 h2 {
-    color:black;
+    color: black;
     font-size: medium;
     text-align: center;
     margin-left: 100px;
     margin-right: 100px;
 }
 
-.loginLink{
+.loginLink {
     color: white;
 }
 
-.loginLink:hover{
+.loginLink:hover {
     color: darkblue;
 }
 
 img {
-    height: 200px;    
+    height: 200px;
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
-
