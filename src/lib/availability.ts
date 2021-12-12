@@ -1,5 +1,4 @@
 import { EventDataAvailability } from '../interfaces/EventData';
-import { UserDataAvailability } from '../interfaces/User';
 
 export const LABELS = {
     xLabels: [
@@ -143,15 +142,13 @@ export const createAvailabilityDataArray = (
 };
 
 export const createCalendarAvailabilityDataArray = (
-    yTimes: string[],
-    xDays: string[],
-    availability: UserDataAvailability
-): number[][] => {
-    return new Array(yTimes.length).fill(0).map((_k, y) => {
-        return new Array(xDays.length).fill(0).map((_j, x) => {
-            return availability[yTimes[y]][x];
-        });
-    });
+    userAvailability: Array<number>
+): Array<Date> => {
+    // userAvailability structure: [ { seconds: number, nanoseconds: number } ]
+    // need to convert seconds to miliseconds to create a new date
+    const scheduleData = userAvailability.map((value) => new Date(value));
+
+    return scheduleData;
 };
 
 export const createZeroStateArray = (
@@ -164,25 +161,42 @@ export const createZeroStateArray = (
 export const createPreloadArray = (
     yTimes: string[],
     xDays: string[],
-    avail: UserDataAvailability
-): number[][] => {
-    const preloadedAvail = new Array(yTimes.length)
-        .fill(0)
-        .map(() => new Array(xDays.length).fill(0));
+    userAvailability: Array<number>
+): Array<Date> => {
+    const scheduleData: Array<Date> = [];
+    const convertedDate = userAvailability.map((value) => new Date(value));
+    const scheduleDataDay = convertedDate.map((value) =>
+        value.toDateString().slice(0, 3)
+    );
+    const scheduleDataTime = convertedDate.map((value) =>
+        value.toTimeString().slice(0, 5)
+    );
 
-    for (let i = 0; i < yTimes.length; i += 1) {
-        for (let j = 0; j < 7; j += 1) {
-            if (avail[yTimes[i]][j] === 1) {
-                const xIndex = xDays.findIndex((item) => {
-                    return item.slice(0, 3) === LABELS.xLabels[j].slice(0, 3);
-                });
+    for (let i = 0; i < userAvailability.length; i += 1) {
+        const xIndex = xDays.findIndex((item) => {
+            return item.slice(0, 3) === scheduleDataDay[i];
+        });
+        const yValue = yTimes.find((item) => {
+            return item === scheduleDataTime[i];
+        });
 
-                for (let k = 0; xIndex + k < xDays.length; k += 7) {
-                    preloadedAvail[i][xIndex + k] = 1;
-                }
-            }
+        for (let k = 0; xIndex + k < xDays.length; k += 7) {
+            scheduleData.push(new Date(`${xDays[xIndex + k]} ${yValue}`));
         }
     }
 
-    return preloadedAvail;
+    return scheduleData;
+};
+
+export const cleanUpUserAvailability = (
+    userAvailability: Array<Date>
+): Array<Date> => {
+    for (let i = 0; i < userAvailability.length; i += 1) {
+        if (userAvailability[i].toString() === 'Invalid Date') {
+            userAvailability.splice(i, 1);
+            i -= 1;
+        }
+    }
+
+    return userAvailability;
 };

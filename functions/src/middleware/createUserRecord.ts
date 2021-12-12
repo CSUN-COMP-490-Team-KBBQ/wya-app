@@ -13,7 +13,7 @@ const createUserRecord: RequestHandler = async (req, res, next) => {
             firstName,
             lastName,
             events: [],
-            availability: {},
+            availability: [],
         });
         functions.logger.info(`User ${uid} successfully created.`);
         next();

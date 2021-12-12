@@ -13,8 +13,6 @@ import {
 import axios from 'axios';
 import app from './firebase';
 import EventData, { EventDataAvailability } from '../interfaces/EventData';
-import { UserDataAvailability } from '../interfaces/User';
-import { LABELS } from './AvailabilityHeatMap';
 
 const firestore = getFirestore(app);
 
@@ -114,29 +112,28 @@ export const getDocSnapshot$ = (
 };
 
 export const updateCalendarAvailability = (
-    data: number[][],
+    date: Array<number>,
     uid: string
 ): Promise<string> => {
     return new Promise((resolve, reject) => {
         const userDocRef = getDocRef(`/users/${uid}`);
-        const availabilityData: UserDataAvailability = {};
+        // const availabilityData: UserDataAvailability = {};
+        // availabilityData.date = data;
 
-        for (let j = 0; j < LABELS.yLabels.length; j += 1) {
-            const dateData = [];
-            for (let i = 0; i < LABELS.xLabels.length; i += 1) {
-                dateData.push(data[j][i]);
-            }
-            availabilityData[LABELS.yLabels[j]] = dateData;
-        }
-
-        updateDoc(userDocRef, 'availability', {
-            ...availabilityData,
-        })
+        updateDoc(userDocRef, 'availability', date)
             .then(() => {
                 resolve(uid);
             })
             .catch(reject);
     });
+};
+
+export const updateEventAvailability = (
+    data: EventDataAvailability,
+    eventId: string
+): Promise<void> => {
+    const eventDocRef = getDocRef(`/events/${eventId}`);
+    return updateDoc(eventDocRef, 'availability', data);
 };
 
 export default firestore;
