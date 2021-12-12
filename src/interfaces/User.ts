@@ -4,7 +4,7 @@ export default interface UserData {
     events: EventInfo[];
     firstName: string;
     lastName: string;
-    availability: Array<Date>;
+    availability: Array<number>;
 }
 
 export interface EventInfo {
@@ -14,8 +14,4 @@ export interface EventInfo {
     startDate: string;
     startTime: string;
     role: string;
-}
-
-export interface UserDataAvailability {
-    [date: string]: Array<Date>;
 }

@@ -8,7 +8,7 @@ import AvailabilityScheduleSelector from '../../components/AvailabilityScheduleS
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import { updateCalendarAvailability } from '../../lib/firestore';
 import ScheduleSelectorData from '../../interfaces/ScheduleSelectorData';
-import { createCalendarAvailabilityDataArray } from '../../lib/Availability';
+import { createCalendarAvailabilityDataArray } from '../../lib/availability';
 
 type UpdateAvailabilityModalProps = {
     uid: string;
@@ -50,7 +50,11 @@ function UpdateAvailabilityModal({
     const onClickUpdateHandle = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        updateCalendarAvailability(userAvailabilityData, uid)
+        // converting to array number for firestore upload
+        const convertedUserAvailabilityData = userAvailabilityData.map(
+            (value) => value.getTime()
+        );
+        updateCalendarAvailability(convertedUserAvailabilityData, uid)
             .then(() => {
                 return onHide ? onHide(e) : undefined;
             })
@@ -73,6 +77,7 @@ function UpdateAvailabilityModal({
                     startTime={0}
                     endTime={24}
                     scheduleData={userAvailabilityData}
+                    dateFormat="dddd"
                     days={7}
                     startDate={new Date('January 04, 1970')}
                     handleChange={onClickScheduleSelectorHandle}

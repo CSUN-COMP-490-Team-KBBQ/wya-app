@@ -13,7 +13,7 @@ import {
     createAvailabilityDataArray,
     createPreloadArray,
     cleanUpUserAvailability,
-} from '../../lib/Availability';
+} from '../../lib/availability';
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import AvailabilityScheduleSelector from '../../components/AvailabilityScheduleSelector/AvailabilityScheduleSelector';
 import ScheduleSelectorData from '../../interfaces/ScheduleSelectorData';
@@ -37,6 +37,7 @@ function appendUserAvailabilityToGroup(
 ): EventDataAvailability {
     cleanUpUserAvailability(userAvailability);
 
+    // removes uid from each cell to start from scratch
     for (let i = 0; i < yTimes.length; i += 1) {
         for (let j = 0; j < xDays.length; j += 1) {
             if (eventAvailability[yTimes[i]][xDays[j]].includes(uid)) {
@@ -50,6 +51,7 @@ function appendUserAvailabilityToGroup(
         }
     }
 
+    // add uid to each appropriate cell
     for (let i = 0; i < userAvailability.length; i += 1) {
         const time = userAvailability[i].toTimeString().slice(0, 5);
         const temp = new Date(userAvailability[i].toDateString().slice(0, 15));
@@ -160,6 +162,7 @@ function AddAvailabilityModal({
                     startTime={startTimeFormatted(yData[0])}
                     endTime={endTimeFormatted(yData[yData.length - 1])}
                     scheduleData={userAvailabilityData}
+                    dateFormat="ddd MMM DD YYYY"
                     days={xDataFormatted.length}
                     startDate={new Date(xDataFormatted[0])}
                     handleChange={onClickScheduleSelectorHandle}

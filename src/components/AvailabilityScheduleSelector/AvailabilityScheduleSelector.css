@@ -1,27 +1,28 @@
 /*this makes the unused/unwanted cells go away*/
 #scheduleSelectorWrapper > div > div {
     grid-template-rows: unset;
+    overflow: auto;
 }
 
-#selectedCell{
+#selectedCell {
     width: 100%;
     height: 100%;
     background: rgb(112, 166, 241);
 }
-#selectedCell:hover{
+#selectedCell:hover {
     background-color: #dbedff;
 }
 
-#unSelectedCell{
+#unSelectedCell {
     width: 100%;
     height: 100%;
     background: rgba(162, 198, 248, 1);
 }
 
-#unSelectedCell:hover{
+#unSelectedCell:hover {
     background-color: #dbedff;
 }
 
-#yLabel{
+#yLabel {
     text-align: right;
 }

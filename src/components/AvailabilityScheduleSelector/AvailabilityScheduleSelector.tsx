@@ -7,6 +7,7 @@ type AvailabilityScheduleSelectorProps = {
     startTime: number;
     endTime: number;
     scheduleData: Date[];
+    dateFormat: string;
     days: number;
     startDate: Date;
     handleChange: (newSchedule: Date[]) => void;
@@ -15,8 +16,15 @@ type AvailabilityScheduleSelectorProps = {
 function AvailabilityScheduleSelector(
     props: AvailabilityScheduleSelectorProps
 ): JSX.Element {
-    const { startTime, endTime, scheduleData, days, startDate, handleChange } =
-        props;
+    const {
+        startTime,
+        endTime,
+        scheduleData,
+        dateFormat,
+        days,
+        startDate,
+        handleChange,
+    } = props;
 
     const handleRenderDateCell = (
         time: Date, // being used internally, somehow -Jorge (laughed after I literally put what he said)
@@ -72,7 +80,7 @@ function AvailabilityScheduleSelector(
                 selection={scheduleData}
                 numDays={days}
                 startDate={startDate}
-                dateFormat="dddd"
+                dateFormat={dateFormat}
                 timeFormat="h:mm a"
                 minTime={startTime}
                 maxTime={endTime}

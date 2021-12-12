@@ -112,7 +112,7 @@ export const getDocSnapshot$ = (
 };
 
 export const updateCalendarAvailability = (
-    date: Array<Date>,
+    date: Array<number>,
     uid: string
 ): Promise<string> => {
     return new Promise((resolve, reject) => {

@@ -142,11 +142,11 @@ export const createAvailabilityDataArray = (
 };
 
 export const createCalendarAvailabilityDataArray = (
-    userAvailability: Array<Date>
+    userAvailability: Array<number>
 ): Array<Date> => {
-    const scheduleData = userAvailability.map(
-        (value) => new Date(Object.values(value)[0] * 1000)
-    );
+    // userAvailability structure: [ { seconds: number, nanoseconds: number } ]
+    // need to convert seconds to miliseconds to create a new date
+    const scheduleData = userAvailability.map((value) => new Date(value));
 
     return scheduleData;
 };
@@ -161,41 +161,27 @@ export const createZeroStateArray = (
 export const createPreloadArray = (
     yTimes: string[],
     xDays: string[],
-    userAvailability: Array<Date>
+    userAvailability: Array<number>
 ): Array<Date> => {
     const scheduleData: Array<Date> = [];
-
-    const convertedDate = userAvailability.map(
-        (value) => new Date(Object.values(value)[0] * 1000)
-    );
+    const convertedDate = userAvailability.map((value) => new Date(value));
     const scheduleDataDay = convertedDate.map((value) =>
         value.toDateString().slice(0, 3)
     );
-    const scheduleDataTime = convertedDate.map((value) => {
-        let hours = value.getHours().toString();
-        let minutes = value.getMinutes().toString();
+    const scheduleDataTime = convertedDate.map((value) =>
+        value.toTimeString().slice(0, 5)
+    );
 
-        if (hours.length === 1) {
-            hours = `0${hours}`;
-        }
-        if (minutes === '0') {
-            minutes = '00';
-        }
-        return `${hours}:${minutes}`;
-    });
-
-    for (let i = 0; i < userAvailability.length && xDays.length; i += 1) {
+    for (let i = 0; i < userAvailability.length; i += 1) {
         const xIndex = xDays.findIndex((item) => {
             return item.slice(0, 3) === scheduleDataDay[i];
         });
-        const yIndex = yTimes.findIndex((item) => {
+        const yValue = yTimes.find((item) => {
             return item === scheduleDataTime[i];
         });
 
         for (let k = 0; xIndex + k < xDays.length; k += 7) {
-            scheduleData.push(
-                new Date(`${xDays[xIndex + k]} ${yTimes[yIndex]}`)
-            );
+            scheduleData.push(new Date(`${xDays[xIndex + k]} ${yValue}`));
         }
     }
 
