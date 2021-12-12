@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
+import Page from '../../components/Page/Page';
 import EventData, { EventDataAvailability } from '../../interfaces/EventData';
 import {
     getDocSnapshot$,
@@ -395,26 +396,30 @@ export default function EventPage({
         userRecord &&
         scheduleSelectorData !== undefined
     ) {
-        return eventInfo.current.isFinalized ? (
-            <EventFinalized
-                event={eventInfo.current}
-                user={userRecord}
-                isHost={isUserAHost()}
-            />
-        ) : (
-            eventPlanning(
-                userRecord.uid,
-                eventInfo.current,
-                heatMapData,
-                scheduleSelectorData
-            )
+        return (
+            <Page>
+                {eventInfo.current.isFinalized ? (
+                    <EventFinalized
+                        event={eventInfo.current}
+                        user={userRecord}
+                        isHost={isUserAHost()}
+                    />
+                ) : (
+                    eventPlanning(
+                        userRecord.uid,
+                        eventInfo.current,
+                        heatMapData,
+                        scheduleSelectorData
+                    )
+                )}
+            </Page>
         );
     }
 
     // default render
     return (
-        <div>
+        <Page>
             <h1>EventPage</h1>
-        </div>
+        </Page>
     );
 }
