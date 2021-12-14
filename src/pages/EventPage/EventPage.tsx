@@ -295,6 +295,13 @@ export default function EventPage({
     const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
     const [scheduleSelectorData, setScheduleSelectorData] =
         React.useState<ScheduleSelectorData>();
+
+    /**
+     * Checks for host to render finalize event button.
+     * Needs to be updated once a proper solution
+     *  is developed
+     *
+     */
     const isUserAHost = (): boolean => {
         if (!userRecord) return false;
 
