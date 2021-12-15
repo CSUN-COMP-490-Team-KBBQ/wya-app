@@ -1,3 +1,7 @@
+#calendarContainer {
+    width: 93%;
+}
+
 .calendar-page-header {
     margin: 0px;
 }
@@ -15,7 +19,7 @@
 }
 
 .react-calendar {
-    max-width: 100%;
+    width: 500px;
     margin-top: 30px;
     margin-bottom: 30px;
     background: white;
