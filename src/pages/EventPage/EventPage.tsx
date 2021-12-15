@@ -1,11 +1,19 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
 import EventData, { EventDataAvailability } from '../../interfaces/EventData';
-import { getDocSnapshot$, updateEventAvailability } from '../../lib/firestore';
+import {
+    getDocSnapshot$,
+    updateEventAvailability,
+    updateEvent,
+    updateUserRecord,
+} from '../../lib/firestore';
 import HeatMapData from '../../interfaces/HeatMapData';
+import ConfirmEventModal from '../../components/ConfirmEventModal/ConfirmEventModal';
 import {
     getYTimesSorted,
     getXDaysSorted,
@@ -17,6 +25,9 @@ import {
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import AvailabilityScheduleSelector from '../../components/AvailabilityScheduleSelector/AvailabilityScheduleSelector';
 import ScheduleSelectorData from '../../interfaces/ScheduleSelectorData';
+
+import './EventPage.css';
+import UserData from '../../interfaces/User';
 
 type AddAvailabilityModalProps = {
     heatMapData: HeatMapData;
@@ -181,6 +192,94 @@ function AddAvailabilityModal({
     );
 }
 
+/**
+ * Renders a final event
+ * Needs to be updated once a proper solution
+ *  is developed
+ *
+ */
+interface EventFinalizedProps {
+    event: EventData;
+    user: UserData;
+    isHost: boolean;
+}
+
+function EventFinalized({
+    event,
+    user,
+    isHost,
+}: EventFinalizedProps): JSX.Element {
+    const { name, day, description, startTime, endTime, rsvp } = event;
+    const { events, firstName, lastName } = user;
+    const eventInUserRecord = events.find((e) => e.eventId === event.eventId)!;
+    const { accepted, declined } = eventInUserRecord;
+
+    const handleAccept = () => {
+        eventInUserRecord.accepted = true;
+        eventInUserRecord.declined = false;
+        rsvp.push(`${firstName} ${lastName}`);
+
+        updateUserRecord(user);
+        updateEvent(event);
+    };
+
+    const handleDecline = () => {
+        eventInUserRecord.accepted = false;
+        eventInUserRecord.declined = true;
+        updateUserRecord(user);
+    };
+
+    return (
+        <div>
+            <h1>{name}</h1>
+            <p>{description}</p>
+            {/* add who is hosting here? */}
+            <p>day: {day}</p>
+            <p>starts: {startTime}</p>
+            <p>ends: {endTime}</p>
+            {/* render for a guest only */}
+            {!isHost && !accepted && !declined && (
+                <div>
+                    <Button onClick={handleAccept}>Accept</Button>
+                    <Button onClick={handleDecline}>Decline</Button>
+                </div>
+            )}
+            {!isHost && declined && (
+                <Alert variant="info">
+                    You have declined this event. Did you want to accept?
+                    <span>
+                        <Button
+                            variant="light"
+                            style={{ margin: '0px 10px' }}
+                            onClick={handleAccept}
+                        >
+                            Yes
+                        </Button>
+                    </span>
+                </Alert>
+            )}
+            <div>
+                <h2>Attending</h2>
+                <ListGroup className="attending-list">
+                    {rsvp.map((guestName) => {
+                        // include key prop with unique key
+                        return <ListGroup.Item>{guestName}</ListGroup.Item>;
+                    })}
+                </ListGroup>
+            </div>
+        </div>
+    );
+}
+
+/**
+ *
+ *  Refactor needed!
+ *
+ *  Once an established style for the app
+ *  is designed and event stages are outlined,
+ *  update this component to refect the changes.
+ *
+ */
 export default function EventPage({
     match,
 }: {
@@ -191,18 +290,32 @@ export default function EventPage({
     };
 }): JSX.Element {
     const { userRecord } = useUserRecordContext();
+    const eventInfo = React.useRef<EventData>();
     const [modalShow, setModalShow] = React.useState<boolean>(false);
     const [heatMapData, setHeatMapData] = React.useState<HeatMapData>();
-    const eventAvailability = React.useRef<EventDataAvailability>();
     const [scheduleSelectorData, setScheduleSelectorData] =
         React.useState<ScheduleSelectorData>();
+
+    /**
+     * Checks for host to render finalize event button.
+     * Needs to be updated once a proper solution
+     *  is developed
+     *
+     */
+    const isUserAHost = (): boolean => {
+        if (!userRecord) return false;
+
+        return userRecord.events.some(
+            (e) => e.eventId === match.params.id && e.role === 'HOST'
+        );
+    };
 
     React.useEffect(() => {
         if (userRecord) {
             getDocSnapshot$(`/events/${match.params.id}`, {
                 next: (eventSnapshot) => {
                     const event = eventSnapshot.data() as EventData;
-                    eventAvailability.current = event.availability;
+                    eventInfo.current = event;
                     const tempYTimes = getYTimesSorted(event.availability);
                     const tempXDays = getXDaysSorted(
                         tempYTimes,
@@ -233,34 +346,73 @@ export default function EventPage({
         }
     }, [userRecord]);
 
-    return heatMapData &&
-        eventAvailability.current &&
-        userRecord &&
-        scheduleSelectorData !== undefined ? (
-        <div>
-            <h1>EventPage</h1>
-            <h2>Group Availabilities</h2>
-            <AvailabilityHeatMap
-                yLabels={heatMapData.yData}
-                xLabels={heatMapData.xDataFormatted}
-                data={heatMapData.mapData}
-                onClick={() => undefined}
-            />
-            <Button type="button" onClick={() => setModalShow(true)}>
-                add Availability
-            </Button>
+    /**
+     * Renders an event in the planning stage
+     * Needs to be updated once a proper solution
+     *  is developed
+     *
+     */
+    const eventPlanning = (
+        userId: string,
+        event: EventData,
+        heatMap: HeatMapData,
+        scheduleSelector: ScheduleSelectorData
+    ): JSX.Element => {
+        return (
+            <div>
+                <h1>EventPage</h1>
+                <h2>Group Availabilities</h2>
+                <AvailabilityHeatMap
+                    yLabels={heatMap.yData}
+                    xLabels={heatMap.xDataFormatted}
+                    data={heatMap.mapData}
+                    onClick={() => undefined}
+                />
+                <Button type="button" onClick={() => setModalShow(true)}>
+                    add Availability
+                </Button>
 
-            <AddAvailabilityModal
-                heatMapData={heatMapData}
-                scheduleSelectorData={scheduleSelectorData}
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                eventAvailability={eventAvailability.current}
-                eventId={match.params.id}
-                uid={userRecord.uid}
+                {isUserAHost() && !event.isFinalized && (
+                    <ConfirmEventModal event={event} heatMapData={heatMap} />
+                )}
+
+                <AddAvailabilityModal
+                    heatMapData={heatMap}
+                    scheduleSelectorData={scheduleSelector}
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                    eventAvailability={event.availability}
+                    eventId={match.params.id}
+                    uid={userId}
+                />
+            </div>
+        );
+    };
+
+    if (
+        heatMapData &&
+        eventInfo.current &&
+        userRecord &&
+        scheduleSelectorData !== undefined
+    ) {
+        return eventInfo.current.isFinalized ? (
+            <EventFinalized
+                event={eventInfo.current}
+                user={userRecord}
+                isHost={isUserAHost()}
             />
-        </div>
-    ) : (
+        ) : (
+            eventPlanning(
+                userRecord.uid,
+                eventInfo.current,
+                heatMapData,
+                scheduleSelectorData
+            )
+        );
+    }
+
+    // default render
+    return (
         <div>
             <h1>EventPage</h1>
         </div>

@@ -13,6 +13,7 @@ import {
 import axios from 'axios';
 import app from './firebase';
 import EventData, { EventDataAvailability } from '../interfaces/EventData';
+import UserData from '../interfaces/User';
 
 const firestore = getFirestore(app);
 
@@ -31,7 +32,9 @@ const formatAvailability = (
     const startDateTimeStamp = new Date(`${startDate}T00:00`);
     const endDateTimeStamp = new Date(`${endDate}T23:59`);
     const startTimeTimeStamp = new Date(`1999-12-31T${startTime}`);
-    const endTimeTimeStamp = new Date(`1999-12-31T${endTime}`);
+    const endTimeTimeStamp = new Date(
+        new Date(`1999-12-31T${endTime}`).getTime() - TIMEINCREMENT.getTime()
+    );
     let tempDateTimeStamp = startDateTimeStamp;
     let tempTimeTimeStamp = startTimeTimeStamp;
     const days = {};
@@ -99,6 +102,16 @@ export const getEventData = async (eventId: string): Promise<EventData> => {
     return (await getDoc(eventDocRef)).data() as EventData;
 };
 
+export const updateEvent = async (event: EventData): Promise<void> => {
+    const eventDocRef = getDocRef(`/events/${event.eventId}`);
+    return updateDoc(eventDocRef, { ...event });
+};
+
+export const updateUserRecord = async (user: UserData): Promise<void> => {
+    const userDocRef = getDocRef(`/users/${user.uid}`);
+    return updateDoc(userDocRef, { ...user });
+};
+
 export const getDocSnapshot$ = (
     path: string,
     observer: {
@@ -117,8 +130,6 @@ export const updateCalendarAvailability = (
 ): Promise<string> => {
     return new Promise((resolve, reject) => {
         const userDocRef = getDocRef(`/users/${uid}`);
-        // const availabilityData: UserDataAvailability = {};
-        // availabilityData.date = data;
 
         updateDoc(userDocRef, 'availability', date)
             .then(() => {
