@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Calendar from 'react-calendar';
 import EventList from '../../components/EventList/EventList';
+import Page from '../../components/Page/Page';
 import AvailabilityScheduleSelector from '../../components/AvailabilityScheduleSelector/AvailabilityScheduleSelector';
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import { updateCalendarAvailability } from '../../lib/firestore';
@@ -113,38 +114,45 @@ export default function CalendarPage(): JSX.Element {
         }
     }, [userRecord]);
 
-    return userRecord && scheduleSelectorData !== undefined ? (
-        <div>
-            <h1>CalendarPage</h1>
+    return (
+        <Page>
+            {userRecord && scheduleSelectorData !== undefined ? (
+                <div>
+                    <h1>CalendarPage</h1>
 
-            <div className="calendar-display">
-                <h1>Calendar</h1>
-                <Calendar
-                    onChange={onChange}
-                    value={value}
-                    calendarType="US"
-                    // onDayClick
-                    // showDoubleView
-                />
-                <Button type="button" onClick={() => setModalShow(true)}>
-                    Edit Availability
-                </Button>
-                <UpdateAvailabilityModal
-                    uid={userRecord.uid}
-                    scheduleSelectorData={scheduleSelectorData}
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                />
-            </div>
-            <EventList
-                elementId="calendar-event-list"
-                events={userRecord.events}
-            />
-        </div>
-    ) : (
-        <div>
-            {/* TODO: Add loading page */}
-            <h1>CalendarPage</h1>
-        </div>
+                    <div className="calendar-display">
+                        <h1>Calendar</h1>
+                        <Calendar
+                            onChange={onChange}
+                            value={value}
+                            calendarType="US"
+                            // onDayClick
+                            // showDoubleView
+                        />
+                        <Button
+                            type="button"
+                            onClick={() => setModalShow(true)}
+                        >
+                            Edit Availability
+                        </Button>
+                        <UpdateAvailabilityModal
+                            uid={userRecord.uid}
+                            scheduleSelectorData={scheduleSelectorData}
+                            show={modalShow}
+                            onHide={() => setModalShow(false)}
+                        />
+                    </div>
+                    <EventList
+                        elementId="calendar-event-list"
+                        events={userRecord.events}
+                    />
+                </div>
+            ) : (
+                <div>
+                    {/* TODO: Add loading page */}
+                    <h1>CalendarPage</h1>
+                </div>
+            )}
+        </Page>
     );
 }

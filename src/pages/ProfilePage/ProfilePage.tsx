@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 
 import ChangePasswordForm from '../../components/ChangePasswordForm/ChangePasswordForm';
+import Page from '../../components/Page/Page';
 import { useUserContext } from '../../contexts/UserContext';
 import { logIn, changePassword } from '../../lib/auth';
 import './ProfilePage.css';
@@ -67,13 +68,18 @@ export default function ProfilePage(): JSX.Element {
     };
 
     return (
-        <div id="profilePage">
-            <h1>ProfilePage</h1>
-            <Form onSubmit={onSubmitHandler} className="change-password-form">
-                <h2>Change Password</h2>
-                <hr />
-                <DisplayPasswordChangeForm />
-            </Form>
-        </div>
+        <Page>
+            <div id="profilePage">
+                <h1>ProfilePage</h1>
+                <Form
+                    onSubmit={onSubmitHandler}
+                    className="change-password-form"
+                >
+                    <h2>Change Password</h2>
+                    <hr />
+                    <DisplayPasswordChangeForm />
+                </Form>
+            </div>
+        </Page>
     );
 }
