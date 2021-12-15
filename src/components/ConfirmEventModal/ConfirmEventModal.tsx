@@ -30,15 +30,17 @@ interface ConfirmEventModalProps {
 function shiftTimeOptions(
     options: { value: string; label: string }[]
 ): { value: string; label: string }[] {
-    // clone options and shift
+    // clone options
     const newOptions = options.map((opts) => ({ ...opts }));
-    newOptions.shift();
 
     // get the last time from options and add 15 mins
     const endTimeOption = newOptions.slice(-1)[0].value;
     const endTimeDate = new Date(`1970-01-01T${endTimeOption}`);
     const newEndTime = endTimeDate.getMinutes() + 15;
     endTimeDate.setMinutes(newEndTime);
+
+    // shift all values to offset start time by 15 minutes
+    newOptions.shift();
 
     // trim the timezone and add the new time to array of options
     const newEndTimeOption = endTimeDate.toTimeString().slice(0, 5);
@@ -56,10 +58,14 @@ export default function ConfirmEventModal(
     const [show, setShow] = React.useState<boolean>(false);
     const [displayError, setDisplayError] = React.useState<string>('');
     const { event, heatMapData } = props;
-    const { yData, xData } = heatMapData;
+    const { yData, xDataFormatted } = heatMapData;
 
     // prepping Select component options
-    const dayOptions = xData.map((time) => ({ value: time, label: time }));
+    const dayOptions = xDataFormatted.map((time) => ({
+        value: time,
+        label: time,
+    }));
+
     const startTimeOptions = yData.map((time) => ({
         value: time,
         label: time,

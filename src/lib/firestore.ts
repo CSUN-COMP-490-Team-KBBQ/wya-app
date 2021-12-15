@@ -32,7 +32,9 @@ const formatAvailability = (
     const startDateTimeStamp = new Date(`${startDate}T00:00`);
     const endDateTimeStamp = new Date(`${endDate}T23:59`);
     const startTimeTimeStamp = new Date(`1999-12-31T${startTime}`);
-    const endTimeTimeStamp = new Date(`1999-12-31T${endTime}`);
+    const endTimeTimeStamp = new Date(
+        new Date(`1999-12-31T${endTime}`).getTime() - TIMEINCREMENT.getTime()
+    );
     let tempDateTimeStamp = startDateTimeStamp;
     let tempTimeTimeStamp = startTimeTimeStamp;
     const days = {};

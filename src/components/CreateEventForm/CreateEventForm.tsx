@@ -28,11 +28,12 @@ export default function CreateEventForm(): JSX.Element {
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
     const yyyy = today.getFullYear();
     const currentDate = String(`${yyyy}-${mm}-${dd}`);
-    const now = moment().startOf('hour');
+    const start = moment().startOf('hour');
+    const end = moment().startOf('hour').add(15, 'minutes');
 
     const [startTimeValue, setStartTimeValue] =
-        React.useState<moment.Moment>(now);
-    const [endTimeValue, setEndTimeValue] = React.useState<moment.Moment>(now);
+        React.useState<moment.Moment>(start);
+    const [endTimeValue, setEndTimeValue] = React.useState<moment.Moment>(end);
 
     const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
