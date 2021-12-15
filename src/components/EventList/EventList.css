@@ -1,6 +1,6 @@
 .event-list {
     max-height: 300px;
-    min-width: 500px;
+    width: 500px;
     margin: 30px;
     margin-top: 31px;
     overflow: auto;

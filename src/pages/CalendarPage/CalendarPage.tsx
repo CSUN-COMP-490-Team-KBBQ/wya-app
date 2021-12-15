@@ -126,12 +126,12 @@ export default function CalendarPage(): JSX.Element {
     return (
         <Page>
             {userRecord && scheduleSelectorData !== undefined ? (
-                <Container fluid>
+                <Container fluid id="calendarContainer">
                     <Row>
                         <h1 className="calendar-page-header">Calendar Page</h1>
                     </Row>
                     <Row>
-                        <Col sm={6}>
+                        <Col sm={6} id="calendarCol">
                             <div className="calendar-display">
                                 <h1>Calendar</h1>
                                 <Calendar
@@ -155,7 +155,7 @@ export default function CalendarPage(): JSX.Element {
                                 />
                             </div>
                         </Col>
-                        <Col sm={6}>
+                        <Col sm={6} id="eventListCol">
                             <EventList
                                 elementId="calendar-event-list"
                                 events={userRecord.events}
