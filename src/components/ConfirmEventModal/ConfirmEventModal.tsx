@@ -108,7 +108,7 @@ export default function ConfirmEventModal(
 
     return (
         <div>
-            <Button type="button" onClick={handleShow}>
+            <Button id="confirmButton" type="button" onClick={handleShow}>
                 Confirm Event
             </Button>
 

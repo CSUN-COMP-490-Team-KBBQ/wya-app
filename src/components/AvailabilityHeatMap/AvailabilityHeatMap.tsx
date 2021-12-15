@@ -26,10 +26,8 @@ function AvailabilityHeatMap(props: AvailabilityHeatMapProps): JSX.Element {
         <div>
             <div
                 style={{
-                    backgroundColor: 'white',
                     fontSize: '13px',
                     width: 'auto',
-                    margin: '10px',
                     // temp set width for mock data
                     maxWidth: '1024px',
                 }}

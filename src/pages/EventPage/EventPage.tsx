@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { Container } from 'react-bootstrap';
 
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
 import Page from '../../components/Page/Page';
@@ -371,22 +374,35 @@ export default function EventPage({
         scheduleSelector: ScheduleSelectorData
     ): JSX.Element => {
         return (
-            <div>
+            <Container fluid>
                 <h1>EventPage</h1>
                 <h2>Group Availabilities</h2>
-                <AvailabilityHeatMap
-                    yLabels={heatMap.yData}
-                    xLabels={heatMap.xDataFormatted}
-                    data={heatMap.mapData}
-                    onClick={() => undefined}
-                />
-                <Button type="button" onClick={() => setModalShow(true)}>
-                    add Availability
-                </Button>
-
-                {isUserAHost() && !event.isFinalized && (
-                    <ConfirmEventModal event={event} heatMapData={heatMap} />
-                )}
+                <Col id="containerCol" sm={6}>
+                    <Row>
+                        <AvailabilityHeatMap
+                            yLabels={heatMap.yData}
+                            xLabels={heatMap.xDataFormatted}
+                            data={heatMap.mapData}
+                            onClick={() => undefined}
+                        />
+                    </Row>
+                    <Row>
+                        <div id="buttonsRow">
+                            <Button
+                                type="button"
+                                onClick={() => setModalShow(true)}
+                            >
+                                Add Availability
+                            </Button>
+                            {isUserAHost() && !event.isFinalized && (
+                                <ConfirmEventModal
+                                    event={event}
+                                    heatMapData={heatMap}
+                                />
+                            )}
+                        </div>
+                    </Row>
+                </Col>
 
                 <AddAvailabilityModal
                     scheduleSelectorData={scheduleSelector}
@@ -396,7 +412,7 @@ export default function EventPage({
                     eventId={match.params.id}
                     uid={userId}
                 />
-            </div>
+            </Container>
         );
     };
 

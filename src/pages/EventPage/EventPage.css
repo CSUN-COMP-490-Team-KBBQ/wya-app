@@ -1,0 +1,11 @@
+#containerCol {
+    margin: auto;
+    width: 75%;
+}
+
+#buttonsRow {
+    margin-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
