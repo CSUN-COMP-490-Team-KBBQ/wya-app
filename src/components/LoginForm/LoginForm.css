@@ -1,11 +1,12 @@
+/* !important override every .clickable-link */
 .clickable-link {
     text-decoration: none;
-    color: white;
+    color: #0081d9 !important;
     font-size: small;
     font-style: italic;
 }
 .clickable-link:hover {
-    color: blue;
+    color: purple !important;
 }
 
 .form-login {
@@ -24,5 +25,5 @@
 }
 
 .row {
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
 }
