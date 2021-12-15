@@ -70,9 +70,9 @@ export default function CreateEventForm(): JSX.Element {
                 >
                     <input type="hidden" name="hostId" value={user?.uid} />
                     <input type="hidden" name="eventId" value={uuid()} />
-                    <h1 style={{ textAlign: 'left', margin: 0 }}>
+                    <h2 style={{ textAlign: 'left', margin: 0 }}>
                         Let&apos;s create an event!
-                    </h1>
+                    </h2>
                     <Row>
                         <Col sm={6}>
                             <Row>
