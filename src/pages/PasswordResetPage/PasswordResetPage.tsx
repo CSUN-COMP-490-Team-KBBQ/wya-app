@@ -33,7 +33,7 @@ export default function PasswordResetPage(): JSX.Element {
 
     return (
         <Page>
-            <Container>
+            <Container id="passwordResetContainer">
                 <Row>
                     <h1>Password Reset</h1>
                 </Row>

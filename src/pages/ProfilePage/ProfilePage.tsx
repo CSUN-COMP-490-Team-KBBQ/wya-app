@@ -71,9 +71,9 @@ export default function ProfilePage(): JSX.Element {
 
     return (
         <Page>
-            <Container>
+            <Container id="profilePageContainer">
                 <Row>
-                    <h1>ProfilePage</h1>
+                    <h1>Profile Page</h1>
                 </Row>
                 <Row>
                     <Form

@@ -234,13 +234,23 @@ function EventFinalized({
     };
 
     return (
-        <div>
+        <div id="eventFinalizedContent">
             <h1>{name}</h1>
-            <p>{description}</p>
-            {/* add who is hosting here? */}
-            <p>day: {day}</p>
-            <p>starts: {startTime}</p>
-            <p>ends: {endTime}</p>
+            <div id="eventFinalizedPs">
+                <p>
+                    <u>Description</u>: {description}
+                </p>
+                {/* add who is hosting here? */}
+                <p>
+                    <u>Day</u>: {day}
+                </p>
+                <p>
+                    <u>Starts</u>: {startTime}
+                </p>
+                <p>
+                    <u>Ends</u>: {endTime}
+                </p>
+            </div>
             {/* render for a guest only */}
             {!isHost && !accepted && !declined && (
                 <div>

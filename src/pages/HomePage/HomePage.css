@@ -13,26 +13,16 @@ header {
     margin-bottom: 1em;
 }
 
-.f-header {
-    text-align: center;
-    font-size: 60px;
-}
-
 .s-header {
     text-align: center;
     font-size: 2em;
 }
 .home-page-content h1 {
-    color: black;
-    font-size: large;
     text-align: center;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-bottom: 20px;
 }
 
 .home-page-content h2 {
-    color: black;
-    font-size: medium;
     text-align: center;
     margin-left: 100px;
     margin-right: 100px;

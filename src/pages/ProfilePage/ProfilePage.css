@@ -1,19 +1,24 @@
-#profilePage h1 {
-    margin: 25px;
+#profilePageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-#profilePage h2 {
-    text-align: left;
+#profilePageContainer h1 {
+    text-align: center;
+}
+
+#profilePageContainer h2 {
+    text-align: center;
     margin: auto;
 }
 
 .change-password-form {
-    width: 40%;
     padding-top: 15px;
-    margin: auto;
 }
 
 .change-password-form .form-label {
-    color: white;
+    color: black;
     font-size: medium;
 }
