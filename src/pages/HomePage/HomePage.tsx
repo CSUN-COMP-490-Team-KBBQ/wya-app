@@ -19,7 +19,7 @@ export default function HomePage(): JSX.Element {
     if (userRecord) {
         return (
             <Page>
-                <div>
+                <div className="home-page-content">
                     <h1 className="f-header">Main Menu</h1>
                     <pre className="s-header">
                         Welcome: {`${userRecord.firstName}!`}
@@ -47,7 +47,7 @@ export default function HomePage(): JSX.Element {
 
     return (
         <Page>
-            <div>
+            <div className="home-page-content">
                 <h1>
                     Welcome!{' '}
                     <Link to="/login" className="loginLink">

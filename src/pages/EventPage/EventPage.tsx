@@ -363,10 +363,16 @@ export default function EventPage({
         scheduleSelector: ScheduleSelectorData
     ): JSX.Element => {
         return (
-            <Container fluid>
-                <h1>EventPage</h1>
-                <h2>Group Availabilities</h2>
+            <Container fluid id="eventPlanningContainer">
+                <h1>{event.name}</h1>
                 <Col id="containerCol" sm={6}>
+                    <Row>
+                        <div id="eventDetails">
+                            <h2>Description</h2>
+                            <p>{event.description}</p>
+                        </div>
+                    </Row>
+                    <h2>Group Availabilities</h2>
                     <Row>
                         <AvailabilityHeatMap
                             yLabels={heatMap.yData}

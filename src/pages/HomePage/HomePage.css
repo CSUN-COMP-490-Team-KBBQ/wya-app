@@ -6,6 +6,7 @@
     width: 20em !important;
 }
 
+/* investigate what header is doing */
 header {
     background-color: #aaaaaa;
     text-align: right;
@@ -21,7 +22,7 @@ header {
     text-align: center;
     font-size: 2em;
 }
-h1 {
+.home-page-content h1 {
     color: black;
     font-size: large;
     text-align: center;
@@ -29,7 +30,7 @@ h1 {
     margin-right: 10px;
 }
 
-h2 {
+.home-page-content h2 {
     color: black;
     font-size: medium;
     text-align: center;
@@ -45,6 +46,7 @@ h2 {
     color: darkblue;
 }
 
+/* investigate what header is doing */
 img {
     height: 200px;
     display: block;

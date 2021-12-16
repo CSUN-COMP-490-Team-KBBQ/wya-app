@@ -1,3 +1,17 @@
+#eventPlanningContainer {
+    text-align: center;
+}
+
+#eventDetails {
+    text-align: center;
+    margin-top: 3em;
+}
+
+/* #eventDetails p {
+    font-size: large;
+    margin-left: 30px;
+} */
+
 #containerCol {
     margin: auto;
     width: 75%;
