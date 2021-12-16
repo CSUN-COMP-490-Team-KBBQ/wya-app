@@ -5,6 +5,7 @@ export default interface UserData {
     firstName: string;
     lastName: string;
     availability: Array<number>;
+    timeFormat24Hr: boolean;
 }
 
 export interface EventInfo {

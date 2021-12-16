@@ -7,17 +7,24 @@ import ChangePasswordForm from '../../components/ChangePasswordForm/ChangePasswo
 import Page from '../../components/Page/Page';
 import { useUserContext } from '../../contexts/UserContext';
 import { logIn, changePassword } from '../../lib/auth';
+import { updateUserTimeFormatOption } from '../../lib/firestore';
+import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import './ProfilePage.css';
 import 'react-toggle/style.css';
 
 export default function ProfilePage(): JSX.Element {
     const { user } = useUserContext();
+    const { userRecord } = useUserRecordContext();
     const [displaySuccess, setDisplaySuccess] = React.useState<string>('');
     const [displayError, setDisplayError] = React.useState<string>('');
-    const [is24Hour, setIs24Hour] = React.useState<boolean>(true);
 
-    console.log('after');
-    console.log(is24Hour);
+    const [is24Hour, setIs24Hour] = React.useState<boolean>();
+
+    React.useEffect(() => {
+        if (userRecord) {
+            setIs24Hour(userRecord.timeFormat24Hr);
+        }
+    }, [userRecord]);
 
     const DisplayPasswordChangeForm = (): JSX.Element => {
         if (displayError.length > 0 && displaySuccess.length === 0) {
@@ -45,23 +52,22 @@ export default function ProfilePage(): JSX.Element {
         return <ChangePasswordForm />;
     };
 
-    const handleToggleChange = (e: any) => {
+    const handleToggleChange = () => {
+        if (userRecord) {
+            updateUserTimeFormatOption(!is24Hour, userRecord?.uid);
+        }
         setIs24Hour(!is24Hour);
     };
 
     const ShowChangeDisplayForm = (): JSX.Element => {
         return (
-            <div>
-                {/* <label> */}
+            <div id="toggleContent">
                 <Toggle
-                    // name="is24Hour"
-                    // value={is24Hour}
                     defaultChecked={is24Hour}
                     icons={false}
                     onChange={handleToggleChange}
                 />
-                <span>Use 24-Hour Clock</span>
-                {/* </label> */}
+                <p>{is24Hour ? 'Use 24-Hour Clock' : 'Use 12-Hour Clock'}</p>
             </div>
         );
     };
@@ -106,10 +112,7 @@ export default function ProfilePage(): JSX.Element {
                     <hr />
                     <DisplayPasswordChangeForm />
                 </Form>
-                <Form
-                    // onSubmit={}
-                    className=""
-                >
+                <Form className="change-display-form">
                     <h2>Display</h2>
                     <hr />
                     <ShowChangeDisplayForm />

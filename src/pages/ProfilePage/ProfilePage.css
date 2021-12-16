@@ -1,9 +1,13 @@
-#profilePage h1 {
-    margin: 25px;
+#toggleContent {
+    display: inline-flex;
+}
+
+#toggleContent p {
+    margin-left: 10px;
 }
 
 #profilePage h2 {
-    text-align: left;
+    text-align: center;
     margin: auto;
 }
 
@@ -14,6 +18,18 @@
 }
 
 .change-password-form .form-label {
-    color: white;
+    color: black;
+    font-size: medium;
+}
+
+.change-display-form {
+    width: 40%;
+    text-align: center;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.change-display-form .form-label {
+    color: black;
     font-size: medium;
 }

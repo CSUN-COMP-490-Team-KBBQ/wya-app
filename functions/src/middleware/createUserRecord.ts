@@ -14,6 +14,7 @@ const createUserRecord: RequestHandler = async (req, res, next) => {
             lastName,
             events: [],
             availability: [],
+            timeFormat24Hr: true,
         });
         functions.logger.info(`User ${uid} successfully created.`);
         next();
