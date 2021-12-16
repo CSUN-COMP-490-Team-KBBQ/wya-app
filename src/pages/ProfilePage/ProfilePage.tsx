@@ -1,17 +1,23 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import Toggle from 'react-toggle';
 
 import ChangePasswordForm from '../../components/ChangePasswordForm/ChangePasswordForm';
 import Page from '../../components/Page/Page';
 import { useUserContext } from '../../contexts/UserContext';
 import { logIn, changePassword } from '../../lib/auth';
 import './ProfilePage.css';
+import 'react-toggle/style.css';
 
 export default function ProfilePage(): JSX.Element {
     const { user } = useUserContext();
     const [displaySuccess, setDisplaySuccess] = React.useState<string>('');
     const [displayError, setDisplayError] = React.useState<string>('');
+    const [is24Hour, setIs24Hour] = React.useState<boolean>(true);
+
+    console.log('after');
+    console.log(is24Hour);
 
     const DisplayPasswordChangeForm = (): JSX.Element => {
         if (displayError.length > 0 && displaySuccess.length === 0) {
@@ -37,6 +43,27 @@ export default function ProfilePage(): JSX.Element {
         }
 
         return <ChangePasswordForm />;
+    };
+
+    const handleToggleChange = (e: any) => {
+        setIs24Hour(!is24Hour);
+    };
+
+    const ShowChangeDisplayForm = (): JSX.Element => {
+        return (
+            <div>
+                {/* <label> */}
+                <Toggle
+                    // name="is24Hour"
+                    // value={is24Hour}
+                    defaultChecked={is24Hour}
+                    icons={false}
+                    onChange={handleToggleChange}
+                />
+                <span>Use 24-Hour Clock</span>
+                {/* </label> */}
+            </div>
+        );
     };
 
     const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -78,6 +105,14 @@ export default function ProfilePage(): JSX.Element {
                     <h2>Change Password</h2>
                     <hr />
                     <DisplayPasswordChangeForm />
+                </Form>
+                <Form
+                    // onSubmit={}
+                    className=""
+                >
+                    <h2>Display</h2>
+                    <hr />
+                    <ShowChangeDisplayForm />
                 </Form>
             </div>
         </Page>
