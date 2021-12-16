@@ -7,7 +7,7 @@ import './RegisterPage.css';
 export default function RegisterPage(): JSX.Element {
     return (
         <Page>
-            <Container fluid>
+            <Container id="registerPageContainer" fluid>
                 <h1>Register</h1>
                 <RegisterForm />
             </Container>

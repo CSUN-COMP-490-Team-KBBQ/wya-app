@@ -7,7 +7,7 @@ import './LoginPage.css';
 export default function LoginPage(): JSX.Element {
     return (
         <Page>
-            <Container fluid>
+            <Container id="loginPageContainer" fluid>
                 <h1>Log In</h1>
                 <LoginForm />
             </Container>
