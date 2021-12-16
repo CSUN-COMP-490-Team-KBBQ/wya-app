@@ -11,6 +11,7 @@ type AvailabilityScheduleSelectorProps = {
     days: number;
     startDate: Date;
     handleChange: (newSchedule: Date[]) => void;
+    is24Hour: boolean;
 };
 
 function AvailabilityScheduleSelector(
@@ -24,6 +25,7 @@ function AvailabilityScheduleSelector(
         days,
         startDate,
         handleChange,
+        is24Hour,
     } = props;
 
     const handleRenderDateCell = (
@@ -48,6 +50,9 @@ function AvailabilityScheduleSelector(
 
         // if with-in timespan
         if (currentTime < endTime) {
+            if (is24Hour) {
+                return <div id="yLabel">{`${timeLabel}`}</div>;
+            }
             // if before noon
             if (timeHoursNum < 12) {
                 return timeHoursNum === 0 ? ( // if mid-night, add 12 to make appropriate 12
@@ -81,7 +86,6 @@ function AvailabilityScheduleSelector(
                 numDays={days}
                 startDate={startDate}
                 dateFormat={dateFormat}
-                timeFormat="h:mm a"
                 minTime={startTime}
                 maxTime={endTime}
                 hourlyChunks={4}
