@@ -1,6 +1,5 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Toggle from 'react-toggle';
 
 import './ChangeDisplayForm.css';
 
