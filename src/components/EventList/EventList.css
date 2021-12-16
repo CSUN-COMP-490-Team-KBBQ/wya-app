@@ -8,3 +8,8 @@
     border-radius: 0px !important;
     border: 1px solid #a0a096;
 }
+
+/* this id comes form the calendar page as a variable */
+#calendar-event-list h1 {
+    text-align: center;
+}

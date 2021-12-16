@@ -2,6 +2,10 @@
     width: 93%;
 }
 
+#calendarContainer h1 {
+    text-align: center;
+}
+
 .calendar-page-header {
     margin: 0px;
 }
