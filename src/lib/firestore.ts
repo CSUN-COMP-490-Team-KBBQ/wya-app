@@ -128,6 +128,7 @@ export const updateCalendarAvailability = (
     date: Array<number>,
     uid: string
 ): Promise<string> => {
+    // remove new Promise since updateDoc returns a promise
     return new Promise((resolve, reject) => {
         const userDocRef = getDocRef(`/users/${uid}`);
 
@@ -137,6 +138,14 @@ export const updateCalendarAvailability = (
             })
             .catch(reject);
     });
+};
+
+export const updateUserTimeFormatOption = (
+    timeFormatOption: boolean,
+    uid: string
+): Promise<void> => {
+    const userDocRef = getDocRef(`/users/${uid}`);
+    return updateDoc(userDocRef, 'timeFormat24Hr', timeFormatOption);
 };
 
 export const updateEventAvailability = (

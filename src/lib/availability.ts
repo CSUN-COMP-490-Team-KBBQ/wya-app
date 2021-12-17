@@ -123,6 +123,20 @@ export const getXDaysSorted = (
     return Object.keys(availability[yTimes[0]]).sort();
 };
 
+export const formatYTimes = (is24hr: boolean, yTimes: string[]): string[] => {
+    return is24hr
+        ? yTimes
+        : yTimes.map((value) => {
+              const temp =
+                  (((Number(value.slice(0, 2)) + 11) % 12) + 1).toString() +
+                  value.slice(2, 5);
+              if (value.slice(0, 2) < '12') {
+                  return `${temp} am`;
+              }
+              return `${temp} pm`;
+          });
+};
+
 export const formatXDays = (xDays: string[]): string[] => {
     return xDays.map((timeStamp) =>
         new Date(Number(timeStamp)).toDateString().slice(0, 15)

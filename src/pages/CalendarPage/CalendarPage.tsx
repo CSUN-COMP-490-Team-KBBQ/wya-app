@@ -24,7 +24,7 @@ function UpdateAvailabilityModal({
     show,
     onHide,
 }: UpdateAvailabilityModalProps): JSX.Element {
-    const { scheduleData } = scheduleSelectorData;
+    const { scheduleData, is24Hour } = scheduleSelectorData;
 
     const [userAvailabilityData, setUserAvailabilityData] =
         React.useState<Array<Date>>(scheduleData);
@@ -82,6 +82,7 @@ function UpdateAvailabilityModal({
                     days={7}
                     startDate={new Date('January 04, 1970')}
                     handleChange={onClickScheduleSelectorHandle}
+                    is24Hour={is24Hour}
                 />
             </Modal.Body>
             <Modal.Footer>
@@ -110,6 +111,11 @@ export default function CalendarPage(): JSX.Element {
                 scheduleData: createCalendarAvailabilityDataArray(
                     userRecord.availability
                 ),
+                sortedXData: [],
+                formattedXData: [],
+                sortedYData: [],
+                formattedYData: [],
+                is24Hour: userRecord.timeFormat24Hr,
             });
         }
     }, [userRecord]);

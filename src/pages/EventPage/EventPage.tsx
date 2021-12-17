@@ -22,6 +22,7 @@ import {
     createAvailabilityDataArray,
     createPreloadArray,
     cleanUpUserAvailability,
+    formatYTimes,
 } from '../../lib/availability';
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import AvailabilityScheduleSelector from '../../components/AvailabilityScheduleSelector/AvailabilityScheduleSelector';
@@ -31,7 +32,6 @@ import './EventPage.css';
 import UserData from '../../interfaces/User';
 
 type AddAvailabilityModalProps = {
-    heatMapData: HeatMapData;
     scheduleSelectorData: ScheduleSelectorData;
     show: boolean;
     onHide: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -80,7 +80,6 @@ function appendUserAvailabilityToGroup(
 }
 
 function AddAvailabilityModal({
-    heatMapData,
     scheduleSelectorData,
     show,
     onHide,
@@ -88,8 +87,8 @@ function AddAvailabilityModal({
     eventId,
     uid,
 }: AddAvailabilityModalProps): JSX.Element {
-    const { yData, xData, xDataFormatted } = heatMapData;
-    const { scheduleData } = scheduleSelectorData;
+    const { scheduleData, sortedXData, formattedXData, sortedYData, is24Hour } =
+        scheduleSelectorData;
 
     const [userAvailabilityData, setUserAvailabilityData] =
         React.useState<Array<Date>>(scheduleData);
@@ -109,8 +108,8 @@ function AddAvailabilityModal({
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         const newEventAvailability = appendUserAvailabilityToGroup(
-            xData,
-            yData,
+            sortedXData,
+            sortedYData,
             eventAvailability,
             userAvailabilityData,
             uid
@@ -171,13 +170,16 @@ function AddAvailabilityModal({
             </Modal.Header>
             <Modal.Body>
                 <AvailabilityScheduleSelector
-                    startTime={startTimeFormatted(yData[0])}
-                    endTime={endTimeFormatted(yData[yData.length - 1])}
+                    startTime={startTimeFormatted(sortedYData[0])}
+                    endTime={endTimeFormatted(
+                        sortedYData[sortedYData.length - 1]
+                    )}
                     scheduleData={userAvailabilityData}
                     dateFormat="ddd MMM DD YYYY"
-                    days={xDataFormatted.length}
-                    startDate={new Date(xDataFormatted[0])}
+                    days={formattedXData.length}
+                    startDate={new Date(formattedXData[0])}
                     handleChange={onClickScheduleSelectorHandle}
+                    is24Hour={is24Hour}
                 />
             </Modal.Body>
             <Modal.Footer>
@@ -317,30 +319,39 @@ export default function EventPage({
                 next: (eventSnapshot) => {
                     const event = eventSnapshot.data() as EventData;
                     eventInfo.current = event;
-                    const tempYTimes = getYTimesSorted(event.availability);
-                    const tempXDays = getXDaysSorted(
-                        tempYTimes,
+                    const sortedYTimes = getYTimesSorted(event.availability);
+                    const formattedYTimes = formatYTimes(
+                        userRecord.timeFormat24Hr,
+                        sortedYTimes
+                    );
+                    const sortedXDays = getXDaysSorted(
+                        sortedYTimes,
                         event.availability
                     );
-                    const formatedTempXDays = formatXDays(tempXDays);
+                    const formattedXDays = formatXDays(sortedXDays);
 
                     setHeatMapData({
-                        yData: tempYTimes,
-                        xData: tempXDays,
-                        xDataFormatted: formatedTempXDays,
+                        yData: formattedYTimes,
+                        xData: sortedXDays,
+                        xDataFormatted: formattedXDays,
                         mapData: createAvailabilityDataArray(
-                            tempYTimes,
-                            tempXDays,
+                            sortedYTimes,
+                            sortedXDays,
                             event.availability
                         ),
                     });
 
                     setScheduleSelectorData({
                         scheduleData: createPreloadArray(
-                            tempYTimes,
-                            formatedTempXDays,
+                            sortedYTimes,
+                            formattedXDays,
                             userRecord.availability
                         ),
+                        sortedXData: sortedXDays,
+                        formattedXData: formattedXDays,
+                        sortedYData: sortedYTimes,
+                        formattedYData: formattedYTimes,
+                        is24Hour: userRecord.timeFormat24Hr,
                     });
                 },
             });
@@ -378,7 +389,6 @@ export default function EventPage({
                 )}
 
                 <AddAvailabilityModal
-                    heatMapData={heatMap}
                     scheduleSelectorData={scheduleSelector}
                     show={modalShow}
                     onHide={() => setModalShow(false)}

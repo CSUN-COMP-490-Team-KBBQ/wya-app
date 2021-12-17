@@ -16,9 +16,12 @@ import GuestList from '../GuestList/GuestList';
 
 import './CreateEventForm.css';
 import 'rc-time-picker/assets/index.css';
+import { useUserRecordContext } from '../../contexts/UserRecordContext';
 
 export default function CreateEventForm(): JSX.Element {
     const { user } = useUserContext();
+    const { userRecord } = useUserRecordContext();
+
     const history = useHistory();
     const [guests, updateGuests] = React.useState<string[]>([]);
     const recaptchaRef = React.useRef<ReCAPTCHA>(null);
@@ -40,6 +43,12 @@ export default function CreateEventForm(): JSX.Element {
         const formData = new FormData(e.target as HTMLFormElement);
         // eslint-disable-next-line
         let formValue = Object.fromEntries(formData.entries()) as any;
+        formValue.startTime = moment(formValue.startTime, ['hh:mm A']).format(
+            'HH:mm'
+        );
+        formValue.endTime = moment(formValue.endTime, ['hh:mm A']).format(
+            'HH:mm'
+        );
         formValue = { ...formValue, guests };
 
         try {
@@ -138,6 +147,7 @@ export default function CreateEventForm(): JSX.Element {
                                         onChange={setStartTimeValue}
                                         name="startTime"
                                         allowEmpty={false}
+                                        use12Hours={!userRecord?.timeFormat24Hr}
                                     />
                                 </Col>
                                 <Col>
@@ -154,6 +164,7 @@ export default function CreateEventForm(): JSX.Element {
                                         onChange={setEndTimeValue}
                                         name="endTime"
                                         allowEmpty={false}
+                                        use12Hours={!userRecord?.timeFormat24Hr}
                                     />
                                 </Col>
                             </Row>
