@@ -7,10 +7,10 @@
 }
 
 #profilePageContainer {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    max-width: 30%;
 }
 
 #profilePageContainer h1 {
@@ -31,11 +31,12 @@
     font-size: medium;
 }
 
-.change-display-form {
-    width: 40%;
-    text-align: center;
-    margin: auto;
+#changeDisplayRow {
     margin-top: 50px;
+}
+
+.change-display-form {
+    text-align: center;
 }
 
 .change-display-form .form-label {

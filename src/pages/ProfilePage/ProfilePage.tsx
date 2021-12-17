@@ -117,6 +117,8 @@ export default function ProfilePage(): JSX.Element {
                         <hr />
                         <DisplayPasswordChangeForm />
                     </Form>
+                </Row>
+                <Row id="changeDisplayRow">
                     <Form className="change-display-form">
                         <h2>Display</h2>
                         <hr />
