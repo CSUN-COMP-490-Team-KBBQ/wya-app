@@ -67,7 +67,7 @@ export default function ProfilePage(): JSX.Element {
                     icons={false}
                     onChange={handleToggleChange}
                 />
-                <p>{is24Hour ? 'Use 24-Hour Clock' : 'Use 12-Hour Clock'}</p>
+                <p>Use 24-Hour Clock</p>
             </div>
         );
     };
