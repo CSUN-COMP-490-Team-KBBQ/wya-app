@@ -165,6 +165,7 @@ function AddAvailabilityModal({
     return (
         <Modal
             show={show}
+            onHide={onClickCancelHandle}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -185,12 +186,14 @@ function AddAvailabilityModal({
             </Modal.Body>
             <Modal.Footer>
                 <Button
-                    variant="secondary"
+                    variant="outline-secondary"
                     onClick={(e) => onClickCancelHandle(e)}
                 >
                     Cancel
                 </Button>
-                <Button onClick={onSubmitHandler}>Submit</Button>
+                <Button onClick={onSubmitHandler} variant="outline-success">
+                    Submit
+                </Button>
             </Modal.Footer>
         </Modal>
     );
@@ -254,8 +257,12 @@ function EventFinalized({
             {/* render for a guest only */}
             {!isHost && !accepted && !declined && (
                 <div>
-                    <Button onClick={handleAccept}>Accept</Button>
-                    <Button onClick={handleDecline}>Decline</Button>
+                    <Button onClick={handleAccept} variant="success">
+                        Accept
+                    </Button>
+                    <Button onClick={handleDecline} variant="danger">
+                        Decline
+                    </Button>
                 </div>
             )}
             {!isHost && declined && (
