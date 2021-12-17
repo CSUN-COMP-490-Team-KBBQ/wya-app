@@ -1,7 +1,11 @@
+#scheduleSelectorWrapper{
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
 /*this makes the unused/unwanted cells go away*/
 #scheduleSelectorWrapper > div > div {
     grid-template-rows: unset;
-    overflow: auto;
 }
 
 #selectedCell {
