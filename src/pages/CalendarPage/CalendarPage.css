@@ -22,6 +22,15 @@
     max-width: 800px;
 }
 
+.calendarAddAvailabilityButton {
+    background-color: #0081d9 !important;
+    border: solid 2px #0081d9 !important;
+}
+
+.calendarAddAvailabilityButton:hover {
+    background-color: #3895d3 !important;
+}
+
 .react-calendar {
     width: 500px;
     margin-top: 30px;
@@ -131,12 +140,12 @@
     background: #a9d4ff;
 }
 .react-calendar__tile--active {
-    background: #006edc;
+    background: #0081d9;
     color: white;
 }
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-    background: #1087ff;
+    background: #3895d3;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: #e6e6e6;

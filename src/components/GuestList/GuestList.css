@@ -33,3 +33,12 @@
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
+
+.guest-invite-button {
+    background-color: #0081d9 !important;
+    border: solid 2px #0081d9 !important;
+}
+
+.guest-invite-button:hover {
+    background-color: #3895d3 !important;
+}

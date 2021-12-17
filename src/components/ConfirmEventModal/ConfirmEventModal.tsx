@@ -161,7 +161,12 @@ export default function ConfirmEventModal(
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={onSubmitHandler}>Update Event</Button>
+                    <Button
+                        id="confirmEventUpdateButton"
+                        onClick={onSubmitHandler}
+                    >
+                        Update Event
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </div>

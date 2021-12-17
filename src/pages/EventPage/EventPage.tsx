@@ -405,6 +405,7 @@ export default function EventPage({
                     <Row>
                         <div id="buttonsRow">
                             <Button
+                                className="eventAddAvailabilityButton"
                                 type="button"
                                 onClick={() => setModalShow(true)}
                             >
