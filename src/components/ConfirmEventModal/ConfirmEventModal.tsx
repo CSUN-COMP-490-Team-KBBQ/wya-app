@@ -119,7 +119,7 @@ export default function ConfirmEventModal(
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title id="contained-modal-title-vcenter">
                         Confirm Event
                     </Modal.Title>
@@ -161,9 +161,13 @@ export default function ConfirmEventModal(
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Button variant="outline-secondary" onClick={handleClose}>
+                        Cancel
+                    </Button>
                     <Button
                         id="confirmEventUpdateButton"
                         onClick={onSubmitHandler}
+                        variant="outline-success"
                     >
                         Update Event
                     </Button>
