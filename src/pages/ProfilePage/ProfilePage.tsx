@@ -106,9 +106,6 @@ export default function ProfilePage(): JSX.Element {
         <Page>
             <Container id="profilePageContainer">
                 <Row>
-                    <h1>Profile Page</h1>
-                </Row>
-                <Row>
                     <Form
                         onSubmit={onSubmitHandler}
                         className="change-password-form"

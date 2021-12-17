@@ -20,9 +20,8 @@ export default function HomePage(): JSX.Element {
         return (
             <Page>
                 <div className="home-page-content">
-                    <h1>Main Menu</h1>
                     <pre className="s-header">
-                        Welcome: {`${userRecord.firstName}!`}
+                        Welcome {`${userRecord.firstName}!`}
                     </pre>
                     <div className="text-center">
                         <Link
