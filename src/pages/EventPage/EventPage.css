@@ -34,6 +34,15 @@ h2 {
     font-size: large;
 }
 
+#eventFinalizedButtons {
+    width: fit-content;
+    margin: auto;
+}
+
+#eventFinalizedButtons Button {
+    margin: 10px;
+}
+
 .attending-list {
     width: 30%;
     margin: auto;

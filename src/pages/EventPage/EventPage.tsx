@@ -256,12 +256,12 @@ function EventFinalized({
             </div>
             {/* render for a guest only */}
             {!isHost && !accepted && !declined && (
-                <div>
-                    <Button onClick={handleAccept} variant="success">
-                        Accept
-                    </Button>
+                <div id="eventFinalizedButtons">
                     <Button onClick={handleDecline} variant="danger">
                         Decline
+                    </Button>
+                    <Button onClick={handleAccept} variant="success">
+                        Accept
                     </Button>
                 </div>
             )}
