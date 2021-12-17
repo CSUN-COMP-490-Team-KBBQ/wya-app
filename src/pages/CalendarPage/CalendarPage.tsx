@@ -138,6 +138,7 @@ export default function CalendarPage(): JSX.Element {
                                 <Button
                                     type="button"
                                     onClick={() => setModalShow(true)}
+                                    className="calendarAddAvailabilityButton"
                                 >
                                     Edit Availability
                                 </Button>

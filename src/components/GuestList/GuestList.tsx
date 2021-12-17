@@ -116,7 +116,11 @@ export default function GuestList({
                             className="container-button-invite"
                             style={{ paddingLeft: 0, paddingRight: 0 }}
                         >
-                            <Button type="button" onClick={onClickHandler}>
+                            <Button
+                                className="guest-invite-button"
+                                type="button"
+                                onClick={onClickHandler}
+                            >
                                 Invite
                             </Button>
                         </Col>

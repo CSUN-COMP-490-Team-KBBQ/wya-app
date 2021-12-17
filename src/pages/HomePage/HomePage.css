@@ -4,6 +4,13 @@
     margin-top: 10px;
     margin-bottom: 10px;
     width: 20em !important;
+    color: white !important;
+    background-color: #0081d9 !important;
+    border: solid 2px #0081d9 !important;
+}
+
+.btn-links:hover {
+    background-color: #3895d3 !important;
 }
 
 /* investigate what header is doing */
