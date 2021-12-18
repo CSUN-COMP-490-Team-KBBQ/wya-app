@@ -12,6 +12,7 @@ import './Page.css';
 
 const Page: React.FC = ({ children }): JSX.Element => {
     const { user } = useUserContext();
+
     return (
         <>
             <Navbar>
