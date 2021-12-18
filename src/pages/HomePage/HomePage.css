@@ -26,7 +26,7 @@ header {
 }
 
 .home-page-content {
-    margin-top: 100px;
+    margin: 10% 0;
 }
 
 .home-page-content h1 {
@@ -37,7 +37,6 @@ header {
 .home-page-content h2 {
     text-align: left;
     margin-left: 100px;
-    margin-right: 100px;
 }
 
 .loginLink {
