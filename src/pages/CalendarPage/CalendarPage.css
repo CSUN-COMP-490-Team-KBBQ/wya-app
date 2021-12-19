@@ -2,6 +2,11 @@
     width: 93%;
 }
 
+#calendarContainer .row {
+    margin: auto;
+    width: fit-content;
+}
+
 #calendarContainer h1 {
     text-align: center;
 }
