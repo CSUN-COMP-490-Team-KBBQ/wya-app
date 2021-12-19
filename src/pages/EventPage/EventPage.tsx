@@ -469,7 +469,7 @@ export default function EventPage({
     // default render
     return (
         <Page>
-            <h1>EventPage</h1>
+            <></>
         </Page>
     );
 }

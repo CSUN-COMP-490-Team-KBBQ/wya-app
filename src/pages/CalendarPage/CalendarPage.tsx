@@ -171,10 +171,7 @@ export default function CalendarPage(): JSX.Element {
                     </Row>
                 </Container>
             ) : (
-                <Container fluid>
-                    {/* TODO: Add loading page */}
-                    <h1>CalendarPage</h1>
-                </Container>
+                <></>
             )}
         </Page>
     );
