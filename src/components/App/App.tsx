@@ -15,6 +15,7 @@ import { UserAuthProvider } from '../../contexts/UserContext';
 import { UserRecordProvider } from '../../contexts/UserRecordContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import LandingPage from '../../pages/LandingPage/LandingPage';
 
 export default function App(): JSX.Element {
     return (
@@ -22,7 +23,7 @@ export default function App(): JSX.Element {
             <UserRecordProvider>
                 <BrowserRouter>
                     <Switch>
-                        <Route path="/" exact component={HomePage} />
+                        <Route path="/" exact component={LandingPage} />
                         <Route path="/login" exact component={LoginPage} />
                         <Route
                             path="/register"
@@ -34,6 +35,7 @@ export default function App(): JSX.Element {
                             exact
                             component={PasswordResetPage}
                         />
+
                         <PrivateRoute
                             path="/create-event"
                             component={CreateEventPage}
