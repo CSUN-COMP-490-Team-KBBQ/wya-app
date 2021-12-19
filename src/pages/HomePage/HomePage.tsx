@@ -1,7 +1,6 @@
 import React from 'react';
 import './HomePage.css';
 import { Link } from 'react-router-dom';
-import Image from 'react-bootstrap/Image';
 import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import PageSpinner from '../../components/PageSpinner/PageSpinner';
 import Page from '../../components/Page/Page';
