@@ -22,7 +22,7 @@ export default function RegisterForm(): JSX.Element {
         if (user) {
             // eslint-disable-next-line
             console.log('User already logged in, redirecting to home page');
-            history.push('/');
+            history.push('/calendar');
         }
     });
 
@@ -41,7 +41,7 @@ export default function RegisterForm(): JSX.Element {
             // eslint-disable-next-line
             console.log(`User successfully created!`, data);
             await logIn(email, password);
-            history.push('/');
+            history.push('/calendar');
         } catch (error) {
             // eslint-disable-next-line
             console.error(error);

@@ -14,7 +14,7 @@ const LandingPage: React.FC = () => {
         if (user) {
             history.push('/calendar');
         }
-    }, [user]);
+    });
 
     return (
         <div className="home-page-content">
