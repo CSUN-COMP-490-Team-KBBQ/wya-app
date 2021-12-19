@@ -9,12 +9,13 @@ import logo from '../../assets/wya-logo.png';
 import { useUserContext } from '../../contexts/UserContext';
 import { logOut } from '../../lib/auth';
 import './Page.css';
+import '../../index.css';
 
 const Page: React.FC = ({ children }): JSX.Element => {
     const { user } = useUserContext();
     return (
         <>
-            <Navbar>
+            <Navbar className="topnav">
                 <Container fluid>
                     <Navbar.Brand href={user ? '/calendar' : '/'}>
                         <Image src={logo} fluid style={{ height: '60px' }} />
