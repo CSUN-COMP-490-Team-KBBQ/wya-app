@@ -22,34 +22,19 @@ const Page: React.FC = ({ children }): JSX.Element => {
                     </Navbar.Brand>
                     <Header>
                         {user ? (
-                            <Container
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    marginRight: 0,
-                                }}
-                            >
-                                <div style={{ flexGrow: 1 }}>
-                                    <div style={{ display: 'flex' }}>
-                                        <Nav.Link href="/calendar">
-                                            Calendar
-                                        </Nav.Link>
-                                        <Nav.Link href="/create-event">
-                                            Create an event
-                                        </Nav.Link>
-                                        <Nav.Link href="/profile">
-                                            Profile
-                                        </Nav.Link>
-                                    </div>
-                                </div>
+                            <>
+                                <Nav.Link href="/calendar">Calendar</Nav.Link>
+                                <Nav.Link href="/create-event">
+                                    Create an event
+                                </Nav.Link>
+                                <Nav.Link href="/profile">Profile</Nav.Link>
 
                                 <Nav.Item>
                                     <Button variant="danger" onClick={logOut}>
                                         Log out
                                     </Button>
                                 </Nav.Item>
-                            </Container>
+                            </>
                         ) : (
                             <Container
                                 style={{
