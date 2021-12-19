@@ -12,14 +12,12 @@ import './LoginForm.css';
 
 export default function LoginForm(): JSX.Element {
     const history = useHistory();
-    const { pending, user } = useUserContext();
+    const { user } = useUserContext();
     React.useEffect(() => {
-        if (!pending && user) {
-            // eslint-disable-next-line
-            console.log('User already logged in, redirecting to home page');
-            history.push('/');
+        if (user) {
+            history.push('/calendar');
         }
-    });
+    }, [user]);
 
     const logInHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -32,7 +30,7 @@ export default function LoginForm(): JSX.Element {
             .then(({ uid }) => {
                 // eslint-disable-next-line
                 console.log(`Logged in as user ${uid}`);
-                history.push('/');
+                history.push('/calendar');
             })
             // eslint-disable-next-line
             .catch(console.error);

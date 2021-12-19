@@ -16,7 +16,7 @@ const Page: React.FC = ({ children }): JSX.Element => {
         <>
             <Navbar>
                 <Container fluid>
-                    <Navbar.Brand href="/">
+                    <Navbar.Brand href={user ? '/calendar' : '/'}>
                         <Image src={logo} fluid style={{ height: '60px' }} />
                     </Navbar.Brand>
                     <Header>
