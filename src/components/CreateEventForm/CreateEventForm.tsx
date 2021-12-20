@@ -70,6 +70,15 @@ export default function CreateEventForm(): JSX.Element {
                 >
                     <input type="hidden" name="hostId" value={user?.uid} />
                     <input type="hidden" name="eventId" value={uuid()} />
+                    <h2
+                        style={{
+                            textAlign: 'left',
+                            margin: 0,
+                            marginBottom: 25,
+                        }}
+                    >
+                        Let&apos;s create an event!
+                    </h2>
                     <Row>
                         <Col sm={6}>
                             <Row>
@@ -176,11 +185,13 @@ export default function CreateEventForm(): JSX.Element {
                                     updateGuests={updateGuests}
                                 />
                             </Row>
+                            <div className="button-container">
+                                <Button type="submit" className="form-button">
+                                    Create
+                                </Button>
+                            </div>
                         </Col>
                     </Row>
-                    <Button type="submit" className="form-button">
-                        Create
-                    </Button>
 
                     <Recaptcha recaptchaRef={recaptchaRef} />
                 </Form>

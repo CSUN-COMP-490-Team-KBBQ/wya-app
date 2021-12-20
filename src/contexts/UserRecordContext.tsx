@@ -8,42 +8,36 @@ type UserRecordState = {
     userRecord: UserData | null;
 };
 
-const initialUserRecordState = {
-    pending: true,
+const UserRecordContext = React.createContext<UserRecordState>({
+    pending: false,
     userRecord: null,
-};
-
-const UserRecordContext = React.createContext<UserRecordState>(
-    initialUserRecordState
-);
+});
 
 export const UserRecordProvider: React.FC = ({ children }) => {
-    const [userRecordState, setUserRecordState] =
-        React.useState<UserRecordState>(initialUserRecordState);
+    const [pending, setPending] = React.useState<boolean>(false);
+    const [userRecord, setUserRecord] = React.useState<UserData | null>(null);
 
-    const { pending, user } = useUserContext();
+    const { user } = useUserContext();
 
     React.useEffect(() => {
-        if (pending) {
-            return setUserRecordState({ pending, userRecord: null });
-        }
         if (user) {
+            setPending(true);
             return getDocSnapshot$(`/users/${user.uid}`, {
                 next: (snapshot) => {
                     if (snapshot.exists()) {
-                        setUserRecordState({
-                            pending: false,
-                            userRecord: snapshot.data() as UserData,
-                        });
+                        setUserRecord(snapshot.data() as UserData);
                     }
+                    setPending(false);
                 },
             });
         }
-        return setUserRecordState({ pending: false, userRecord: null });
+        setUserRecord(null);
+        setPending(false);
+        return void 0;
     }, [user]);
 
     return (
-        <UserRecordContext.Provider value={userRecordState}>
+        <UserRecordContext.Provider value={{ pending, userRecord }}>
             {children}
         </UserRecordContext.Provider>
     );

@@ -1,15 +1,6 @@
-h1 {
-    color:black;
-    font-size: large;
+#registerPageContainer h1 {
+    color: black;
     text-align: center;
     margin-left: 10px;
     margin-right: 10px;
-}
-
-h2 {
-    color:black;
-    font-size: medium;
-    text-align: center;
-    margin-left: 100px;
-    margin-right: 100px;
 }

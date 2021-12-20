@@ -2,41 +2,22 @@ import React from 'react';
 import { User } from 'firebase/auth';
 import auth from '../lib/auth';
 
-type UserState = {
-    pending: boolean;
-    user: User | null;
-};
-
-const initialUserState = {
-    pending: true,
-    user: null,
-};
-
-const UserContext = React.createContext<UserState>(initialUserState);
+const UserContext = React.createContext<User | null>(null);
 
 export const UserAuthProvider: React.FC = ({ children }) => {
-    const [userState, setUserState] =
-        React.useState<UserState>(initialUserState);
+    const [user, setUser] = React.useState<User | null>(null);
 
-    React.useEffect(() => {
-        return auth.onAuthStateChanged((user) =>
-            setUserState({ pending: false, user })
-        );
-    }, []);
+    React.useEffect(() => auth.onAuthStateChanged(setUser), []);
 
-    return (
-        <UserContext.Provider value={userState}>
-            {children}
-        </UserContext.Provider>
-    );
+    return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 };
 
-export const useUserContext = (): UserState => {
+export const useUserContext = (): { user: User | null } => {
     const user = React.useContext(UserContext);
     if (user === undefined) {
         throw new Error(
             'useUserContext hook must be used within an UserAuthProvider'
         );
     }
-    return user;
+    return { user };
 };

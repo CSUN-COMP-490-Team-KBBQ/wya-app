@@ -2,6 +2,8 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Toggle from 'react-toggle';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 import ChangePasswordForm from '../../components/ChangePasswordForm/ChangePasswordForm';
 import Page from '../../components/Page/Page';
@@ -102,22 +104,25 @@ export default function ProfilePage(): JSX.Element {
 
     return (
         <Page>
-            <div id="profilePage">
-                <h1>ProfilePage</h1>
-                <Form
-                    onSubmit={onSubmitHandler}
-                    className="change-password-form"
-                >
-                    <h2>Change Password</h2>
-                    <hr />
-                    <DisplayPasswordChangeForm />
-                </Form>
-                <Form className="change-display-form">
-                    <h2>Display</h2>
-                    <hr />
-                    <ShowChangeDisplayForm />
-                </Form>
-            </div>
+            <Container id="profilePageContainer">
+                <Row>
+                    <Form
+                        onSubmit={onSubmitHandler}
+                        className="change-password-form"
+                    >
+                        <h2>Change Password</h2>
+                        <hr />
+                        <DisplayPasswordChangeForm />
+                    </Form>
+                </Row>
+                <Row id="changeDisplayRow">
+                    <Form className="change-display-form">
+                        <h2>Display</h2>
+                        <hr />
+                        <ShowChangeDisplayForm />
+                    </Form>
+                </Row>
+            </Container>
         </Page>
     );
 }

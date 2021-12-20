@@ -6,5 +6,5 @@ jest.mock('firebase/auth');
 
 it('renders component', () => {
     const { queryByText } = render(<ProfilePage />);
-    expect(queryByText('ProfilePage')).toBeTruthy();
+    expect(queryByText('Change Password')).toBeTruthy();
 });

@@ -4,47 +4,50 @@
     margin-top: 10px;
     margin-bottom: 10px;
     width: 20em !important;
+    color: white !important;
+    background-color: #0081d9 !important;
+    border: solid 2px #0081d9 !important;
 }
 
+.btn-links:hover {
+    background-color: #3895d3 !important;
+}
+
+/* investigate what header is doing */
 header {
     background-color: #aaaaaa;
     text-align: right;
     margin-bottom: 1em;
 }
 
-.f-header {
-    text-align: center;
-    font-size: 60px;
-}
-
 .s-header {
     text-align: center;
     font-size: 2em;
 }
-h1 {
-    color: black;
-    font-size: large;
-    text-align: center;
-    margin-left: 10px;
-    margin-right: 10px;
+
+.home-page-content {
+    margin: 10% 0;
 }
 
-h2 {
-    color: black;
-    font-size: medium;
+.home-page-content h1 {
     text-align: center;
+    margin-bottom: 20px;
+}
+
+.home-page-content h2 {
+    text-align: left;
     margin-left: 100px;
-    margin-right: 100px;
 }
 
 .loginLink {
-    color: white;
+    color: #0081d9;
 }
 
 .loginLink:hover {
     color: darkblue;
 }
 
+/* investigate what header is doing */
 img {
     height: 200px;
     display: block;

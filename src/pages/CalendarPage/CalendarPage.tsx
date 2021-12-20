@@ -2,6 +2,9 @@ import React from 'react';
 import './CalendarPage.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Calendar from 'react-calendar';
 import EventList from '../../components/EventList/EventList';
 import Page from '../../components/Page/Page';
@@ -86,12 +89,21 @@ function UpdateAvailabilityModal({
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onClickResetHandle}>Reset</Button>
-                <Button onClick={onClickClearHandle}>Clear</Button>
-                <Button variant="secondary" onClick={onClickCancelHandle}>
+                <Button onClick={onClickResetHandle} variant="outline-info">
+                    Reset
+                </Button>
+                <Button onClick={onClickClearHandle} variant="outline-primary">
+                    Clear
+                </Button>
+                <Button
+                    variant="outline-secondary"
+                    onClick={onClickCancelHandle}
+                >
                     Cancel
                 </Button>
-                <Button onClick={onClickUpdateHandle}>Update</Button>
+                <Button onClick={onClickUpdateHandle} variant="outline-success">
+                    Update
+                </Button>
             </Modal.Footer>
         </Modal>
     );
@@ -123,41 +135,43 @@ export default function CalendarPage(): JSX.Element {
     return (
         <Page>
             {userRecord && scheduleSelectorData !== undefined ? (
-                <div>
-                    <h1>CalendarPage</h1>
-
-                    <div className="calendar-display">
-                        <h1>Calendar</h1>
-                        <Calendar
-                            onChange={onChange}
-                            value={value}
-                            calendarType="US"
-                            // onDayClick
-                            // showDoubleView
-                        />
-                        <Button
-                            type="button"
-                            onClick={() => setModalShow(true)}
-                        >
-                            Edit Availability
-                        </Button>
-                        <UpdateAvailabilityModal
-                            uid={userRecord.uid}
-                            scheduleSelectorData={scheduleSelectorData}
-                            show={modalShow}
-                            onHide={() => setModalShow(false)}
-                        />
-                    </div>
-                    <EventList
-                        elementId="calendar-event-list"
-                        events={userRecord.events}
-                    />
-                </div>
+                <Container fluid id="calendarContainer">
+                    <Row>
+                        <Col sm={6} id="calendarCol">
+                            <div className="calendar-display">
+                                <h1>Calendar</h1>
+                                <Calendar
+                                    onChange={onChange}
+                                    value={value}
+                                    calendarType="US"
+                                    // onDayClick
+                                    // showDoubleView
+                                />
+                                <Button
+                                    type="button"
+                                    onClick={() => setModalShow(true)}
+                                    className="calendarAddAvailabilityButton"
+                                >
+                                    Edit Availability
+                                </Button>
+                                <UpdateAvailabilityModal
+                                    uid={userRecord.uid}
+                                    scheduleSelectorData={scheduleSelectorData}
+                                    show={modalShow}
+                                    onHide={() => setModalShow(false)}
+                                />
+                            </div>
+                        </Col>
+                        <Col sm={6} id="eventListCol">
+                            <EventList
+                                elementId="calendar-event-list"
+                                events={userRecord.events}
+                            />
+                        </Col>
+                    </Row>
+                </Container>
             ) : (
-                <div>
-                    {/* TODO: Add loading page */}
-                    <h1>CalendarPage</h1>
-                </div>
+                <></>
             )}
         </Page>
     );

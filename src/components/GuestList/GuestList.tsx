@@ -81,11 +81,16 @@ export default function GuestList({
                             ) : (
                                 <ListGroup.Item
                                     style={{
-                                        fontStyle: 'italic',
-                                        textAlign: 'center',
+                                        display: 'flex',
+                                        height: '100%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
                                     }}
                                 >
-                                    Empty
+                                    <span style={{ fontStyle: 'italic' }}>
+                                        Empty&nbsp;
+                                    </span>
+                                    <span>😔</span>
                                 </ListGroup.Item>
                             )}
                         </ListGroup>
@@ -112,9 +117,9 @@ export default function GuestList({
                             style={{ paddingLeft: 0, paddingRight: 0 }}
                         >
                             <Button
+                                className="guest-invite-button"
                                 type="button"
                                 onClick={onClickHandler}
-                                style={{ width: '100%' }}
                             >
                                 Invite
                             </Button>

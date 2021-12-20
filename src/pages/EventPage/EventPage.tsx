@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { Container } from 'react-bootstrap';
 
 import AvailabilityHeatMap from '../../components/AvailabilityHeatMap/AvailabilityHeatMap';
 import Page from '../../components/Page/Page';
@@ -161,6 +164,7 @@ function AddAvailabilityModal({
     return (
         <Modal
             show={show}
+            onHide={onClickCancelHandle}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -184,12 +188,14 @@ function AddAvailabilityModal({
             </Modal.Body>
             <Modal.Footer>
                 <Button
-                    variant="secondary"
+                    variant="outline-secondary"
                     onClick={(e) => onClickCancelHandle(e)}
                 >
                     Cancel
                 </Button>
-                <Button onClick={onSubmitHandler}>Submit</Button>
+                <Button onClick={onSubmitHandler} variant="outline-success">
+                    Submit
+                </Button>
             </Modal.Footer>
         </Modal>
     );
@@ -233,18 +239,32 @@ function EventFinalized({
     };
 
     return (
-        <div>
+        <div id="eventFinalizedContent">
             <h1>{name}</h1>
-            <p>{description}</p>
-            {/* add who is hosting here? */}
-            <p>day: {day}</p>
-            <p>starts: {startTime}</p>
-            <p>ends: {endTime}</p>
+            <div id="eventFinalizedPs">
+                <p>
+                    <u>Description</u>: {description}
+                </p>
+                {/* add who is hosting here? */}
+                <p>
+                    <u>Day</u>: {day}
+                </p>
+                <p>
+                    <u>Starts</u>: {startTime}
+                </p>
+                <p>
+                    <u>Ends</u>: {endTime}
+                </p>
+            </div>
             {/* render for a guest only */}
             {!isHost && !accepted && !declined && (
-                <div>
-                    <Button onClick={handleAccept}>Accept</Button>
-                    <Button onClick={handleDecline}>Decline</Button>
+                <div id="eventFinalizedButtons">
+                    <Button onClick={handleDecline} variant="danger">
+                        Decline
+                    </Button>
+                    <Button onClick={handleAccept} variant="success">
+                        Accept
+                    </Button>
                 </div>
             )}
             {!isHost && declined && (
@@ -371,22 +391,42 @@ export default function EventPage({
         scheduleSelector: ScheduleSelectorData
     ): JSX.Element => {
         return (
-            <div>
-                <h1>EventPage</h1>
-                <h2>Group Availabilities</h2>
-                <AvailabilityHeatMap
-                    yLabels={heatMap.yData}
-                    xLabels={heatMap.xDataFormatted}
-                    data={heatMap.mapData}
-                    onClick={() => undefined}
-                />
-                <Button type="button" onClick={() => setModalShow(true)}>
-                    add Availability
-                </Button>
-
-                {isUserAHost() && !event.isFinalized && (
-                    <ConfirmEventModal event={event} heatMapData={heatMap} />
-                )}
+            <Container fluid id="eventPlanningContainer">
+                <h1>{event.name}</h1>
+                <Col id="containerCol" sm={6}>
+                    <Row>
+                        <div id="eventDetails">
+                            <h2>Description</h2>
+                            <p>{event.description}</p>
+                        </div>
+                    </Row>
+                    <h2>Group Availabilities</h2>
+                    <Row>
+                        <AvailabilityHeatMap
+                            yLabels={heatMap.yData}
+                            xLabels={heatMap.xDataFormatted}
+                            data={heatMap.mapData}
+                            onClick={() => undefined}
+                        />
+                    </Row>
+                    <Row>
+                        <div id="buttonsRow">
+                            <Button
+                                className="eventAddAvailabilityButton"
+                                type="button"
+                                onClick={() => setModalShow(true)}
+                            >
+                                Add Availability
+                            </Button>
+                            {isUserAHost() && !event.isFinalized && (
+                                <ConfirmEventModal
+                                    event={event}
+                                    heatMapData={heatMap}
+                                />
+                            )}
+                        </div>
+                    </Row>
+                </Col>
 
                 <AddAvailabilityModal
                     scheduleSelectorData={scheduleSelector}
@@ -396,7 +436,7 @@ export default function EventPage({
                     eventId={match.params.id}
                     uid={userId}
                 />
-            </div>
+            </Container>
         );
     };
 
@@ -429,7 +469,7 @@ export default function EventPage({
     // default render
     return (
         <Page>
-            <h1>EventPage</h1>
+            <></>
         </Page>
     );
 }

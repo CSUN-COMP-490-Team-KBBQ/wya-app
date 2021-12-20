@@ -28,10 +28,14 @@
 }
 
 .form-create-event {
-    width: 100%;
+    width: 75%;
 }
-
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
 .form-button {
-    width: 100%;
+    width: 30%;
     margin-top: 0.5rem;
 }

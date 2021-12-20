@@ -7,6 +7,6 @@ jest.mock('firebase/auth');
 jest.mock('firebase/firestore');
 
 it('renders component', () => {
-    const { queryByTestId } = render(<CreateEventForm />);
-    expect(queryByTestId('CreateEventForm')).toBeTruthy();
+    const { queryByText } = render(<CreateEventForm />);
+    expect(queryByText('Name')).toBeTruthy();
 });
