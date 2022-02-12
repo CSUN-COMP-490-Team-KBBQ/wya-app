@@ -29,13 +29,16 @@ function AvailabilityScheduleSelector(
     } = props;
 
     const handleRenderDateCell = (
-        time: Date, // being used internally, somehow -Jorge (laughed after I literally put what he said)
+        time: Date,
         selected: boolean,
         refSetter: (dateCell: HTMLElement | null) => void
     ) => {
+        const currentTime = time.getHours() + time.getMinutes() / 60;
         const selectionId = selected ? 'selectedCell' : 'unSelectedCell';
 
-        return <div id={selectionId} ref={refSetter} />;
+        return currentTime < endTime ? (
+            <div id={selectionId} ref={refSetter} />
+        ) : null;
     };
 
     const handleRenderTimeLabel = (time: Date) => {
