@@ -36,18 +36,9 @@ function AvailabilityScheduleSelector(
         const currentTime = time.getHours() + time.getMinutes() / 60;
         const selectionId = selected ? 'selectedCell' : 'unSelectedCell';
 
-        if (startTime === 0) {
-            if (currentTime < endTime) {
-                return <div id={selectionId} ref={refSetter} />;
-            }
-
-            return <div />;
-        }
-
-        if (currentTime < endTime && Math.floor(currentTime) !== 0) {
-            return <div id={selectionId} ref={refSetter} />;
-        }
-        return <div />;
+        return currentTime < endTime ? (
+            <div id={selectionId} ref={refSetter} />
+        ) : null;
     };
 
     const handleRenderTimeLabel = (time: Date) => {
