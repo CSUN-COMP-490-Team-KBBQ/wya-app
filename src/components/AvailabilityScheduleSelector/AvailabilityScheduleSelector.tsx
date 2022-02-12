@@ -50,15 +50,6 @@ function AvailabilityScheduleSelector(
         return <div />;
     };
 
-    //     time: Date, // being used internally, somehow -Jorge (laughed after I literally put what he said)
-    //     selected: boolean,
-    //     refSetter: (dateCell: HTMLElement | null) => void
-    // ) => {
-    //     const selectionId = selected ? 'selectedCell' : 'unSelectedCell';
-
-    //     return <div id={selectionId} ref={refSetter} />;
-    //  };
-
     const handleRenderTimeLabel = (time: Date) => {
         const timeLabel = time.toTimeString().slice(0, 5);
         const currentTime = time.getHours() + time.getMinutes() / 60;
