@@ -19,6 +19,12 @@ export default function ChangePasswordForm(): JSX.Element {
                 name="newPassword"
                 className="form-input"
             />
+            <Form.Label>Re-Enter New Password</Form.Label>
+            <Form.Control
+                type="password"
+                name="newPasswordAgain"
+                className="form-input"
+            />
             <Button id="passwordUpdateBtn" type="submit">
                 Update Password
             </Button>

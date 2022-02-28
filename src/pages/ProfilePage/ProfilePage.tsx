@@ -14,6 +14,25 @@ import { useUserRecordContext } from '../../contexts/UserRecordContext';
 import './ProfilePage.css';
 import 'react-toggle/style.css';
 
+function isValidPassword(newPass: string) {
+    let passValid = true;
+    if (
+        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i.test(
+            newPass
+        )
+    ) {
+        passValid = false;
+    }
+    return passValid;
+}
+
+function matchesPassword(newPass: string, newPassAgain: string) {
+    let passMatches = true;
+    if (newPassAgain !== newPass) {
+        passMatches = false;
+    }
+    return passMatches;
+}
 export default function ProfilePage(): JSX.Element {
     const { user } = useUserContext();
     const { userRecord } = useUserRecordContext();
@@ -78,11 +97,27 @@ export default function ProfilePage(): JSX.Element {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         const formValue = Object.fromEntries(formData.entries());
-        const { oldPassword, newPassword } = formValue;
+        const { oldPassword, newPassword, newPasswordAgain } = formValue;
 
         if (newPassword === oldPassword) {
             setDisplayError('New password cannot be the same as old password!');
         } else {
+            if (!isValidPassword(newPassword as string)) {
+                setDisplayError(
+                    'Password must contain at least 8 characters, including:' +
+                        '\n  1 lowercase letter' +
+                        '\n  1 uppercase letter' +
+                        '\n  1 number' +
+                        '\n  1 special character'
+                );
+            } else if (
+                !matchesPassword(
+                    newPassword as string,
+                    newPasswordAgain as string
+                )
+            ) {
+                setDisplayError('Passwords do not match');
+            }
             // eslint-disable-next-line
             logIn(user!.email as string, oldPassword as string)
                 .then(() => {
